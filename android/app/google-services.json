@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "35178936416",
+    "project_id": "livetask-50e27",
+    "storage_bucket": "livetask-50e27.appspot.com"
+  },
+  "client": [
+    
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:35178936416:android:16cfc370cc84a7a2052b05",
+        "android_client_info": {
+          "package_name": "com.livetask.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "35178936416-7loeqpr32k8fenlmkvjd39jq5djdodo3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.livetask.app",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "35178936416-js1adf66idue7qa3as8151ihh40nmkbs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxSn5coRk_c34Wdy909rpU1FOJRj2NewE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "35178936416-js1adf66idue7qa3as8151ihh40nmkbs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

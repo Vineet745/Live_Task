@@ -42,6 +42,11 @@ const Reset = () => {
     }
   };
 
+  const isEmailValid = email => {
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailPattern.test(email);
+  };
+
   return (
     <View style={forgotPasswordStyle.forgotPasswordMain}>
       <Loader loading={loading} />
@@ -63,7 +68,10 @@ const Reset = () => {
             <Controller
               control={control}
               name="email"
-              rules={{required: true}}
+              rules={{
+                required: 'Email is Required',
+                validate: value => isEmailValid(value) || 'Email is not valid',
+              }}
               render={({field}) => (
                 <View style={forgotPasswordStyle.inputBoxView}>
                   <UserEmail />
@@ -77,7 +85,7 @@ const Reset = () => {
               )}></Controller>
             {errors.email && (
               <Text style={forgotPasswordStyle.errorText}>
-                Please Enter The Valid Email Address
+                {errors.email.message}
               </Text>
             )}
           </View>

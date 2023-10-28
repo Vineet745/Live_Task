@@ -1,5 +1,5 @@
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {resetPasswordStyle} from './resetPasswordStyle';
 import CustomAuthHeader from '../../../components/authComponent/CustomAuthHeader';
 import {verticalScale} from '../../../constants/dimension';
@@ -46,6 +46,14 @@ const ResetPassword = ({route}) => {
     }
   };
 
+  // Password
+
+  const isPasswordValid = password => {
+    const passwordPattern =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordPattern.test(password);
+  };
+
   return (
     <View style={resetPasswordStyle.resetPasswordMain}>
       <Loader loading={loading} />
@@ -65,7 +73,12 @@ const ResetPassword = ({route}) => {
             <Controller
               control={control}
               name="newPassword"
-              rules={{required: 'Enter new Password'}}
+              rules={{
+                required: 'Enter new Password',
+                validate: value =>
+                  isPasswordValid(value) ||
+                  'Must contain special Number and alphabetic Values',
+              }}
               render={({field}) => (
                 <View style={resetPasswordStyle.inputBoxView}>
                   <UserLock />
@@ -80,7 +93,7 @@ const ResetPassword = ({route}) => {
               )}></Controller>
             {errors.newPassword && (
               <Text style={resetPasswordStyle.errorText}>
-                New Password is required
+                {errors.newPassword.message}
               </Text>
             )}
           </View>

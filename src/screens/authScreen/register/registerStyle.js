@@ -15,7 +15,7 @@ export const registerStyle = StyleSheet.create({
   registerTopView: {
     paddingTop: verticalScale(15),
     paddingHorizontal: horizontalScale(20),
-    minHeight:verticalScale(490)
+    minHeight: verticalScale(490),
   },
   welcomeMain: {
     marginTop: verticalScale(30),
@@ -28,15 +28,15 @@ export const registerStyle = StyleSheet.create({
   welcomeText: {
     fontFamily: fonts.segoeUI,
     color: color.black,
-    fontSize: RFValue(sizes.h1,667),
-    paddingBottom:verticalScale(5)
+    fontSize: RFValue(sizes.h1, 667),
+    paddingBottom: verticalScale(5),
   },
 
   welcomePara: {
     marginVertical: verticalScale(8),
     color: color.black,
     fontFamily: fonts.light,
-    fontSize: RFValue(sizes.h7,667),
+    fontSize: RFValue(sizes.h7, 667),
   },
 
   detailView: {
@@ -45,7 +45,7 @@ export const registerStyle = StyleSheet.create({
 
   inputBoxView: {
     borderWidth: 1,
-    borderColor: "grey",
+    borderColor: 'grey',
     borderRadius: 10,
     paddingVertical: verticalScale(1),
     flexDirection: 'row',
@@ -64,9 +64,9 @@ export const registerStyle = StyleSheet.create({
     color: 'red',
     fontFamily: fonts.medium,
     marginTop: verticalScale(5),
-    fontSize:RFValue(sizes.h8,667)
+    fontSize: RFValue(8.5, 667),
   },
-  dropDown:{
+  dropDown: {
     borderWidth: 1,
     marginBottom: verticalScale(10),
     flexDirection: 'row',
@@ -75,9 +75,9 @@ export const registerStyle = StyleSheet.create({
     borderColor: 'grey',
     borderRadius: 10,
     paddingLeft: horizontalScale(10),
-    zIndex:100
+    zIndex: 100,
   },
-  
+
   lineBreak: {
     flexDirection: 'row',
     alignItems: 'center',

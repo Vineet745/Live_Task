@@ -1,4 +1,10 @@
 {
   "name": "LiveTask",
-  "displayName": "LiveTask"
+  "displayName": "LiveTask",
+    "android": {
+      "googleServicesFile": "./google-services.json"
+    },
+    
+    "plugins": ["@react-native-google-signin/google-signin"]
 }
+

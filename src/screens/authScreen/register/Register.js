@@ -40,9 +40,9 @@ const Register = () => {
   const {navigate} = useNavigation();
   const dispatch = useDispatch();
   const [value, setValue] = useState(null);
-  const [loading, setloading] = useState(false)
+  const [loading, setloading] = useState(false);
 
-  //
+  // Register User
 
   const handleRegister = async data => {
     const userData = {
@@ -53,15 +53,30 @@ const Register = () => {
       role: 'TCH',
     };
     try {
-      setloading(true)
+      setloading(true);
       const {data} = await RegisterUser({userData});
       await AsyncStorage.setItem('Token', data?.data?.access_token);
       dispatch(authToken(data?.data?.access_token));
-      setloading(false)
+      setloading(false);
     } catch (error) {
       toast({type: 'error', text1: error.response.data.message});
-      setloading(false)
+      setloading(false);
     }
+  };
+
+  // Is Valid Email
+
+  const isEmailValid = email => {
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailPattern.test(email);
+  };
+
+  // Is Password Valid
+
+  const isPasswordValid = password => {
+    const passwordPattern =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordPattern.test(password);
   };
 
   return (
@@ -70,7 +85,7 @@ const Register = () => {
         showsVerticalScrollIndicator={false}
         style={registerStyle.registerMain}>
         <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
-        <Loader loading={loading}/>
+        <Loader loading={loading} />
         <View style={registerStyle.registerTopView}>
           <CustomAuthHeader />
           <View style={registerStyle.welcomeMain}>
@@ -109,7 +124,11 @@ const Register = () => {
               <Controller
                 control={control}
                 name="email"
-                rules={{required: 'Enter your email'}}
+                rules={{
+                  required: 'Email is Required',
+                  validate: value =>
+                    isEmailValid(value) || 'Valid Email is Required',
+                }}
                 render={({field}) => (
                   <View style={registerStyle.inputBoxView}>
                     <UserEmail />
@@ -122,7 +141,9 @@ const Register = () => {
                   </View>
                 )}></Controller>
               {errors.email && (
-                <Text style={registerStyle.errorText}>Email is required</Text>
+                <Text style={registerStyle.errorText}>
+                  {errors.email.message}
+                </Text>
               )}
             </View>
 
@@ -137,7 +158,12 @@ const Register = () => {
               <Controller
                 control={control}
                 name="password"
-                rules={{required: 'password is Required'}}
+                rules={{
+                  required: 'password is Required',
+                  validate: value =>
+                    isPasswordValid(value) ||
+                    'Password must contain special ,Number and alphabetic values',
+                }}
                 render={({field}) => (
                   <View style={registerStyle.inputBoxView}>
                     <UserLock />
@@ -152,7 +178,7 @@ const Register = () => {
                 )}></Controller>
               {errors.password && (
                 <Text style={registerStyle.errorText}>
-                  Password is required
+                  {errors.password.message}
                 </Text>
               )}
             </View>

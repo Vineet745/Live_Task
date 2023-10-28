@@ -8,7 +8,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import CustomAuthHeader from '../../../components/authComponent/CustomAuthHeader';
 import {useForm, Controller} from 'react-hook-form';
 import {horizontalScale, verticalScale} from '../../../constants/dimension';
@@ -27,6 +27,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {authToken} from '../../../redux/slice/authSlice';
 import Loader from '../../../utils/Loader';
 import {toast} from '../../../service/ToastMessage';
+import {onGoogleButtonPress, signOutGoogle} from '../../../service/authLogin';
 
 const Login = () => {
   const {
@@ -39,7 +40,30 @@ const Login = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  // handleLogin
+  // Google SignIn
+
+  // const onGoogleButtonPress = async () => {
+  //   try {
+  //     GoogleSignin.configure({
+  //       webClientId:
+  //         '35178936416-js1adf66idue7qa3as8151ihh40nmkbs.apps.googleusercontent.com',
+  //       offlineAccess: false,
+  //     });
+  //     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+  //     const userInfo = await GoogleSignin.signIn();
+  //     console.log(userInfo, 'userInfo thejb j j');
+  //     const {idToken, access_token} = userInfo;
+  //     const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
+  //     console.log(googleCredentials, 'googleCredentials <<');
+  //     const userCredential = await auth().signInWithCredential(
+  //       googleCredentials,
+  //     );
+  //     console.log(userCredential, 'userCredential  ??????');
+  //     console.log('Successfully signed in with Google:', userCredential.user);
+  //   } catch (error) {}
+  // };
+
+  // Login By the Email AND Id
 
   const handleLogin = async data => {
     const userData = {
@@ -57,6 +81,13 @@ const Login = () => {
       setLoading(false);
       toast({type: 'error', text1: 'Credential Error'});
     }
+  };
+
+  // Email Validation
+
+  const isEmailValid = email => {
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailPattern.test(email);
   };
 
   return (
@@ -82,7 +113,11 @@ const Login = () => {
               <Controller
                 control={control}
                 name="email"
-                rules={{required: true}}
+                rules={{
+                  required: 'Email is Required',
+                  validate: value =>
+                    isEmailValid(value) || 'Please Enter Valid Email',
+                }}
                 render={({field}) => (
                   <View style={loginStyle.inputBoxView}>
                     <UserEmail />
@@ -95,7 +130,7 @@ const Login = () => {
                   </View>
                 )}></Controller>
               {errors.email && (
-                <Text style={loginStyle.errorText}>Email is required</Text>
+                <Text style={loginStyle.errorText}>{errors.email.message}</Text>
               )}
             </View>
 
@@ -132,6 +167,7 @@ const Login = () => {
             <AuthButton text="Login" action={handleSubmit(handleLogin)} />
           </View>
         </View>
+
         <View style={loginStyle.bottomView}>
           <View style={loginStyle.lineBreak}>
             <View style={loginStyle.leftLine}></View>
@@ -139,7 +175,9 @@ const Login = () => {
             <View style={loginStyle.rightLine}></View>
           </View>
           <View style={loginStyle.socialAccounts}>
-            <TouchableOpacity style={loginStyle.socialAccountItem}>
+            <TouchableOpacity
+              onPress={() => onGoogleButtonPress(dispatch)}
+              style={loginStyle.socialAccountItem}>
               <Google width={40} />
             </TouchableOpacity>
             <TouchableOpacity style={loginStyle.socialAccountItem}>
