@@ -1,0 +1,35 @@
+<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="26" height="26" fill="#1E1E1E"/>
+<g id="Debit History" clip-path="url(#clip0_0_1)">
+<rect width="390" height="867" transform="translate(-34 -535)" fill="white"/>
+<g id="Group 875">
+<g id="Group 862">
+<g id="Group 859">
+<circle id="Ellipse 37" cx="13.5" cy="13.5" r="22.5" fill="#FB166B"/>
+<g id="icon-park-solid:file-withdrawal">
+<g id="Mask group">
+<mask id="mask0_0_1" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="3" y="1" width="20" height="24">
+<g id="Group">
+<g id="Group_2">
+<path id="Vector" d="M5.41732 23.8332H20.584C20.8713 23.8332 21.1469 23.719 21.35 23.5159C21.5532 23.3127 21.6673 23.0372 21.6673 22.7498V7.58317H16.2507V2.1665H5.41732C5.13 2.1665 4.85445 2.28064 4.65129 2.4838C4.44812 2.68697 4.33398 2.96252 4.33398 3.24984V22.7498C4.33398 23.0372 4.44812 23.3127 4.65129 23.5159C4.85445 23.719 5.13 23.8332 5.41732 23.8332Z" fill="white" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M16.25 2.1665L21.6667 7.58317" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M11.3763 13.5415L8.66797 16.2498L11.3763 18.9582" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_4" d="M8.66797 16.2498H17.3346V11.9165" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</mask>
+<g mask="url(#mask0_0_1)">
+<path id="Vector_5" d="M0 0H26V26H0V0Z" fill="white"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_0_1">
+<rect width="390" height="867" fill="white" transform="translate(-34 -535)"/>
+</clipPath>
+</defs>
+</svg>

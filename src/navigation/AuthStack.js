@@ -1,5 +1,5 @@
 import {View, Text} from 'react-native';
-import React,{useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import Register from '../screens/authScreen/register/Register';
 import Login from '../screens/authScreen/login/Login';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -13,30 +13,21 @@ import Success from '../screens/authScreen/success/Success';
 const Stack = createNativeStackNavigator();
 
 const AuthStack = () => {
+  // Splash Timer
 
-// Splash Timer
+  const [splashTimer, setSplashTimer] = useState(true);
 
-const [splashTimer, setSplashTimer] = useState(true)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSplashTimer(false);
+    }, 3000);
 
-useEffect(() => {
-  const timer = setTimeout(() => {
-    setSplashTimer(false)
-  }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
-  return ()=>clearTimeout(timer)
-}, []);
-
-if(splashTimer){
-  return <SplashScreen/>
-}
-
-
-
-
-
-
-
-
+  if (splashTimer) {
+    return <SplashScreen />;
+  }
 
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
@@ -46,7 +37,7 @@ if(splashTimer){
       <Stack.Screen name="Forgot Password" component={Reset} />
       <Stack.Screen name="Verification" component={Verification} />
       <Stack.Screen name="Reset Password" component={ResetPassword} />
-      <Stack.Screen name="Success" component={Success}/>
+      <Stack.Screen name="Success" component={Success} />
     </Stack.Navigator>
   );
 };

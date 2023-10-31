@@ -17,6 +17,7 @@ export const onGoogleButtonPress = async dispatch => {
     });
     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
     const userInfo = await GoogleSignin.signIn();
+    console.log("userInfo",userInfo)
     dispatch(authToken(userInfo.idToken));
     await AsyncStorage.setItem('Token', userInfo.idToken);
     const {idToken, access_token} = userInfo;

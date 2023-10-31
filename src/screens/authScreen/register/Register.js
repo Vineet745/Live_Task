@@ -29,6 +29,7 @@ import CustomDropdown from '../../../utils/CustomDropDown';
 import {toast} from '../../../service/ToastMessage';
 import UserLang from '../../../assets/images/inputLanguage.svg';
 import Loader from '../../../utils/Loader';
+import { onGoogleButtonPress } from '../../../service/authLogin';
 
 const Register = () => {
   const {
@@ -151,7 +152,7 @@ const Register = () => {
               <View style={{padding: 3}}>
                 <UserLang />
               </View>
-              <CustomDropdown value={value} setValue={setValue} />
+              <CustomDropdown value={value} setValue={setValue} width={285}/>
             </View>
 
             <View style={{marginBottom: verticalScale(10)}}>
@@ -195,7 +196,7 @@ const Register = () => {
             <View style={registerStyle.rightLine}></View>
           </View>
           <View style={registerStyle.socialAccounts}>
-            <TouchableOpacity style={registerStyle.socialAccountItem}>
+            <TouchableOpacity onPress={()=>onGoogleButtonPress(dispatch)} style={registerStyle.socialAccountItem}>
               <Google width={40} />
             </TouchableOpacity>
             <TouchableOpacity style={registerStyle.socialAccountItem}>

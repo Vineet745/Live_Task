@@ -4,7 +4,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import {horizontalScale, verticalScale} from '../constants/dimension';
 import {color, fonts} from '../constants/theme';
 
-const CustomDropdown = ({value, setValue}) => {
+const CustomDropdown = ({value, setValue, width}) => {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
     {label: 'Hindi', value: 'hindi'},
@@ -18,13 +18,14 @@ const CustomDropdown = ({value, setValue}) => {
       <View
         style={{
           flex: 1,
-          width: horizontalScale(285),
+          width: horizontalScale(width),
         }}>
         <DropDownPicker
           style={{
             backgroundColor: color.lightGrey,
-            borderWidth: 0,
+            borderWidth: 1,
             borderRadius: 10,
+            borderColor: '#c0c0c0',
           }}
           open={open}
           value={value}
@@ -32,7 +33,7 @@ const CustomDropdown = ({value, setValue}) => {
           setOpen={setOpen}
           setValue={setValue}
           setItems={setItems}
-          textStyle={{fontFamily:fonts.medium}}
+          textStyle={{fontFamily: fonts.medium}}
           placeholder={
             <View
               style={{
@@ -45,7 +46,6 @@ const CustomDropdown = ({value, setValue}) => {
           listItemLabelStyle={{
             fontFamily: fonts.medium,
           }}
-        
         />
       </View>
 
