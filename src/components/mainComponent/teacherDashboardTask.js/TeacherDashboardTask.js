@@ -13,7 +13,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import SingleTask from '../../../screens/mainScreen/singleTask/SingleTask';
 
-const TeacherDashboardTask = ({item}) => {
+const TeacherDashboardTask = ({item,handleGetTask}) => {
   const navigation = useNavigation();
   const [singleData, setSingleData] = useState('');
 
@@ -41,13 +41,14 @@ const TeacherDashboardTask = ({item}) => {
       task_id: item.id,
     };
     try {
-      await getTaskReaction(userData);
+      await getTaskReaction(userData)
+      handleGetTask()
     } catch (error) {
       console.log('error', error);
     }
   };
 
-  const unlikePost = async () => {
+  const unlikePost = async ({upvote}) => {
     const userData = {
       upvote: false,
       flag: 'upvote',
@@ -55,7 +56,8 @@ const TeacherDashboardTask = ({item}) => {
       task_id: item.id,
     };
     try {
-      await getTaskReaction(userData);
+        await getTaskReaction(userData);
+        handleGetTask()
     } catch (error) {
       console.log('error', error);
     }

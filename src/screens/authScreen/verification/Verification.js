@@ -14,6 +14,7 @@ const Verification = ({route}) => {
     params: {email},
   } = route;
   const {navigate} = useNavigation();
+  
   // States
   const [inputOne, setInputOne] = useState('');
   const [inputTwo, setInputTwo] = useState('');
@@ -42,7 +43,6 @@ const Verification = ({route}) => {
       navigate('Reset Password', {email: email});
       setLoading(false)
     } catch (error) {
-      console.log('error', error.response.data.message);
       toast({type:"error",text1:error.response.data.message})
       setLoading(false)
     }

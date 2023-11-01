@@ -1,6 +1,5 @@
 import instance from '../instance';
 
-
 // Get Home Task
 
 export const getHomeTask = async () => {
@@ -11,7 +10,6 @@ export const getHomeTask = async () => {
       },
     });
     return response;
-
   } catch (error) {
     console.log('error', error);
   }
@@ -19,27 +17,41 @@ export const getHomeTask = async () => {
 
 // Like & Dislike
 
-export const getTaskReaction = async(userData)=>{
-  console.log("uerData",userData)
-    try {
-        const response = await instance.post("tasks/reactions",userData,{
-            headers:{
-                role:"TCH"
-            },
-        })
-        console.log("data",response)
-        
-    } catch (error) {
-        console.log("Error",error.response)
-    }
-}
-
+export const getTaskReaction = async userData => {
+  try {
+    const response = await instance.post('tasks/reactions', userData, {
+      headers: {
+        role: 'TCH',
+      },
+    });
+  } catch (error) {
+    console.log('Error', error.response);
+  }
+};
 
 // SingleTask
 
-export const getSingleTask = async(id)=>{
+export const getSingleTask = async id => {
   try {
-    const response = await instance.get(`tasks/?flag=explore&reaction=UPV&taskId=${id}`, {
+    const response = await instance.get(
+      `tasks/?flag=explore&reaction=UPV&taskId=${id}`,
+      {
+        headers: {
+          role: 'TCH',
+        },
+      },
+    );
+    return response;
+  } catch (error) {
+    console.log('error', error);
+  }
+};
+
+// SearchTask
+
+export const searchTask = async userData => {
+  try {
+    const response = instance.post('tasks/search', userData, {
       headers: {
         role: 'TCH',
       },
@@ -48,20 +60,20 @@ export const getSingleTask = async(id)=>{
   } catch (error) {
     console.log('error', error);
   }
-}
+};
 
+// Filter
 
-// SearchTask
-
-export const searchTask = async(userData)=>{
+export const filterTask = async query => {
+  console.log("query",query)
   try {
-    const response = instance.post("tasks/search",userData,{
-    headers:{
-      role:"TCH"
-    }
-    })
-    return response;    
+    const response = await instance.post('tasks/search', query, {
+      headers: {
+        role: 'TCH',
+      },
+    });
+    return response;
   } catch (error) {
-    console.log("error",error)
+    console.log('error', error);
   }
-}
+};

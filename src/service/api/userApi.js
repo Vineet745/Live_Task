@@ -30,3 +30,29 @@ export const updateUserProfile = async inputValue => {
     console.log('error', error);
   }
 };
+
+export const updateUserImage = async (userData) =>{
+  console.log("userData",userData)
+
+  try {
+    const formData = new FormData();
+    if (userData.profile_image) {
+      formData.append('profile_image', {
+        uri: userData.profile_image.path,
+        name: `${new Date().getTime()}.jpeg`,
+        type: 'image/jpeg',
+      });
+    }
+      formData.append("username", userData.username);
+
+    const response = await instance.post('settings/profile',formData,{
+      headers:{
+        role:"TCH",
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return response;
+  } catch (error) {
+    console.log("error",error.response)
+  }
+}

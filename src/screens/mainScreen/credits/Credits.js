@@ -12,6 +12,7 @@ import CustomDropdown from '../../../utils/CustomDropDown';
 import Filter from '../../../assets/images/filter_icon.svg';
 import {fonts} from '../../../constants/theme';
 import {useNavigation} from '@react-navigation/native';
+import { CustomBarChart } from '../../../components/CustomBarChart';
 
 const Credits = () => {
   const {navigate} = useNavigation();
@@ -38,7 +39,9 @@ const Credits = () => {
         <CustomDropdown width={237} />
         </View>
       </View>
-      <View style={creditStyle.graphView}></View>
+      <View style={creditStyle.graphView}>
+        <CustomBarChart/>
+      </View>
       <View style={creditStyle.bottonView}>
         <View style={creditStyle.usedCreditView}>
           <Text style={creditStyle.usedCreditViewText}>

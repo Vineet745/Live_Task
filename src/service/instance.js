@@ -15,7 +15,6 @@ instance.interceptors.request.use(
     const token = await getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-      
     }
     return config;
   },

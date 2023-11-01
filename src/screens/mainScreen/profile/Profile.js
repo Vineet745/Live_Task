@@ -4,6 +4,7 @@ import {
   StatusBar,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from 'react-native';
 import React, {useState, useEffect, useCallback} from 'react';
 import {horizontalScale, verticalScale} from '../../../constants/dimension';
@@ -12,22 +13,28 @@ import ImageEdit from '../../../assets/images/image_edit.svg';
 import Coin from '../../../assets/images/coin.svg';
 import RightArrow from '../../../assets/images/update_password_arrow.svg';
 import LogOutModal from '../../../components/modals/LogOutModal';
-import {getUserProfile} from '../../../service/api/userApi';
+import {getUserProfile, updateUserImage} from '../../../service/api/userApi';
 import {useFocusEffect} from '@react-navigation/native';
 import ImagePicker from 'react-native-image-crop-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = ({navigation}) => {
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState('');
+  const [uri, setUri] = useState("")
 
+  const variantPath = "https://livetask-ai.hackerkernel.co/".concat(userData.image_path)
   // Check Variable
   const show = false;
 
   useFocusEffect(
     useCallback(() => {
       handleUserProfile();
-    }, []),
+    },[]),
   );
+
+
+console.log("userData",userData)
 
   // Open Modal
   const openModal = () => {
@@ -53,15 +60,44 @@ const Profile = ({navigation}) => {
 
   // Crop Picker
 
-  const openGallery = () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true,
-    }).then(image => {
-      console.log(image);
-    });
+  const openGallery = async () => {
+    try {
+      const image = await ImagePicker.openPicker({
+        mediaType: 'photo',
+        cropping: true,
+        cropperToolbarTitle: 'Crop Image',
+        aspectRatio: [4, 4],
+        quality: 1,
+      });
+      console.log(image)
+      setUri(image.path);
+      await AsyncStorage.setItem("Image",image.path)
+      handleUserImage(userData, image); 
+      if (!image.cancelled) {
+      } else {
+        console.log('Image picker canceled');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+  
+  // Update User Profile
+  const handleUserImage = async (userData, image) => {
+    const updatedUserData = {
+      profile_image: image,
+      username: userData.username
+    };
+  
+    try {
+     await updateUserImage(updatedUserData);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+
+
 
   return (
     <ScrollView style={{backgroundColor: 'white'}}>
@@ -78,7 +114,9 @@ const Profile = ({navigation}) => {
         }}>
         <View style={profileStyle.profileImageContainer}>
           <View style={profileStyle.imageRectangle}>
-            <View style={profileStyle.imageCircle}></View>
+            <View style={profileStyle.imageCircle}>
+              <Image  height="100%" source={{uri:uri?uri:variantPath}}></Image>
+            </View>
             <TouchableOpacity
               onPress={openGallery}
               style={profileStyle.imageEdit}>

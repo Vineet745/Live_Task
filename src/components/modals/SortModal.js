@@ -5,38 +5,202 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  FlatList,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {horizontalScale, verticalScale} from '../../constants/dimension';
 import {color, fonts, sizes} from '../../constants/theme';
 import {RFValue} from 'react-native-responsive-fontsize';
+import CustomCheckBox from '../../utils/CustomCheckBox';
+import {filterTask, getHomeTask} from '../../service/api/homeApi';
+import {useDispatch} from 'react-redux';
+import {filteredData} from '../../redux/slice/filterTaskSlice';
 
 const SortModal = ({open, closeModal}) => {
+  const dispatch = useDispatch();
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [minimum_age, setminimum_age] = useState('');
+  const [maximum_age, setmaximum_age] = useState('');
+
+  // Custom Data
+  const subjectList = [
+    {id: 1, item: 'Hindi'},
+    {id: 2, item: 'English'},
+    {id: 3, item: 'Science'},
+    {id: 4, item: 'Maths'},
+    {id: 5, item: 'Sanskrit'},
+  ];
+
+  // hometask
+
+  const handleGetTask = async () => {
+    try {
+      const {data} = await getHomeTask();
+      console.log('Data', data);
+      dispatch(filteredData(data.data));
+    } catch (error) {
+      console.log('Error fetching tasks: ', error);
+    }
+  };
+
+  // Clear Selection
+
+  const clearAllSelection = () => {
+    setSelectedItems([]);
+    setminimum_age('');
+    setmaximum_age('');
+    handleGetTask();
+    closeModal();
+  };
+
+  // Extra func
+  const closeFunction = () => {
+    try {
+      closeModal();
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+  // filter
+
+  const handleFilterTask = async () => {
+    const query = {
+      flag: 'explore',
+      searchParam: '',
+      minage: minimum_age ? parseInt(minimum_age, 10) : '',
+      maxage: maximum_age ? parseInt(maximum_age, 10) : '',
+      subjectId: selectedItems ? selectedItems : '',
+    };
+    console.log(typeof query.minage)
+    try {
+      if (selectedItems.length > 0 || maximum_age !== '' || minimum_age !== '') {
+        const data = await filterTask(query);
+        console.log("Data",data)
+        dispatch(filteredData(data.data.data));
+        closeModal();
+      } else {
+        handleGetTask();
+        closeModal();
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   return (
     <Modal transparent={true} animationType="fade" visible={open}>
       <View style={styles.modalBackground}>
         <View style={styles.innerModal}>
           <View style={styles.topView}>
             <Text style={styles.sortText}>Sort</Text>
-            <TouchableOpacity onPress={closeModal}>
+            <TouchableOpacity onPress={clearAllSelection}>
               <Text style={styles.clearText}>Clear All</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.ageView}>
-            <Text>Age</Text>
+            <Text style={styles.ageText}>Age</Text>
             <View style={styles.ageViewInner}>
-              <View>
-                <Text>Minimum Age</Text>
-                <TextInput></TextInput>
+              <View style={styles.minimumAge}>
+                <Text
+                  style={{
+                    fontFamily: fonts.medium,
+                    fontSize: RFValue(sizes.h7, 667),
+                    color: color.black,
+                  }}>
+                  Minimum Age
+                </Text>
+                <TextInput
+                  value={minimum_age}
+                  onChangeText={val => setminimum_age(val)}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: 'grey',
+                    height: verticalScale(30),
+                    marginTop: verticalScale(5),
+                    borderRadius: 5,
+                  }}
+                />
               </View>
-              <View>
-                <Text>Maximum Age</Text>
-                <TextInput></TextInput>
+              <View style={styles.minimumAge}>
+                <Text
+                  style={{
+                    fontFamily: fonts.medium,
+                    fontSize: RFValue(sizes.h7, 667),
+                    color: color.black,
+                  }}>
+                  Maximum Age
+                </Text>
+                <TextInput
+                  value={maximum_age}
+                  onChangeText={val => setmaximum_age(val)}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: 'grey',
+                    height: verticalScale(30),
+                    marginTop: verticalScale(5),
+                    borderRadius: 5,
+                  }}
+                />
               </View>
             </View>
           </View>
-          <View>
-            <Text>Subject</Text>
+          <View
+            style={{
+              paddingHorizontal: horizontalScale(10),
+              paddingVertical: verticalScale(10),
+            }}>
+            <Text style={{color: color.black, fontFamily: fonts.semiBold}}>
+              Subject
+            </Text>
+            <View
+              style={{
+                minHeight: verticalScale(150),
+                flexDirection: 'row',
+                alignItems: 'flex-start',
+                justifyContent: 'space-between',
+                marginTop: verticalScale(10),
+              }}>
+              <FlatList
+                data={subjectList}
+                renderItem={({item}) => {
+                  return (
+                    <CustomCheckBox
+                      item={item}
+                      selectedItems={selectedItems}
+                      setSelectedItems={setSelectedItems}
+                    />
+                  );
+                }}
+              />
+            </View>
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={closeFunction}
+              style={{
+                width: horizontalScale(175),
+                height: verticalScale(50),
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#dedede',
+              }}>
+              <Text style={{fontFamily: fonts.medium}}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => handleFilterTask()}
+              style={{
+                width: horizontalScale(175),
+                height: verticalScale(52),
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#04c38c',
+              }}>
+              <Text style={{fontFamily: fonts.semiBold, color: color.white}}>
+                Apply
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -53,10 +217,10 @@ const styles = StyleSheet.create({
   },
   innerModal: {
     backgroundColor: color.white,
-    width: horizontalScale(330),
-    height: verticalScale(350),
+    width: horizontalScale(350),
+    height: verticalScale(380),
     paddingVertical: verticalScale(10),
-    borderRadius: 10,
+    borderRadius: 1,
   },
   topView: {
     borderBottomWidth: 1,
@@ -80,10 +244,24 @@ const styles = StyleSheet.create({
   ageView: {
     borderWidth: 1,
     height: verticalScale(100),
+    paddingHorizontal: horizontalScale(15),
+    paddingVertical: verticalScale(10),
   },
+  ageText: {
+    fontFamily: fonts.semiBold,
+    color: color.black,
+  },
+
   ageViewInner: {
     flexDirection: 'row',
-    alignItems: 'cebter',
+    alignItems: 'center',
+    marginTop: verticalScale(5),
+    paddingHorizontal: horizontalScale(10),
+    justifyContent: 'space-evenly',
+  },
+
+  minimumAge: {
+    width: horizontalScale(110),
   },
   mainText: {
     fontFamily: fonts.semiBold,

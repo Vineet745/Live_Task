@@ -20,6 +20,7 @@ export const profileStyle = StyleSheet.create({
     height: 130,
     width: 130,
     borderRadius: 65,
+    overflow:"hidden"
   },
   imageEdit: {
     backgroundColor: '#333333',
