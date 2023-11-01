@@ -108,7 +108,7 @@ export const profileStyle = StyleSheet.create({
     justifyContent: 'space-between',
   },
   updatePasswordText: {
-    fontSize: RFValue(sizes.h5, 667),
+    fontSize: RFValue(sizes.h6, 667),
     color: color.black,
     fontFamily: fonts.semiBold,
   },

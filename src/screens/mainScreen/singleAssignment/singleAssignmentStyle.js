@@ -36,5 +36,14 @@ export const SingleAssignmentStyle = StyleSheet.create({
         fontFamily:fonts.segoeUI,
         fontSize:RFValue(sizes.h3,667),
         fontWeight:"600"
+    },
+    studentSpendView:{
+        paddingHorizontal:horizontalScale(15),
+    
+    },
+    studentSpendText:{
+        fontFamily:fonts.medium,
+        fontSize:RFValue(sizes.h5,667),
+        color:color.black
     }
 }) 

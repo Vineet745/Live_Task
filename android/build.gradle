@@ -19,7 +19,15 @@ buildscript {
          jcenter()
          maven {
             url "$rootDir/../node_modules/react-native/android"
-        }    }
+        }  
+        // Add This
+        maven { url 'https://maven.google.com' }
+
+      // ADD THIS
+      maven { url "https://www.jitpack.io" }
+        
+        
+          }
     dependencies {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")

@@ -11,10 +11,10 @@ import {creditStyle} from './creditStyle';
 import CustomDropdown from '../../../utils/CustomDropDown';
 import Filter from '../../../assets/images/filter_icon.svg';
 import {fonts} from '../../../constants/theme';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const Credits = () => {
-const {navigate} = useNavigation() 
+  const {navigate} = useNavigation();
 
   return (
     <ScrollView style={creditStyle.creditMain}>
@@ -34,7 +34,9 @@ const {navigate} = useNavigation()
             <Text style={{fontFamily: fonts.semiBold}}>Sort</Text>
           </View>
         </View>
+        <View style={creditStyle.taskDropDown}>
         <CustomDropdown width={237} />
+        </View>
       </View>
       <View style={creditStyle.graphView}></View>
       <View style={creditStyle.bottonView}>
@@ -58,7 +60,9 @@ const {navigate} = useNavigation()
           <Text style={creditStyle.buyButtonText}>Buy Credit</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={()=>navigate("test")} style={creditStyle.transactionButton}>
+        <TouchableOpacity
+          onPress={() => navigate('CreditStack', {Screen: 'Transaction'})}
+          style={creditStyle.transactionButton}>
           <Text style={creditStyle.transactionButtonText}>
             View Transaction History
           </Text>

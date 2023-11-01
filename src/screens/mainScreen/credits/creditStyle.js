@@ -38,7 +38,10 @@ export const creditStyle = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: verticalScale(10),
-    zIndex: 100,
+    zIndex: 10,
+  },
+  taskDropDown: {
+    zindex: -10,
   },
   sortView: {
     borderWidth: 1,
@@ -89,6 +92,7 @@ export const creditStyle = StyleSheet.create({
     height: verticalScale(38),
     marginVertical: verticalScale(15),
     borderRadius: 5,
+    zIndex: -1,
   },
   buyButtonText: {
     color: color.black,
@@ -103,6 +107,7 @@ export const creditStyle = StyleSheet.create({
     height: verticalScale(38),
     marginVertical: verticalScale(10),
     borderRadius: 5,
+    zIndex: -1,
   },
   transactionButtonText: {
     fontSize: RFValue(sizes.h6, 667),

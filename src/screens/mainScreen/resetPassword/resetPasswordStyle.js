@@ -8,34 +8,32 @@ import {
 import {RFValue} from 'react-native-responsive-fontsize';
 
 export const resetPasswordStyle = StyleSheet.create({
-  resetPasswordMain: {
+  forgotPasswordMain: {
     flex: 1,
     backgroundColor: color.white,
   },
-  resetPasswordTopView: {
-    paddingTop: verticalScale(15),
+  forgotPasswordTopView: {
     paddingHorizontal: horizontalScale(20),
-    minHeight:verticalScale(580)
+    minHeight: verticalScale(580),
   },
   welcomeMain: {
-    marginTop: verticalScale(30),
+    marginTop: verticalScale(8),
   },
   welcomeTextView: {
     borderBottomWidth: 2,
-    width: horizontalScale(190),
+    width: horizontalScale(220),
     borderColor: color.darkPink,
-    paddingBottom:verticalScale(5)
+    paddingBottom: verticalScale(5),
   },
   welcomeText: {
     fontFamily: fonts.segoeUI,
     color: color.black,
-    fontSize: RFValue(sizes.h1,667),
+    fontSize: RFValue(sizes.h1, 667),
   },
 
   welcomePara: {
-    marginVertical: verticalScale(8),
     color: color.black,
-    fontFamily: fonts.light,
+    fontFamily: fonts.regular,
     fontSize: RFValue(sizes.h8,667),
   },
 
@@ -45,7 +43,7 @@ export const resetPasswordStyle = StyleSheet.create({
 
   inputBoxView: {
     borderWidth: 1,
-    borderColor: "grey",
+    borderColor: 'grey',
     borderRadius: 10,
     paddingVertical: verticalScale(2),
     flexDirection: 'row',
@@ -60,46 +58,9 @@ export const resetPasswordStyle = StyleSheet.create({
     width: '90%',
     borderRadius: 30,
   },
-
-  forgotPassword:{
-     flexDirection:"row",
-     alignItems:"center",
-     justifyContent:"flex-start",
-     marginBottom:verticalScale(10)
-  },
-
-  forgotPasswordTextOne:{
-    fontFamily: fonts.regular,
-    color: color.black,
-    fontSize: RFValue(sizes.h7, 667),
-  },
-  forgotPasswordTextTwo:{
-    fontFamily: fonts.medium,
-    color: color.lightGreen,
-    fontSize: RFValue(sizes.h6, 667),
-    marginLeft: horizontalScale(5),
-    
-  },
-
-  resetButton:{
-    backgroundColor:color.lightGreen,
-    paddingVertical:verticalScale(14),
-    alignItems:"center",
-    borderRadius:30
-  },
-
-  resetButtonText:{
-    fontFamily:fonts.segoeUI,
-    color:color.white,
-    fontSize:RFValue(sizes.h6,667),
-
-  },
   errorText: {
     color: 'red',
     fontFamily: fonts.medium,
     marginTop: verticalScale(5),
-    fontSize:RFValue(sizes.h8,667)
   },
-  
-  
 });

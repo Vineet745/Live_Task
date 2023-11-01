@@ -1,29 +1,37 @@
-import {View, Text, KeyboardAvoidingView} from 'react-native';
+import {View, Text, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Home from '../screens/mainScreen/home/Home';
 import Credits from '../screens/mainScreen/credits/Credits';
 import Explore from '../screens/mainScreen/explore/Explore';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Profile from '../screens/mainScreen/profile/Profile';
-import Transaction from '../screens/mainScreen/transaction/Transaction';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {color, fonts, sizes} from '../constants/theme';
-import HomeIcon from '../assets/images/home_icon.svg';
-import UserIcon from '../assets/images/user.svg';
 import {horizontalScale, verticalScale} from '../constants/dimension';
 import {RFValue} from 'react-native-responsive-fontsize';
 import CreditHistory from '../screens/mainScreen/creditHistory/CreditHistory';
 import DebitHistory from '../screens/mainScreen/debitHistory/DebitHistory';
 import SingleAssignment from '../screens/mainScreen/singleAssignment/SingleAssignment';
-import {useDrawerStatus} from '@react-navigation/drawer';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import HomeUserProfile from './components/HomeUserProfile';
+import HomeIcon from '../assets/images/home_icon.svg';
+import UserIcon from '../assets/images/user.svg';
+import StackCustomHeader from './components/StackCustomHeader';
+import EditProfile from '../screens/mainScreen/editProfile/EditProfile';
+import UpdatePassword from '../screens/mainScreen/updatePassword/UpdatePassword';
+import ResetPassword from '../screens/mainScreen/resetPassword/ResetPassword';
+import Verification from '../screens/mainScreen/verification/Verification';
+import CustomDropdown from '../utils/CustomDropDown';
+import LanguageDropdown from './components/LanguageDropdown';
+import SingleTask from '../screens/mainScreen/singleTask/SingleTask';
+
+// Navigator Imports
 
 const Stack = createNativeStackNavigator();
 const TopTab = createMaterialTopTabNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
+
 // HomeTopStack
 
 const HomeTopStack = () => {
@@ -41,9 +49,93 @@ const HomeTopStack = () => {
           },
         }}>
         <TopTab.Screen name="Explore" component={Explore} />
-        <TopTab.Screen name="Credits" component={CreditStack} />
+        <TopTab.Screen name="Credits" component={Credits} />
       </TopTab.Navigator>
     </View>
+  );
+};
+
+// Profile Stack
+
+const ProfileStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{}}>
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Edit"
+        component={EditProfile}
+        options={{
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerBackVisible: false,
+          headerTitle: () => {
+            return <StackCustomHeader text="Edit Information !" />;
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="Update Password"
+        component={UpdatePassword}
+        options={{
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerBackVisible: false,
+          headerTitle: () => {
+            return <StackCustomHeader text="Update Password !" />;
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="Reset Password"
+        component={ResetPassword}
+        options={{
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerBackVisible: false,
+          headerTitle: () => {
+            return <StackCustomHeader text="Reset Password !" />;
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="Verification"
+        component={Verification}
+        options={{
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerBackVisible: false,
+          headerTitle: () => {
+            return <StackCustomHeader text="Verification !" />;
+          },
+        }}
+      />
+    </Stack.Navigator>
   );
 };
 
@@ -53,11 +145,6 @@ const CreditStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Credit View"
-        component={Credits}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
         name="Transaction"
         component={TransactionTopStack}
         options={{
@@ -66,7 +153,9 @@ const CreditStack = () => {
             fontSize: RFValue(sizes.h4, 667),
             color: color.black,
           },
-          headerTitle: 'Transaction History',
+          headerTitle: () => {
+            return <StackCustomHeader text="Transaction History" />;
+          },
         }}
       />
       <Stack.Screen
@@ -78,19 +167,17 @@ const CreditStack = () => {
             fontSize: RFValue(sizes.h4, 667),
             color: color.black,
           },
-          headerTitle: 'Assignment Name',
-          // headerRight:()=>{
-          //   return(
-          //     <View style={{backgroundColor:color.darkPink,width:horizontalScale(30)}}>
-
-          //     </View>
-          //   )
-          // }
+          headerBackVisible: false,
+          headerTitle: () => {
+            return <StackCustomHeader text="Assignment Name" />;
+          },
         }}
       />
     </Stack.Navigator>
   );
 };
+
+
 
 // Transaction Top Stack
 
@@ -114,27 +201,9 @@ const TransactionTopStack = () => {
   );
 };
 
-// Drawer Stack
+// Bottom Stack
 
-const DrawerStack = () => {
-  return (
-    <Drawer.Navigator
-      screenOptions={{
-        headerBackground: () => (
-          <View style={{backgroundColor: color.darkPink, flex: 1}} />
-        ),
-        headerTitleStyle: {
-          display: 'none',
-        },
-      }}>
-      <Drawer.Screen name="HomeTopStack" component={HomeTopStack} />
-    </Drawer.Navigator>
-  );
-};
-
-// MainStack
-
-const MainStack = () => {
+const BottomStack = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -151,7 +220,7 @@ const MainStack = () => {
       }}>
       <Tab.Screen
         name="Home"
-        component={DrawerStack}
+        component={HomeTopStack}
         options={{
           tabBarIcon: focused => {
             return (
@@ -175,8 +244,8 @@ const MainStack = () => {
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={Profile}
+        name="Profile Stack"
+        component={ProfileStack}
         options={{
           tabBarIcon: focused => {
             return (
@@ -199,8 +268,53 @@ const MainStack = () => {
           },
         }}
       />
-      {/* <Tab.Screen options={{tabBarItemStyle:{display:'none'}}} name='test' component={()=><Text>Yash</Text>} /> */}
+      <Tab.Screen
+        options={{tabBarItemStyle: {display: 'none'}}}
+        name="CreditStack"
+        component={CreditStack}
+      />
+      <Tab.Screen
+        options={{tabBarItemStyle: {display: 'none'}}}
+        name="SingleTask"
+        component={SingleTask}
+      />
     </Tab.Navigator>
+  );
+};
+
+// MainStack Drawer Stack
+
+const MainStack = () => {
+  return (
+    <Drawer.Navigator
+      screenOptions={{
+        headerBackground: () => (
+          <View style={{backgroundColor: color.darkPink, flex: 1}} />
+        ),
+        headerStyle:{
+          height:verticalScale(55),
+        },
+
+        headerTitleStyle: {
+          display: 'none',
+        },
+        headerRight: () => {
+          return (
+            <LanguageDropdown/>
+            // <View
+            //   style={{
+            //     width: horizontalScale(110),
+            //     marginRight: horizontalScale(20),
+            //     borderRadius: 5,
+            //     height: verticalScale(30),
+            //     backgroundColor: 'white',
+            //   }}></View>
+          );
+        },
+        
+      }}>
+      <Drawer.Screen name="HomeStack" component={BottomStack} />
+    </Drawer.Navigator>
   );
 };
 

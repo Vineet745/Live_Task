@@ -10,7 +10,7 @@ export const teacherDashboardTaskStyle = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: 'white',
     padding: verticalScale(5),
-    elevation: 10,
+    elevation: 5,
   },
   topView: {
     padding: verticalScale(6),

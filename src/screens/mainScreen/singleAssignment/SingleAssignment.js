@@ -2,6 +2,8 @@ import {View, Text} from 'react-native';
 import React from 'react';
 import {SingleAssignmentStyle} from './singleAssignmentStyle';
 import Coin from '../../../assets/images/coin.svg';
+import StudentAssignment from '../../../components/mainComponent/studentAssignment/StudentAssignment';
+import { horizontalScale } from '../../../constants/dimension';
 const SingleAssignment = () => {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -27,6 +29,11 @@ const SingleAssignment = () => {
           </View>
         </View>
       </View>
+      <View style={SingleAssignmentStyle.studentSpendView}>
+        <Text style={SingleAssignmentStyle.studentSpendText}>Students Spends</Text>
+      </View>
+      <StudentAssignment/>
+      <StudentAssignment/>
     </View>
   );
 };
