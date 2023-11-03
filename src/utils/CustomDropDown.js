@@ -3,15 +3,13 @@ import {View, Text} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {horizontalScale, verticalScale} from '../constants/dimension';
 import {color, fonts} from '../constants/theme';
+import { languageArray } from './CustomArray';
 
-const CustomDropdown = ({value, setValue, width}) => {
+const CustomDropdown = ({value, setValue, width,text}) => {
+
+
   const [open, setOpen] = useState(false);
-  const [items, setItems] = useState([
-    {label: 'Hindi', value: 'hindi'},
-    {label: 'French', value: 'french'},
-    {label: 'German', value: 'german'},
-    {label: 'English', value: 'english'},
-  ]);
+  const [items, setItems] = useState(languageArray);
 
   return (
     <View>
@@ -40,7 +38,7 @@ const CustomDropdown = ({value, setValue, width}) => {
                 flexDirection: 'row',
                 alignItems: 'center',
               }}>
-              <Text style={{fontFamily: fonts.medium}}>Select a Language</Text>
+              <Text style={{fontFamily: fonts.medium}}>{text}</Text>
             </View>
           }
           listItemLabelStyle={{

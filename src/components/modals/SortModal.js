@@ -9,18 +9,18 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import {horizontalScale, verticalScale} from '../../constants/dimension';
-import {color, fonts, sizes} from '../../constants/theme';
 import {RFValue} from 'react-native-responsive-fontsize';
-import CustomCheckBox from '../../utils/CustomCheckBox';
 import {filterTask, getHomeTask} from '../../service/api/homeApi';
 import {useDispatch} from 'react-redux';
 import {filteredData} from '../../redux/slice/filterTaskSlice';
+import {color, fonts, sizes} from '../../constants/theme';
+import CustomCheckBox from '../mainComponent/CustomCheckBox';
 
 const SortModal = ({open, closeModal}) => {
   const dispatch = useDispatch();
   const [selectedItems, setSelectedItems] = useState([]);
-  const [minimum_age, setminimum_age] = useState('');
-  const [maximum_age, setmaximum_age] = useState('');
+  const [minimum_age, setminimum_age] = useState(null);
+  const [maximum_age, setmaximum_age] = useState(null);
 
   // Custom Data
   const subjectList = [
@@ -36,7 +36,6 @@ const SortModal = ({open, closeModal}) => {
   const handleGetTask = async () => {
     try {
       const {data} = await getHomeTask();
-      console.log('Data', data);
       dispatch(filteredData(data.data));
     } catch (error) {
       console.log('Error fetching tasks: ', error);
@@ -64,18 +63,23 @@ const SortModal = ({open, closeModal}) => {
   // filter
 
   const handleFilterTask = async () => {
+    let subjectId = selectedItems.length > 0 ? selectedItems : [];
+    subjectId = subjectId.length > 0 ? subjectId : '';
     const query = {
       flag: 'explore',
       searchParam: '',
       minage: minimum_age ? parseInt(minimum_age, 10) : '',
       maxage: maximum_age ? parseInt(maximum_age, 10) : '',
-      subjectId: selectedItems ? selectedItems : '',
+      subjectId: subjectId,
     };
-    console.log(typeof query.minage)
     try {
-      if (selectedItems.length > 0 || maximum_age !== '' || minimum_age !== '') {
+      console.log(query);
+      if (
+        selectedItems.length > 0 ||
+        maximum_age !== '' ||
+        minimum_age !== ''
+      ) {
         const data = await filterTask(query);
-        console.log("Data",data)
         dispatch(filteredData(data.data.data));
         closeModal();
       } else {

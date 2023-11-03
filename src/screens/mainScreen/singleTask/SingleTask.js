@@ -1,20 +1,31 @@
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {horizontalScale, verticalScale} from '../../../constants/dimension';
 import {color, fonts, sizes} from '../../../constants/theme';
 import {RFValue} from 'react-native-responsive-fontsize';
+import BackButton from '../../../assets/images/back_arrow_button.svg';
+import UserRemix from '../../../assets/images/user_remix_white.svg';
+import {useNavigation} from '@react-navigation/native';
+import {singleTaskStyle} from './singleTaskStyle';
 
 const SingleTask = ({route}) => {
-    const {params:{singleData}} = route;
-
+  const {
+    params: {singleData},
+  } = route;
+  const navigation = useNavigation();
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-        paddingHorizontal: horizontalScale(10),
-        paddingVertical: verticalScale(10),
-      }}>
+    <View style={singleTaskStyle.singleMain}>
+      <View style={singleTaskStyle.customHeader}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <BackButton width={32} height={32} />
+        </TouchableOpacity>
+        <TouchableOpacity style={singleTaskStyle.remixButton}>
+          <Text style={{color: color.white, fontFamily: fonts.semiBold}}>
+            Remix
+          </Text>
+          <UserRemix />
+        </TouchableOpacity>
+      </View>
       <View
         style={{
           borderBottomWidth: 1,

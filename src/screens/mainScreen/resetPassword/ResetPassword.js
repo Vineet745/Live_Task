@@ -27,33 +27,23 @@ const Reset = () => {
 
   // handle-Forgot-Password
 
-  // const handleForgotPassword = async data => {
-  //   const userData = {
-  //     email: data.email,
-  //     role: 'TCH',
-  //   };
+  const handleForgotPassword = async data => {
+    const userData = {
+      email: data.email,
+    };
 
-  //   try {
-  //     setLoading(true);
-  //     // const data = await forgotPassword({userData});
-  //     navigation.navigate('Verification');
-  //     setLoading(false);
-  //   } catch (error) {
-  //     console.log('error', error.response);
-  //     setLoading(false);
-  //     toast({type: 'error', text1: error.response.data.message});
-  //   }
-  // };
-
-const handleForgotPassword = async ()=>{
-try {
-  navigation.navigate("Profile Stack",{screen:"Verification"})
-  
-} catch (error) {
-console.log("error",error)
-}
-}
-
+    try {
+      setLoading(true);
+      const data = await forgotPassword({userData});
+      navigation.navigate('Profile Stack', { screen: 'Verification', params: { email: userData.email }
+      });
+      setLoading(false);
+    } catch (error) {
+      console.log('error', error.response);
+      setLoading(false);
+      toast({type: 'error', text1: error.response.data.message});
+    }
+  };
 
   const isEmailValid = email => {
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -96,7 +86,11 @@ console.log("error",error)
             )}
           </View>
 
-          <Mainbutton text="Get Verification Code" width={270} action={handleSubmit(handleForgotPassword)} />
+          <Mainbutton
+            text="Get Verification Code"
+            width={270}
+            action={handleSubmit(handleForgotPassword)}
+          />
         </View>
       </View>
       <View style={{minHeight: 50, justifyContent: 'flex-end'}}>

@@ -31,9 +31,7 @@ export const updateUserProfile = async inputValue => {
   }
 };
 
-export const updateUserImage = async (userData) =>{
-  console.log("userData",userData)
-
+export const updateUserImage = async userData => {
   try {
     const formData = new FormData();
     if (userData.profile_image) {
@@ -43,16 +41,16 @@ export const updateUserImage = async (userData) =>{
         type: 'image/jpeg',
       });
     }
-      formData.append("username", userData.username);
+    formData.append('username', userData.username);
 
-    const response = await instance.post('settings/profile',formData,{
-      headers:{
-        role:"TCH",
+    const response = await instance.post('settings/profile', formData, {
+      headers: {
+        role: 'TCH',
         'Content-Type': 'multipart/form-data',
       },
-    })
+    });
     return response;
   } catch (error) {
-    console.log("error",error.response)
+    console.log('error', error.response);
   }
-}
+};

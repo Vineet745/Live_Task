@@ -16,25 +16,27 @@ import LogOutModal from '../../../components/modals/LogOutModal';
 import {getUserProfile, updateUserImage} from '../../../service/api/userApi';
 import {useFocusEffect} from '@react-navigation/native';
 import ImagePicker from 'react-native-image-crop-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../../../utils/Loader';
+import CameraModal from '../../../components/modals/CameraModal';
 
 const Profile = ({navigation}) => {
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState('');
-  const [uri, setUri] = useState("")
+  const [uri, setUri] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [cameraOpen, setCameraOpen] = useState(false);
 
-  const variantPath = "https://livetask-ai.hackerkernel.co/".concat(userData.image_path)
+  const originalPath = 'https://livetask-ai.hackerkernel.co/'.concat(
+    userData.image_path,
+  );
   // Check Variable
   const show = false;
 
   useFocusEffect(
     useCallback(() => {
       handleUserProfile();
-    },[]),
+    }, []),
   );
-
-
-console.log("userData",userData)
 
   // Open Modal
   const openModal = () => {
@@ -47,20 +49,31 @@ console.log("userData",userData)
     setOpen(false);
   };
 
+  const openCamera = () => {
+    setCameraOpen(true);
+  };
+
+  const closeCamera = () => {
+    setCameraOpen(false);
+  };
+
   // Get User Detail
 
   const handleUserProfile = async () => {
+    setLoading(true);
     try {
       const {data} = await getUserProfile();
       setUserData(data?.data);
+      setLoading(false);
     } catch (error) {
       console.log('error', error);
+      setLoading(false);
     }
   };
 
-  // Crop Picker
+  // Crop Picker open Gallery
 
-  const openGallery = async () => {
+  const handleOpenGallery = async () => {
     try {
       const image = await ImagePicker.openPicker({
         mediaType: 'photo',
@@ -69,10 +82,8 @@ console.log("userData",userData)
         aspectRatio: [4, 4],
         quality: 1,
       });
-      console.log(image)
       setUri(image.path);
-      await AsyncStorage.setItem("Image",image.path)
-      handleUserImage(userData, image); 
+      handleUserImage(userData, image);
       if (!image.cancelled) {
       } else {
         console.log('Image picker canceled');
@@ -81,30 +92,55 @@ console.log("userData",userData)
       console.log(error);
     }
   };
-  
+
+  const handleOpenCamera = async () => {
+    try {
+      const image = await ImagePicker.openCamera({
+        mediaType: 'photo',
+        cropping: true,
+        cropperToolbarTitle: 'Crop Image',
+        aspectRatio: [4, 4],
+        quality: 1,
+      });
+      setUri(image.path);
+      handleUserImage(userData, image);
+      if (!image.cancelled) {
+      } else {
+        console.log('Image picker canceled');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // Update User Profile
   const handleUserImage = async (userData, image) => {
     const updatedUserData = {
       profile_image: image,
-      username: userData.username
+      username: userData.username,
     };
-  
+    console.log("userData",updatedUserData)
+
     try {
-     await updateUserImage(updatedUserData);
+      await updateUserImage(updatedUserData);
     } catch (error) {
-      console.log("error", error);
+      console.log('error', error);
     }
   };
 
-
-
-
   return (
     <ScrollView style={{backgroundColor: 'white'}}>
+      <Loader loading={loading} />
       <LogOutModal
         open={open}
         closeModal={closeModal}
         navigation={navigation}
+      />
+      <CameraModal
+        open={cameraOpen}
+        closeModal={closeCamera}
+        openGallery={handleOpenGallery}
+        openCamera={handleOpenCamera}
       />
       <StatusBar backgroundColor="white" barStyle="dark-content" />
       <View
@@ -115,10 +151,12 @@ console.log("userData",userData)
         <View style={profileStyle.profileImageContainer}>
           <View style={profileStyle.imageRectangle}>
             <View style={profileStyle.imageCircle}>
-              <Image  height="100%" source={{uri:uri?uri:variantPath}}></Image>
+              <Image
+                style={{height: '100%'}}
+                source={{uri: uri ? uri : originalPath}}></Image>
             </View>
             <TouchableOpacity
-              onPress={openGallery}
+              onPress={openCamera}
               style={profileStyle.imageEdit}>
               <ImageEdit />
             </TouchableOpacity>
@@ -136,12 +174,12 @@ console.log("userData",userData)
           </TouchableOpacity>
         </View>
         <View style={profileStyle.profileDetail}>
-          <View style={profileStyle.singleDetailContainer}>
+          {/* <View style={profileStyle.singleDetailContainer}>
             <Text style={profileStyle.singleDetailContainerLable}>Name</Text>
             <Text style={profileStyle.singleDetailContainerText}>
               Maria Nolan
             </Text>
-          </View>
+          </View> */}
           <View style={profileStyle.singleDetailContainer}>
             <Text style={profileStyle.singleDetailContainerLable}>E mail</Text>
             <Text style={profileStyle.singleDetailContainerText}>

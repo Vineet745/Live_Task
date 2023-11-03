@@ -1,8 +1,8 @@
 import { View, Text } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import CheckBox from '@react-native-community/checkbox';
-import { horizontalScale } from '../constants/dimension';
-import { color, fonts } from '../constants/theme';
+import { horizontalScale } from '../../constants/dimension';
+import { color, fonts } from '../../constants/theme';
 
 const CustomCheckBox = ({ selectedItems, setSelectedItems, item }) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);

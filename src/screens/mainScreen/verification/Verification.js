@@ -10,7 +10,10 @@ import {toast} from '../../../service/ToastMessage';
 import instance from '../../../service/instance';
 import Mainbutton from '../../../components/mainComponent/Mainbutton';
 
-const Verification = () => {
+const Verification = ({route}) => {
+  const {
+    params: {email},
+  } = route;
   const {navigate} = useNavigation();
   // States
   const [inputOne, setInputOne] = useState('');
@@ -20,9 +23,9 @@ const Verification = () => {
   const [inputFive, setInputFive] = useState('');
   const [loading, setLoading] = useState(false);
 
-// Check Variable
+  // Check Variable
 
-const show = true;
+  const show = true;
 
   // Refs
   const pin1Ref = useRef('');
@@ -33,31 +36,27 @@ const show = true;
 
   // handleVerification
 
-  // const userData = {
-  //   email: email,
-  //   otp: `${inputOne}${inputTwo}${inputThree}${inputFour}${inputFive}`,
-  //   role: 'TCH',
-  // };
-  // const handleVerification = async () => {
-  //   try {
-  //     setLoading(true)
-  //    const data =  await otpVerification({userData});
-  //     navigate('Reset Password', {email: email});
-  //     setLoading(false)
-  //   } catch (error) {
-  //     console.log('error', error.response.data.message);
-  //     toast({type:"error",text1:error.response.data.message})
-  //     setLoading(false)
-  //   }
-  // };
-
-  const handleVerification = async()=>{
+  const userData = {
+    email: email,
+    otp: `${inputOne}${inputTwo}${inputThree}${inputFour}${inputFive}`,
+    role: 'TCH',
+  };
+  const handleVerification = async () => {
     try {
-      navigate("Profile Stack",{screen:"Update Password",params: {show:show}})
+      setLoading(true);
+      const data = await otpVerification({userData});
+      navigate('Profile Stack', {
+        screen: 'Update Password',
+        params: {show: show},
+      });
+
+      setLoading(false);
     } catch (error) {
-      console.log("error",error)
+      console.log('error', error.response.data.message);
+      toast({type: 'error', text1: error.response.data.message});
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <View style={verificationStyle.verificationMain}>
@@ -144,7 +143,7 @@ const show = true;
           </View>
         </View>
 
-        <Mainbutton text="Verify" width={153} action={handleVerification}/>
+        <Mainbutton text="Verify" width={153} action={handleVerification} />
       </View>
       <View>
         <BigRectangle />

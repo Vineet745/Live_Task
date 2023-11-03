@@ -55,8 +55,14 @@ export const creditStyle = StyleSheet.create({
     height: verticalScale(38),
   },
   graphView: {
-    borderWidth: 1,
     height: verticalScale(390),
+    justifyContent:"flex-end",
+    paddingHorizontal:horizontalScale(15),
+    borderWidth:1
+  }, 
+  graphCreditText:{
+    fontFamily:fonts.medium,
+    color:color.darkPink
   },
   bottonView: {
     paddingHorizontal: horizontalScale(15),

@@ -5,20 +5,65 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Coin from '../../../assets/images/coin.svg';
 import {creditStyle} from './creditStyle';
 import CustomDropdown from '../../../utils/CustomDropDown';
 import Filter from '../../../assets/images/filter_icon.svg';
 import {fonts} from '../../../constants/theme';
 import {useNavigation} from '@react-navigation/native';
-import { CustomBarChart } from '../../../components/CustomBarChart';
+import {CustomBarChart} from '../../../components/CustomBarChart';
+import {getInitalChartData} from '../../../service/api/creditApi';
+import DateModal from '../../../components/modals/DateModal';
+import {useDispatch, useSelector} from 'react-redux';
+import graphDataSlice, {
+  graphFilterData,
+} from '../../../redux/slice/graphDataSlice';
 
 const Credits = () => {
   const {navigate} = useNavigation();
+  const [value, setValue] = useState(null);
+  const [open, setOpen] = useState(false);
+  const {graphData} = useSelector(state => state.graph);
+  const dispatch = useDispatch();
+
+
+
+
+  // open Modal
+  const openModal = () => {
+    setOpen(true);
+  };
+
+  // close Modal
+
+  const closeModal = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    handleGetChart();
+  }, []);
+
+  // handleGetInitial Chart
+
+  const handleGetChart = async () => {
+    try {
+      const {data} = await getInitalChartData();
+      console.log("data",data.data.updated_at)
+      dispatch(graphFilterData(data.data));
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  // Get total of the week
+
+  const total = graphData.reduce((acc, item) => acc + item.credits, 0);
 
   return (
     <ScrollView style={creditStyle.creditMain}>
+      <DateModal open={open} closeModal={closeModal} />
       <StatusBar backgroundColor={'white'} barStyle="dark-content" />
       <View style={creditStyle.balanceView}>
         <Text style={creditStyle.balanceViewText}>Available Credit Coins</Text>
@@ -29,18 +74,16 @@ const Credits = () => {
       </View>
       <View style={creditStyle.filterView}>
         <View style={creditStyle.filterTopView}>
-          <CustomDropdown width={237} />
-          <View style={creditStyle.sortView}>
+          <CustomDropdown value={value} setValue={setValue} width={237} />
+          <TouchableOpacity onPress={openModal} style={creditStyle.sortView}>
             <Filter />
             <Text style={{fontFamily: fonts.semiBold}}>Sort</Text>
-          </View>
-        </View>
-        <View style={creditStyle.taskDropDown}>
-        <CustomDropdown width={237} />
+          </TouchableOpacity>
         </View>
       </View>
       <View style={creditStyle.graphView}>
-        <CustomBarChart/>
+        <Text style={creditStyle.graphCreditText}>Per day Credit Uses</Text>
+        <CustomBarChart weekChart={graphData} />
       </View>
       <View style={creditStyle.bottonView}>
         <View style={creditStyle.usedCreditView}>
@@ -49,17 +92,17 @@ const Credits = () => {
           </Text>
           <View style={creditStyle.usedCoin}>
             <Coin />
-            <Text style={creditStyle.spendCoins}>500</Text>
+            <Text style={creditStyle.spendCoins}>{total}</Text>
           </View>
         </View>
-        <View style={creditStyle.usedCreditView}>
+        {/* <View style={creditStyle.usedCreditView}>
           <CustomDropdown width={237} />
           <View style={creditStyle.usedCoin}>
             <Coin />
             <Text style={creditStyle.spendCoins}>500</Text>
           </View>
-        </View>
-        <TouchableOpacity style={creditStyle.buyButton}>
+        </View> */}
+        <TouchableOpacity onPress={() => navigate('CreditStack', {Screen: 'Balance'})}  style={creditStyle.buyButton}>
           <Text style={creditStyle.buyButtonText}>Buy Credit</Text>
         </TouchableOpacity>
 

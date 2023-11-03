@@ -15,7 +15,9 @@ import SingleAssignment from '../screens/mainScreen/singleAssignment/SingleAssig
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import HomeUserProfile from './components/HomeUserProfile';
 import HomeIcon from '../assets/images/home_icon.svg';
+import WhiteHome from "../assets/images/white_home.svg"
 import UserIcon from '../assets/images/user.svg';
+import GreenUser from "../assets/images/green_user.svg"
 import StackCustomHeader from './components/StackCustomHeader';
 import EditProfile from '../screens/mainScreen/editProfile/EditProfile';
 import UpdatePassword from '../screens/mainScreen/updatePassword/UpdatePassword';
@@ -24,6 +26,7 @@ import Verification from '../screens/mainScreen/verification/Verification';
 import CustomDropdown from '../utils/CustomDropDown';
 import LanguageDropdown from './components/LanguageDropdown';
 import SingleTask from '../screens/mainScreen/singleTask/SingleTask';
+import Balance from '../screens/mainScreen/balanceScreen/Balance';
 
 // Navigator Imports
 
@@ -173,6 +176,19 @@ const CreditStack = () => {
           },
         }}
       />
+      <Stack.Screen
+        name="Balance"
+        component={Balance}
+        options={{
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerBackVisible: false,
+          
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -212,60 +228,63 @@ const BottomStack = () => {
         tabBarStyle: {
           backgroundColor: color.darkPink,
           height: verticalScale(20),
-          position: 'absolute',
-          bottom: 10,
           elevation: 0,
         },
         headerShown: false,
       }}>
       <Tab.Screen
-        name="Home"
-        component={HomeTopStack}
-        options={{
-          tabBarIcon: focused => {
-            return (
-              <View
-                style={{
-                  position: 'absolute',
-                  top: -30,
-                  backgroundColor: 'white',
-                  borderRadius: 30,
-                  padding: verticalScale(5),
-                  elevation: 2,
-                  borderWidth: 1,
-                  shadowColor: 'grey',
-                  shadowOffset: {width: 0, height: 4},
-                  shadowOpacity: 0.5,
-                }}>
-                <HomeIcon width={35} height={35} />
-              </View>
-            );
-          },
+  name="Home"
+  component={HomeTopStack}
+  options={{
+    tabBarIcon: ({ focused, color, size }) => (
+      <View
+        style={{
+          position: 'absolute',
+          top: -32,
+          backgroundColor: focused ? "#04c38c" : "white",
+          borderRadius: 30,
+          padding: verticalScale(5),
+          elevation: 2,
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.5,
+          width:50,
+          height:50,
+          alignItems:"center",
+          justifyContent:"center",
+          elevation:5
         }}
-      />
+      >
+        {focused ? <WhiteHome width={35} height={35} /> : <HomeIcon width={35} height={35} />}
+      </View>
+    ),
+  }}
+/>
+
       <Tab.Screen
         name="Profile Stack"
         component={ProfileStack}
         options={{
-          tabBarIcon: focused => {
-            return (
-              <View
-                style={{
-                  position: 'absolute',
-                  top: -30,
-                  backgroundColor: 'white',
-                  borderRadius: 30,
-                  padding: verticalScale(5),
-                  elevation: 2,
-                  borderWidth: 1,
-                  shadowColor: 'grey',
-                  shadowOffset: {width: 0, height: 4},
-                  shadowOpacity: 0.5,
-                }}>
-                <UserIcon width={35} height={35} />
-              </View>
-            );
-          },
+          tabBarIcon: ({ focused, color, size }) => (
+            <View
+              style={{
+                position: 'absolute',
+                top: -32,
+                backgroundColor: focused ? "#04c38c" : "white",
+                borderRadius: 30,
+                padding: verticalScale(5),
+                elevation: 2,
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.5,
+                width:50,
+                height:50,
+                alignItems:"center",
+                justifyContent:"center",
+                elevation:5
+              }}
+            >
+              {focused ? <GreenUser width={35} height={35} /> : <UserIcon width={45} height={45} />}
+            </View>
+          ),
         }}
       />
       <Tab.Screen
