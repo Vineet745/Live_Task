@@ -8,7 +8,6 @@ import {
 import React, {useState, useEffect} from 'react';
 import Coin from '../../../assets/images/coin.svg';
 import {creditStyle} from './creditStyle';
-import CustomDropdown from '../../../utils/CustomDropDown';
 import Filter from '../../../assets/images/filter_icon.svg';
 import {fonts} from '../../../constants/theme';
 import {useNavigation} from '@react-navigation/native';
@@ -19,6 +18,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import graphDataSlice, {
   graphFilterData,
 } from '../../../redux/slice/graphDataSlice';
+import { CustomDropDown } from '../../../utils/CustomDropDown';
 
 const Credits = () => {
   const {navigate} = useNavigation();
@@ -74,7 +74,7 @@ const Credits = () => {
       </View>
       <View style={creditStyle.filterView}>
         <View style={creditStyle.filterTopView}>
-          <CustomDropdown value={value} setValue={setValue} width={237} />
+          <CustomDropDown text="Class" value={value} setValue={setValue} width={237} />
           <TouchableOpacity onPress={openModal} style={creditStyle.sortView}>
             <Filter />
             <Text style={{fontFamily: fonts.semiBold}}>Sort</Text>
@@ -102,7 +102,7 @@ const Credits = () => {
             <Text style={creditStyle.spendCoins}>500</Text>
           </View>
         </View> */}
-        <TouchableOpacity onPress={() => navigate('CreditStack', {Screen: 'Balance'})}  style={creditStyle.buyButton}>
+        <TouchableOpacity onPress={() => navigate("Balance")}  style={creditStyle.buyButton}>
           <Text style={creditStyle.buyButtonText}>Buy Credit</Text>
         </TouchableOpacity>
 

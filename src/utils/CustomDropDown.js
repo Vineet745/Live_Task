@@ -1,29 +1,25 @@
 import React, {useState} from 'react';
 import {View, Text} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {horizontalScale, verticalScale} from '../constants/dimension';
+import {horizontalScale} from '../constants/dimension';
 import {color, fonts} from '../constants/theme';
-import { languageArray } from './CustomArray';
 
-const CustomDropdown = ({value, setValue, width,text}) => {
-
-
+export const CustomDropDown = ({value, width, setValue, text}) => {
+  const [items, setItems] = useState([
+    {label: 'Apple', value: 'apple'},
+    {label: 'Banana', value: 'banana'},
+    {label: 'Pear', value: 'pear'},
+  ]);
   const [open, setOpen] = useState(false);
-  const [items, setItems] = useState(languageArray);
 
   return (
-    <View>
-      <View
-        style={{
-          flex: 1,
-          width: horizontalScale(width),
-        }}>
+    <View style={{flex: 1}}>
+      <View>
         <DropDownPicker
           style={{
-            backgroundColor: color.lightGrey,
-            borderWidth: 1,
-            borderRadius: 10,
-            borderColor: '#c0c0c0',
+            borderWidth: 0,
+            backgroundColor: '#f3f3f3',
+            width: horizontalScale(width),
           }}
           open={open}
           value={value}
@@ -31,19 +27,9 @@ const CustomDropdown = ({value, setValue, width,text}) => {
           setOpen={setOpen}
           setValue={setValue}
           setItems={setItems}
+          placeholder={text}
+          placeholderStyle={{fontFamily: fonts.medium, color: color.grey}}
           textStyle={{fontFamily: fonts.medium}}
-          placeholder={
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <Text style={{fontFamily: fonts.medium}}>{text}</Text>
-            </View>
-          }
-          listItemLabelStyle={{
-            fontFamily: fonts.medium,
-          }}
         />
       </View>
 
@@ -56,5 +42,3 @@ const CustomDropdown = ({value, setValue, width,text}) => {
     </View>
   );
 };
-
-export default CustomDropdown;

@@ -40,28 +40,6 @@ const Login = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  // Google SignIn
-
-  // const onGoogleButtonPress = async () => {
-  //   try {
-  //     GoogleSignin.configure({
-  //       webClientId:
-  //         '35178936416-js1adf66idue7qa3as8151ihh40nmkbs.apps.googleusercontent.com',
-  //       offlineAccess: false,
-  //     });
-  //     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-  //     const userInfo = await GoogleSignin.signIn();
-  //     console.log(userInfo, 'userInfo thejb j j');
-  //     const {idToken, access_token} = userInfo;
-  //     const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
-  //     console.log(googleCredentials, 'googleCredentials <<');
-  //     const userCredential = await auth().signInWithCredential(
-  //       googleCredentials,
-  //     );
-  //     console.log(userCredential, 'userCredential  ??????');
-  //     console.log('Successfully signed in with Google:', userCredential.user);
-  //   } catch (error) {}
-  // };
 
   // Login By the Email AND Id
 

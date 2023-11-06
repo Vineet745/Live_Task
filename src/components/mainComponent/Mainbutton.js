@@ -1,17 +1,17 @@
-import {View, Text,TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {color, fonts, sizes} from '../../constants/theme';
 import {horizontalScale, verticalScale} from '../../constants/dimension';
 import {RFValue} from 'react-native-responsive-fontsize';
 
-const Mainbutton = ({text, width,action}) => {
+const Mainbutton = ({text, width, action}) => {
   return (
     <TouchableOpacity
-    onPress={action}
+      onPress={action}
       style={{
         backgroundColor: color.lightGreen,
         width: horizontalScale(width),
-        height: verticalScale(40),
+        height: verticalScale(45),
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 30,

@@ -25,11 +25,11 @@ import {RegisterUser} from '../../../service/api/authApi';
 import {useDispatch} from 'react-redux';
 import {authToken} from '../../../redux/slice/authSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CustomDropdown from '../../../utils/CustomDropDown';
 import {toast} from '../../../service/ToastMessage';
 import UserLang from '../../../assets/images/inputLanguage.svg';
 import Loader from '../../../utils/Loader';
 import { onGoogleButtonPress } from '../../../service/authLogin';
+import { CustomDropDown } from '../../../utils/CustomDropDown';
 
 const Register = () => {
   const {
@@ -152,7 +152,7 @@ const Register = () => {
               <View style={{padding: 3}}>
                 <UserLang />
               </View>
-              <CustomDropdown value={value} setValue={setValue} width={285}/>
+              <CustomDropDown value={value} setValue={setValue} width={285} text="Select Language"/>
             </View>
 
             <View style={{marginBottom: verticalScale(10)}}>

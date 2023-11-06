@@ -120,7 +120,7 @@ export const CustomBarChart = ({weekChart}) => {
         dashWidth={0}
         height={330}
         initialSpacing={30}
-        spacing={50}
+        spacing={20}
         width={300}
         barWidth={20}
         backgroundColor="#f3f3f3"
