@@ -1,4 +1,10 @@
-import {View, Text, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Credits from '../screens/mainScreen/credits/Credits';
@@ -39,7 +45,19 @@ import ClassAssignment from '../screens/drawerScreen/classAssignment/ClassAssign
 import ClassStudent from '../screens/drawerScreen/classStudents/ClassStudent';
 import SingleAssigmentDetail from '../screens/drawerScreen/singleAssignmentDetail/SingleAssigmentDetail';
 import EditClass from '../screens/drawerScreen/editClass/EditClass';
-
+import Bulb from '../assets/images/bulb.svg';
+import AssignClass from '../screens/drawerScreen/assignClasses/AssignClass';
+import SelectAssignment from '../screens/drawerScreen/selectAssignment/SelectAssignment';
+import {CustomDropDown} from '../utils/CustomDropDown';
+import AssignmentDetail from '../screens/drawerScreen/assignmentDetail/AssignmentDetail';
+import Report from '../screens/drawerScreen/report/Report';
+import StudentAssignment from '../components/mainComponent/studentAssignment/StudentAssignment';
+import StudentAssignmentDetail from '../screens/drawerScreen/studentAssignmentDetail/StudentAssignmentDetail';
+import CreateNewAssignment from '../screens/drawerScreen/createNewAssignment/CreateNewAssignment';
+import EditAssignment from '../screens/drawerScreen/editAssignment/EditAssignment';
+import SingleAllTask from '../screens/drawerScreen/singleAllTask/SingleAllTask';
+import Conversation from '../screens/drawerScreen/conversation/Conversation';
+import AddTask from '../screens/drawerScreen/addTask/AddTask';
 // Navigator Imports
 
 const Stack = createNativeStackNavigator();
@@ -72,9 +90,11 @@ const HomeTopStack = () => {
 
 // Profile Stack
 
+
+
 const ProfileStack = () => {
   return (
-    <Stack.Navigator >
+    <Stack.Navigator>
       <Stack.Screen
         name="Profile View"
         component={Profile}
@@ -85,9 +105,7 @@ const ProfileStack = () => {
             color: color.black,
           },
           headerShown: false,
-          
         }}
-
       />
       <Stack.Screen
         name="Edit"
@@ -98,8 +116,9 @@ const ProfileStack = () => {
             fontSize: RFValue(sizes.h4, 667),
             color: color.black,
           },
-          headerShadowVisible:false,
+          headerShadowVisible: false,
           headerBackVisible: false,
+          autoHideHomeIndicator:false,
           headerTitle: () => {
             return <StackCustomHeader text="Edit Information !" />;
           },
@@ -116,7 +135,7 @@ const ProfileStack = () => {
             color: color.black,
           },
           headerBackVisible: false,
-          headerShadowVisible:false,
+          headerShadowVisible: false,
           headerTitle: () => {
             return <StackCustomHeader text="Update Password !" />;
           },
@@ -133,7 +152,7 @@ const ProfileStack = () => {
             color: color.black,
           },
           headerBackVisible: false,
-          headerShadowVisible:false,
+          headerShadowVisible: false,
           headerTitle: () => {
             return <StackCustomHeader text="Reset Password !" />;
           },
@@ -150,7 +169,7 @@ const ProfileStack = () => {
             color: color.black,
           },
           headerBackVisible: false,
-          headerShadowVisible:false,
+          headerShadowVisible: false,
           headerTitle: () => {
             return <StackCustomHeader text="Verification !" />;
           },
@@ -174,7 +193,7 @@ const CreditStack = () => {
             fontSize: RFValue(sizes.h4, 667),
             color: color.black,
           },
-          headerShadowVisible:false,
+          headerShadowVisible: false,
           headerTitle: () => {
             return <StackCustomHeader text="Transaction History" />;
           },
@@ -262,7 +281,7 @@ const StudentStack = () => {
             fontSize: RFValue(sizes.h4, 667),
             color: color.black,
           },
-          headerShadowVisible:false,
+          headerShadowVisible: false,
           headerBackVisible: false,
           headerTitle: () => {
             return <StackCustomHeader text="Add New Student" />;
@@ -284,6 +303,7 @@ const StudentStack = () => {
           headerShown: false,
         }}
       />
+
       <Stack.Screen
         name="Edit Student"
         component={EditStudent}
@@ -293,30 +313,15 @@ const StudentStack = () => {
             fontSize: RFValue(sizes.h4, 667),
             color: color.black,
           },
-          headerShadowVisible:false,
-          headerBackVisible: false, 
+          headerShadowVisible: false,
+          headerBackVisible: false,
           headerTitle: () => {
             return <StackCustomHeader text="Edit Student Information" />;
           },
         }}
       />
 
-      {/* <Stack.Screen
-        name="Add Class"
-        component={AddClass}
-        options={{
-          headerTitleStyle: {
-            fontFamily: fonts.segoeUI,
-            fontSize: RFValue(sizes.h4, 667),
-            color: color.black,
-          },
-          headerShadowVisible:false,
-          headerBackVisible: false,
-          headerTitle: () => {
-            return <StackCustomHeader text="Edit Student Information" />;
-          },
-        }}
-      /> */}
+     
     </Stack.Navigator>
   );
 };
@@ -325,12 +330,12 @@ const StudentStack = () => {
 
 const ClassStack = () => {
   return (
-    <Stack.Navigator screenOptions={{
-      headerStyle: {
-        // backgroundColor:"lightgreen",
-        borderBottomWidth:0
-      },
-    }}  >
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          borderBottomWidth: 0,
+        },
+      }}>
       <Stack.Screen
         name="My Class"
         component={MyClasses}
@@ -340,7 +345,7 @@ const ClassStack = () => {
             fontSize: RFValue(sizes.h4, 667),
             color: color.black,
           },
-          headerShadowVisible:false,
+          headerShadowVisible: false,
           headerBackVisible: false,
           headerShown: false,
         }}
@@ -354,15 +359,15 @@ const ClassStack = () => {
             fontSize: RFValue(sizes.h4, 667),
             color: color.black,
           },
-          headerShadowVisible:false,
+          headerShadowVisible: false,
           headerBackVisible: false,
           headerTitle: () => {
-            return <StackCustomHeader  text="Create New Class" />;
+            return <StackCustomHeader text="Create New Class" />;
           },
         }}
       />
 
-<Stack.Screen
+      <Stack.Screen
         name="Edit Class"
         component={EditClass}
         options={{
@@ -371,10 +376,10 @@ const ClassStack = () => {
             fontSize: RFValue(sizes.h4, 667),
             color: color.black,
           },
-          headerShadowVisible:false,
+          headerShadowVisible: false,
           headerBackVisible: false,
           headerTitle: () => {
-            return <StackCustomHeader  text="Edit New Class" />;
+            return <StackCustomHeader text="Edit New Class" />;
           },
         }}
       />
@@ -403,11 +408,26 @@ const ClassStack = () => {
             fontSize: RFValue(sizes.h4, 667),
             color: color.black,
           },
-          headerShadowVisible:false,
+          headerShadowVisible: false,
           headerBackVisible: false,
           headerTitle: () => {
             return <StackCustomHeader text="Class Assignments " />;
           },
+        }}
+      />
+
+      <Stack.Screen
+        name="Select Assignment"
+        component={SelectAssignment}
+        options={{
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerShadowVisible: false,
+          headerBackVisible: false,
+          headerShown: false,
         }}
       />
 
@@ -420,7 +440,7 @@ const ClassStack = () => {
             fontSize: RFValue(sizes.h4, 667),
             color: color.black,
           },
-         headerShadowVisible:false,
+          headerShadowVisible: false,
           headerBackVisible: false,
           headerTitle: () => {
             return <StackCustomHeader text="Assignment Name" />;
@@ -439,7 +459,7 @@ const ClassStack = () => {
           },
 
           headerBackVisible: false,
-          headerShadowVisible:false,
+          headerShadowVisible: false,
           headerTitle: () => {
             return <StackCustomHeader text="Class Students " />;
           },
@@ -449,11 +469,191 @@ const ClassStack = () => {
   );
 };
 
+const AssignmentStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          borderBottomWidth: 0,
+        },
+      }}>
+      <Stack.Screen
+        name="My Assignments"
+        component={AllAssignments}
+        options={{
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerShadowVisible: false,
+          headerBackVisible: false,
+          headerShown: false,
+        }}
+      />
+       <Stack.Screen
+        name="Create New Assignment"
+        component={CreateNewAssignment}
+        options={{
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerShadowVisible: false,
+          headerBackVisible: false,
+          headerTitle: () => {
+            return <StackCustomHeader text="Create New Assignment" />;
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Assignment Details"
+        component={AssignmentDetail}
+        options={{
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerShadowVisible: false,
+          headerBackVisible: false,
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Edit Assignment"
+        component={EditAssignment}
+        options={{
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerShadowVisible: false,
+          headerBackVisible: false,
+          headerTitle: () => {
+            return <StackCustomHeader text="Edit Assignment" />;
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Report"
+        component={Report}
+        options={{
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerShadowVisible: false,
+          headerBackVisible: false,
+          headerTitle: () => {
+            return <StackCustomHeader text="Report" />;
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Student Assignment Detail"
+        component={StudentAssignmentDetail}
+        options={{
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerShadowVisible: false,
+          headerBackVisible: false,
+          headerTitle: () => {
+            return <StackCustomHeader text="Student Name" />;
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Conversation"
+        component={Conversation}
+        options={({ route }) => ({
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerShadowVisible: false,
+          headerBackVisible: false,
+          headerTitle: () => {
+            const studentName = route?.params?.item?.students[0].username || 'Default Name';
+            return <StackCustomHeader text={studentName} />;
+          },
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
+// Task
+
+const TaskStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          borderBottomWidth: 0,
+        },
+      }}>
+        <Stack.Screen
+        name="My Tasks"
+        component={AllTasks}
+        options={{
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerShadowVisible: false,
+          headerBackVisible: false,
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Single Task"
+        component={SingleAllTask}
+        options={{
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerShadowVisible: false,
+          headerBackVisible: false,
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="add Task"
+        component={AddTask}
+        options={{
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerShadowVisible: false,
+          headerBackVisible: false,
+          headerTitle: () => {
+            return <StackCustomHeader text="Create New Task" />;
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
 // Drawer Navigator
 
-const DrawerStack = () => {
+const DrawerStack = ({route}) => {
   return (
     <Drawer.Navigator
+      initialRouteName={route.name === 'Home' ? 'HomeStack' : 'MyProfile'}
       screenOptions={{
         headerBackground: () => (
           <View style={{backgroundColor: color.darkPink, flex: 1}} />
@@ -466,14 +666,35 @@ const DrawerStack = () => {
           display: 'none',
         },
         headerRight: () => {
-          return <LanguageDropdown />;
+          return (
+            <LanguageDropdown
+              width={130}
+              text="English"
+              marginRight={15}
+              backgroundColor="white"
+            />
+          );
+        },
+
+        drawerLabelStyle: {
+          fontFamily: fonts.medium,
+          color: color.black,
         },
       }}>
-      <Drawer.Screen name="HomeStack" component={HomeTopStack} />
+      <Drawer.Screen
+        name="HomeStack"
+        component={HomeTopStack}
+        
+      />
+      <Drawer.Screen
+        name="MyProfile"
+        component={ProfileStack}
+        
+      />
       <Drawer.Screen name="My Students" component={StudentStack} />
       <Drawer.Screen name="My Classes" component={ClassStack} />
-      <Drawer.Screen name="All Assignment" component={AllAssignments} />
-      <Drawer.Screen name="All Tasks" component={AllTasks} />
+        <Drawer.Screen name="All Assignment" component={AssignmentStack} />
+      <Drawer.Screen name="All Tasks" component={TaskStack} />
     </Drawer.Navigator>
   );
 };
@@ -482,94 +703,95 @@ const DrawerStack = () => {
 
 const MainStack = () => {
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarHideOnKeyboard: false,
-        tabBarShowLabel: false,
-        tabBarStyle: {
-          backgroundColor: color.darkPink,
-          height: verticalScale(20),
-          elevation: 0,
-        },
-        headerShown: false,
-      }}>
-      <Tab.Screen
-        name="Home"
-        component={DrawerStack}
-        options={{
-          tabBarIcon: ({focused, color, size}) => (
-            <View
-              style={{
-                position: 'absolute',
-                top: -32,
-                backgroundColor: focused ? '#04c38c' : 'white',
-                borderRadius: 30,
-                padding: verticalScale(5),
-                elevation: 2,
-                shadowOffset: {width: 0, height: 4},
-                shadowOpacity: 0.5,
-                width: 50,
-                height: 50,
-                alignItems: 'center',
-                justifyContent: 'center',
-                elevation: 5,
-              }}>
-              {focused ? (
-                <WhiteHome width={35} height={35} />
-              ) : (
-                <HomeIcon width={35} height={35} />
-              )}
-            </View>
-          ),
-        }}
-      />
+    <View style={{flex: 1}}>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarShowLabel: false,
+          tabBarStyle: {
+            backgroundColor: color.darkPink,
+            height: verticalScale(20),
+            elevation: 0,
+          },
+          headerShown: false,
+        }}>
+        <Tab.Screen
+          name="Home"
+          component={DrawerStack}
+          options={{
+            tabBarIcon: ({focused, color, size}) => (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -32,
+                  backgroundColor: focused ? '#04c38c' : 'white',
+                  borderRadius: 30,
+                  padding: verticalScale(5),
+                  elevation: 2,
+                  shadowOffset: {width: 0, height: 4},
+                  shadowOpacity: 0.5,
+                  width: 50,
+                  height: 50,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  elevation: 5,
+                }}>
+                {focused ? (
+                  <WhiteHome width={35} height={35} />
+                ) : (
+                  <HomeIcon width={35} height={35} />
+                )}
+              </View>
+            ),
+          }}
+        />
 
-      <Tab.Screen
-        name="Profile Stack"
-        component={ProfileStack}
-        options={{
-          tabBarIcon: ({focused, color, size}) => (
-            <View
-              style={{
-                position: 'absolute',
-                top: -32,
-                backgroundColor: focused ? '#04c38c' : 'white',
-                borderRadius: 30,
-                padding: verticalScale(5),
-                elevation: 2,
-                shadowOffset: {width: 0, height: 4},
-                shadowOpacity: 0.5,
-                width: 50,
-                height: 50,
-                alignItems: 'center',
-                justifyContent: 'center',
-                elevation: 5,
-              }}>
-              {focused ? (
-                <GreenUser width={35} height={35} />
-              ) : (
-                <UserIcon width={45} height={45} />
-              )}
-            </View>
-          ),
-        }}
-      />
-      <Tab.Screen
-        options={{tabBarItemStyle: {display: 'none'}}}
-        name="CreditStack"
-        component={CreditStack}
-      />
-      <Tab.Screen
-        options={{tabBarItemStyle: {display: 'none'}}}
-        name="SingleTask"
-        component={SingleTask}
-      />
-      <Tab.Screen
-        options={{tabBarItemStyle: {display: 'none'}}}
-        name="Balance"
-        component={Balance}
-      />
-    </Tab.Navigator>
+        <Tab.Screen
+          name="Profile Stack"
+          component={DrawerStack}
+          options={{
+            tabBarIcon: ({focused, color, size}) => (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -32,
+                  backgroundColor: focused ? '#04c38c' : 'white',
+                  borderRadius: 30,
+                  padding: verticalScale(5),
+                  elevation: 2,
+                  shadowOffset: {width: 0, height: 4},
+                  shadowOpacity: 0.5,
+                  width: 50,
+                  height: 50,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  elevation: 5,
+                }}>
+                {focused ? (
+                  <GreenUser width={35} height={35} />
+                ) : (
+                  <UserIcon width={45} height={45} />
+                )}
+              </View>
+            ),
+          }}
+        />
+        <Tab.Screen
+          options={{tabBarItemStyle: {display: 'none'}}}
+          name="CreditStack"
+          component={CreditStack}
+        />
+        <Tab.Screen
+          options={{tabBarItemStyle: {display: 'none'}}}
+          name="SingleTask"
+          component={SingleTask}
+        />
+        <Tab.Screen
+          options={{tabBarItemStyle: {display: 'none'}}}
+          name="Balance"
+          component={Balance}
+        />
+      </Tab.Navigator>
+    </View>
   );
 };
 

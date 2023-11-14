@@ -14,6 +14,7 @@ import {toast} from '../../../service/ToastMessage';
 import {resetPasswordStyle} from './resetPasswordStyle';
 import MainButton from '../../../components/mainComponent/Mainbutton';
 import Mainbutton from '../../../components/mainComponent/Mainbutton';
+import { isEmailValid } from '../../../utils/HelperFunction';
 
 const Reset = () => {
   const {
@@ -45,10 +46,7 @@ const Reset = () => {
     }
   };
 
-  const isEmailValid = email => {
-    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    return emailPattern.test(email);
-  };
+  
 
   return (
     <View style={resetPasswordStyle.forgotPasswordMain}>

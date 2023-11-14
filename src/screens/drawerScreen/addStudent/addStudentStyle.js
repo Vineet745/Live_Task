@@ -30,6 +30,7 @@ export const addStudentStyle = StyleSheet.create({
     color: 'red',
     fontFamily: fonts.medium,
     marginTop: verticalScale(5),
+    fontSize:RFValue(sizes.h8,667)
   },
   lineBreak: {
     flexDirection: 'row',

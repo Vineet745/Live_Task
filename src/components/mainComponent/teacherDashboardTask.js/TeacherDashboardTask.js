@@ -13,21 +13,24 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import SingleTask from '../../../screens/mainScreen/singleTask/SingleTask';
 
-const TeacherDashboardTask = ({item,handleGetTask}) => {
+const TeacherDashboardTask = ({item, handleGetTask}) => {
   const navigation = useNavigation();
   const [singleData, setSingleData] = useState('');
+  const [isLike, setIsLike] = useState(false);
 
+  // Single Task
   useEffect(() => {
     handleSingleTask();
   }, []);
 
-  // Single Task
-
   const handleSingleTask = async () => {
-    const id = item.id;
+    const query = {
+      id: item.id,
+      flag: 'explore',
+    };
     try {
-      const {data} = await getSingleTask(id);
-      setSingleData(data.data);
+      const {data} = await getSingleTask({query});
+      setSingleData(data?.data);
     } catch (error) {
       console.log('error', error);
     }
@@ -41,9 +44,11 @@ const TeacherDashboardTask = ({item,handleGetTask}) => {
       task_id: item.id,
     };
     try {
-      await getTaskReaction(userData)
-      handleGetTask()
+      setIsLike(true);
+      await getTaskReaction(userData);
+      await handleGetTask();
     } catch (error) {
+      setIsLike(false);
       console.log('error', error);
     }
   };
@@ -56,9 +61,11 @@ const TeacherDashboardTask = ({item,handleGetTask}) => {
       task_id: item.id,
     };
     try {
-        await getTaskReaction(userData);
-        handleGetTask()
+      setIsLike(false);
+      await getTaskReaction(userData);
+      await handleGetTask();
     } catch (error) {
+      setIsLike(true);
       console.log('error', error);
     }
   };
@@ -86,14 +93,18 @@ const TeacherDashboardTask = ({item,handleGetTask}) => {
           <View style={teacherDashboardTaskStyle.iconTextContainer}>
             <TouchableOpacity
               onPress={() => {
-                if (item?.task_reaction !== null) {
+                if (isLike === true || item.task_reaction !== null) {
                   unlikePost({item});
                 } else {
                   likePost({item});
                 }
               }}
               style={teacherDashboardTaskStyle.buttons}>
-              {item.task_reaction !== null ? <LikePink /> : <LikePlane />}
+              {item.task_reaction !== null || isLike === true ? (
+                <LikePink />
+              ) : (
+                <LikePlane />
+              )}
             </TouchableOpacity>
             <Text style={teacherDashboardTaskStyle.countText}>
               {item.upvote_count}

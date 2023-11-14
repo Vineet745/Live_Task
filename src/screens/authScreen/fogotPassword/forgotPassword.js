@@ -11,6 +11,7 @@ import BigRectangle from '../../../assets/images/big-rectangle.svg';
 import {forgotPassword} from '../../../service/api/authApi';
 import Loader from '../../../utils/Loader';
 import {toast} from '../../../service/ToastMessage';
+import {isEmailValid} from '../../../utils/HelperFunction';
 
 const Reset = () => {
   const {
@@ -40,11 +41,6 @@ const Reset = () => {
       setLoading(false);
       toast({type: 'error', text1: error.response.data.message});
     }
-  };
-
-  const isEmailValid = email => {
-    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    return emailPattern.test(email);
   };
 
   return (

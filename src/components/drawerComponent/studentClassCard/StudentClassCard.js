@@ -2,12 +2,13 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {studentClassCardStyle} from './studentClassCardStyle';
 import MinusIcon from '../../../assets/images/minus_icon.svg';
-const StudentClassCard = () => {
+const StudentClassCard = ({item}) => {
+  console.log("item",item)
   return (
     <View style={studentClassCardStyle.studentClassCardMain}>
       <View style={studentClassCardStyle.studentClassCardTop}>
         <Text style={studentClassCardStyle.studentClassCardClassName}>
-          Class Name
+          {item.class.show_name}
         </Text>
         <TouchableOpacity>
           <MinusIcon />

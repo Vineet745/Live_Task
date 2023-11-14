@@ -60,4 +60,26 @@ export const editClassStyle = StyleSheet.create({
     fontFamily: fonts.medium,
     color: color.darkPink,
   },
+  assignmentName: {
+    backgroundColor: '#f3f3f3',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    justifyContent: 'space-between',
+    borderRadius: 10,
+    borderColor: '#c3c3c3',
+    // marginVertical:verticalScale(10)
+  },
+  assignmentLogo: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: horizontalScale(5),
+  },
+  selectBoxInput:{
+    fontFamily: fonts.medium,
+    color: color.black,
+    fontWeight: '600',
+    fontSize: RFValue(sizes.h6, 667),
+    width:"90%"
+  }
 });

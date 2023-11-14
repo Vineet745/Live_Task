@@ -51,4 +51,19 @@ export const addClassStyle = StyleSheet.create({
     borderRadius: 10,
   },
   dropDownLogo: {width: horizontalScale(42), alignItems: 'center'},
+  assignmentName: {
+    backgroundColor: '#f3f3f3',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    justifyContent: 'space-between',
+    borderRadius: 10,
+    borderColor: '#c3c3c3',
+    marginVertical:verticalScale(10)
+  },
+  assignmentLogo: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: horizontalScale(5),
+  },
 });

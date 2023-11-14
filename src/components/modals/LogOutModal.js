@@ -4,11 +4,12 @@ import {color, fonts, sizes} from '../../constants/theme';
 import {horizontalScale, verticalScale} from '../../constants/dimension';
 import {RFValue} from 'react-native-responsive-fontsize';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {authToken} from '../../redux/slice/authSlice';
 
 const LogOutModal = ({open, closeModal, navigation}) => {
   const dispatch = useDispatch();
+  const {isOpen} = useSelector(state=>state.modal)
 
   // HandleLogout
   const handleLogout = async () => {

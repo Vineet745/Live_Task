@@ -28,8 +28,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {toast} from '../../../service/ToastMessage';
 import UserLang from '../../../assets/images/inputLanguage.svg';
 import Loader from '../../../utils/Loader';
-import { onGoogleButtonPress } from '../../../service/authLogin';
-import { CustomDropDown } from '../../../utils/CustomDropDown';
+import {onGoogleButtonPress} from '../../../service/authLogin';
+import {CustomDropDown} from '../../../utils/CustomDropDown';
+import {isEmailValid, isPasswordValid} from '../../../utils/HelperFunction';
 
 const Register = () => {
   const {
@@ -63,21 +64,6 @@ const Register = () => {
       toast({type: 'error', text1: error.response.data.message});
       setloading(false);
     }
-  };
-
-  // Is Valid Email
-
-  const isEmailValid = email => {
-    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    return emailPattern.test(email);
-  };
-
-  // Is Password Valid
-
-  const isPasswordValid = password => {
-    const passwordPattern =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    return passwordPattern.test(password);
   };
 
   return (
@@ -152,7 +138,12 @@ const Register = () => {
               <View style={{padding: 3}}>
                 <UserLang />
               </View>
-              <CustomDropDown value={value} setValue={setValue} width={285} text="Select Language"/>
+              <CustomDropDown
+                value={value}
+                setValue={setValue}
+                width={285}
+                text="Select Language"
+              />
             </View>
 
             <View style={{marginBottom: verticalScale(10)}}>
@@ -196,7 +187,9 @@ const Register = () => {
             <View style={registerStyle.rightLine}></View>
           </View>
           <View style={registerStyle.socialAccounts}>
-            <TouchableOpacity onPress={()=>onGoogleButtonPress(dispatch)} style={registerStyle.socialAccountItem}>
+            <TouchableOpacity
+              onPress={() => onGoogleButtonPress(dispatch)}
+              style={registerStyle.socialAccountItem}>
               <Google width={40} />
             </TouchableOpacity>
             <TouchableOpacity style={registerStyle.socialAccountItem}>

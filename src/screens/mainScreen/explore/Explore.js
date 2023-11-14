@@ -7,7 +7,7 @@ import SearchIcon from '../../../assets/images/search_icon.svg';
 import Filter from '../../../assets/images/filter_icon.svg';
 import {fonts} from '../../../constants/theme';
 import {exploreStyle} from './exploreStyle';
-import {getHomeTask} from '../../../service/api/homeApi';
+import {getTasks} from '../../../service/api/homeApi';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import SortModal from '../../../components/modals/SortModal';
@@ -29,8 +29,9 @@ const Explore = () => {
   // Get Task
 
   const handleGetTask = async () => {
+    const flag = "explore";
     try {
-      const {data} = await getHomeTask();
+      const {data} = await getTasks(flag);
       dispatch(filteredData(data.data));
       setOriginalTaskData(data.data);
     } catch (error) {

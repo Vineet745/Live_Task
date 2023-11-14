@@ -8,7 +8,12 @@ import {singleClassStyle} from './singleClassStyle';
 import RightArrow from '../../../assets/images/right_arrow.svg';
 import {verticalScale} from '../../../constants/dimension';
 
-const SingleClass = () => {
+const SingleClass = ({route}) => {
+  const {
+    params: {item, id},
+  } = route;
+
+
   const navigation = useNavigation();
 
   return (
@@ -31,7 +36,7 @@ const SingleClass = () => {
           </View>
           <View style={singleClassStyle.singleClassRightView}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Edit Class')}
+              onPress={() => navigation.navigate('Edit Class', {item: item})}
               style={singleClassStyle.profileEditButton}>
               <Text style={singleClassStyle.profileEditText}>Edit</Text>
               <ImageEdit />
@@ -43,10 +48,10 @@ const SingleClass = () => {
           </View>
         </View>
         <View style={singleClassStyle.classDetail}>
-          <Text style={singleClassStyle.className}>Class Name 1</Text>
+          <Text style={singleClassStyle.className}>{item.show_name}</Text>
           <View style={{marginVertical: verticalScale(10)}}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Class Assignment')}
+              onPress={() => navigation.navigate('Class Assignment', {id: id})}
               style={singleClassStyle.classChildView}>
               <Text style={singleClassStyle.classChildViewText}>
                 Assignments
@@ -55,7 +60,7 @@ const SingleClass = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => navigation.navigate('Class Student')}
+              onPress={() => navigation.navigate('Class Student', {id: id,item:item})}
               style={singleClassStyle.classChildView}>
               <Text style={singleClassStyle.classChildViewText}>Students</Text>
               <RightArrow />

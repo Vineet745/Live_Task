@@ -3,15 +3,31 @@ import React from 'react';
 import MinusDeleteIcon from '../../../assets/images/minus_delete_icon.svg';
 import {studentProgressCardStyle} from './studentProgressCardStyle';
 import * as Progress from 'react-native-progress';
+import { deleteClassStudent } from '../../../service/api/classApi';
 
-const StudentProgressCard = () => {
+const StudentProgressCard = ({item, id, handleGetSingleClass}) => {
+  // handleDelete
+
+
+  const handleDeleteClass = async () => {
+    const query={
+      classId:id,
+      studentId:item.id
+    }
+    try {
+      await deleteClassStudent({query})
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   return (
     <View style={studentProgressCardStyle.progressCardMain}>
       <View style={studentProgressCardStyle.progressCardTop}>
         <Text style={studentProgressCardStyle.progressCardStudentName}>
-          Student Name
+          {item.username}
         </Text>
-        <TouchableOpacity style={studentProgressCardStyle.studentDeleteView}>
+        <TouchableOpacity onPress={handleDeleteClass} style={studentProgressCardStyle.studentDeleteView}>
           <MinusDeleteIcon />
         </TouchableOpacity>
       </View>
@@ -20,7 +36,7 @@ const StudentProgressCard = () => {
         <View style={studentProgressCardStyle.progressView}>
           <Progress.Bar
             progress={0.65}
-            width={280}
+            width={260}
             color="#04c38c"
             height={12}
             unfilledColor="#d9d9d9"

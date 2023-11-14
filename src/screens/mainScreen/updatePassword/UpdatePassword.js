@@ -12,6 +12,7 @@ import Loader from '../../../utils/Loader';
 import {updatePasswordStyle} from './updatePasswordStyle';
 import Button from '../../../components/mainComponent/Mainbutton';
 import Mainbutton from '../../../components/mainComponent/Mainbutton';
+import { isPasswordValid } from '../../../utils/HelperFunction';
 
 const UpdatePassword = ({route}) => {
   const {
@@ -31,11 +32,7 @@ const UpdatePassword = ({route}) => {
 
   // Password
 
-  const isPasswordValid = password => {
-    const passwordPattern =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    return passwordPattern.test(password);
-  };
+  
 
   return (
     <View style={updatePasswordStyle.resetPasswordMain}>

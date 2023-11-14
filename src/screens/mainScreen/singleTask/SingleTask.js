@@ -7,14 +7,20 @@ import BackButton from '../../../assets/images/back_arrow_button.svg';
 import UserRemix from '../../../assets/images/user_remix_white.svg';
 import {useNavigation} from '@react-navigation/native';
 import {singleTaskStyle} from './singleTaskStyle';
+import { getSingleTask } from '../../../service/api/homeApi';
+import Loader from '../../../utils/Loader';
 
 const SingleTask = ({route}) => {
   const {
     params: {singleData},
   } = route;
   const navigation = useNavigation();
+
+
+
   return (
     <View style={singleTaskStyle.singleMain}>
+      {/* <Loader loading={loading}/> */}
       <View style={singleTaskStyle.customHeader}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <BackButton width={32} height={32} />

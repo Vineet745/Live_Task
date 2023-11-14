@@ -10,6 +10,7 @@ import {changePassword} from '../../../service/api/authApi';
 import {useNavigation} from '@react-navigation/native';
 import {toast} from '../../../service/ToastMessage';
 import Loader from '../../../utils/Loader';
+import { isPasswordValid } from '../../../utils/HelperFunction';
 
 const ResetPassword = ({route}) => {
   const [loading, setLoading] = useState(false);
@@ -46,13 +47,8 @@ const ResetPassword = ({route}) => {
     }
   };
 
-  // Password
 
-  const isPasswordValid = password => {
-    const passwordPattern =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    return passwordPattern.test(password);
-  };
+  
 
   return (
     <View style={resetPasswordStyle.resetPasswordMain}>

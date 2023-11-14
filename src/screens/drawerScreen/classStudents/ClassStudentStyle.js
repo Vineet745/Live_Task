@@ -26,7 +26,7 @@ export const classStudent = StyleSheet.create({
     searchTask: {
         borderWidth: 1,
         borderColor:"grey",
-        width: '70%',
+        width: '73%',
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: horizontalScale(5),
@@ -51,7 +51,8 @@ export const classStudent = StyleSheet.create({
         
       },
       cardView:{
-        marginVertical:verticalScale(10)
+        marginVertical:verticalScale(10),
+        borderWidth:1,
       }
       
 })

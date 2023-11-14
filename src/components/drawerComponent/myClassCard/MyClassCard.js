@@ -1,36 +1,71 @@
 import {View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Delete from '../../../assets/images/delete_icon.svg';
 import Edit from '../../../assets/images/pink_edit.svg';
 import {useNavigation} from '@react-navigation/native';
 import {myClassCardStyle} from './myClassCardStyle';
+import DataDeleteModal from '../../modals/DataDeleteModal';
+import { deleteClass } from '../../../service/api/classApi';
 
-const MyClassCard = () => {
+const MyClassCard = ({item,handleGetClasses,navigation}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  // handleOpen
+
+  const handleOpen = () => {
+    setIsOpen(true);
+  };
+
+  // handleClose
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
+
+  const handleDelete = async () => {
+    const id = item.id;
+    try {
+      await deleteClass(id);
+      await handleGetClasses();
+      handleClose();
+      navigation.navigate('My Class');
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+
+
   const {navigate} = useNavigation();
 
   return (
-    <TouchableOpacity onPress={()=>navigate("Single Class")}  style={myClassCardStyle.dashboardTaskMain}>
+    <TouchableOpacity
+      onPress={() => navigate('Single Class',{ id: item.id, item:item })}
+      style={myClassCardStyle.dashboardTaskMain}>
+      <DataDeleteModal open={isOpen} closeModal={handleClose} handleDelete={handleDelete} />
       <View style={myClassCardStyle.topView}>
-        <Text style={myClassCardStyle.demoText}>Student Name 1</Text>
+        <Text style={myClassCardStyle.demoText}>{item.show_name}</Text>
         <View style={myClassCardStyle.middleView}>
           <Text style={myClassCardStyle.subjectText}>
-            <Text>Stude 1</Text>
+            <Text>Student {item.class_students.length}</Text>
           </Text>
-          <Text style={myClassCardStyle.assignMentText}>
-            <Text>Assignment - 4</Text>
-          </Text>
+         
         </View>
       </View>
       <View style={myClassCardStyle.bottomView}>
         <View style={myClassCardStyle.bottomViewInnerView}></View>
         <View style={myClassCardStyle.buttonContainer}>
           <View style={myClassCardStyle.iconTextContainer}>
-            <TouchableOpacity style={myClassCardStyle.buttons}>
+            <TouchableOpacity
+              onPress={() => navigate('Edit Class',{ item: item })}
+              style={myClassCardStyle.buttons}>
               <Edit />
             </TouchableOpacity>
           </View>
           <View style={myClassCardStyle.iconTextContainer}>
-            <TouchableOpacity style={myClassCardStyle.buttons}>
+            <TouchableOpacity
+              onPress={handleOpen}
+              style={myClassCardStyle.buttons}>
               <Delete />
             </TouchableOpacity>
           </View>

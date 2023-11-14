@@ -10,7 +10,7 @@ import {
 import React, {useState} from 'react';
 import {horizontalScale, verticalScale} from '../../constants/dimension';
 import {RFValue} from 'react-native-responsive-fontsize';
-import {filterTask, getHomeTask} from '../../service/api/homeApi';
+import {filterTask, getHomeTask, getTasks} from '../../service/api/homeApi';
 import {useDispatch} from 'react-redux';
 import {filteredData} from '../../redux/slice/filterTaskSlice';
 import {color, fonts, sizes} from '../../constants/theme';
@@ -35,7 +35,7 @@ const SortModal = ({open, closeModal}) => {
 
   const handleGetTask = async () => {
     try {
-      const {data} = await getHomeTask();
+      const {data} = await getTasks();
       dispatch(filteredData(data.data));
     } catch (error) {
       console.log('Error fetching tasks: ', error);
@@ -73,7 +73,6 @@ const SortModal = ({open, closeModal}) => {
       subjectId: subjectId,
     };
     try {
-      console.log(query);
       if (
         selectedItems.length > 0 ||
         maximum_age !== '' ||

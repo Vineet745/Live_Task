@@ -12,7 +12,6 @@ export const studentProgressCardStyle = StyleSheet.create({
     borderBottomWidth: 1,
     paddingHorizontal: horizontalScale(10),
     flexDirection: 'column',
-    justifyContent: 'space-evenly',
     borderColor: '#646464',
     marginVertical: verticalScale(10),
     paddingVertical: verticalScale(5),
@@ -35,7 +34,7 @@ export const studentProgressCardStyle = StyleSheet.create({
     justifyContent: 'center',
   },
   progressCardMiddle: {
-    marginVertical: verticalScale(10),
+    marginVertical: verticalScale(8),
   },
 
   progressText: {

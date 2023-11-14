@@ -5,7 +5,7 @@ import {color, fonts, sizes} from '../../constants/theme';
 import {horizontalScale, verticalScale} from '../../constants/dimension';
 import {RFValue} from 'react-native-responsive-fontsize';
 
-const LanguageDropdown = ({value, setValue, width}) => {
+const LanguageDropdown = ({value, setValue, width,text,marginRight,backgroundColor}) => {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
     {label: 'Hindi', value: 'hindi'},
@@ -16,19 +16,18 @@ const LanguageDropdown = ({value, setValue, width}) => {
 
   return (
     <View
-      style={{marginRight: horizontalScale(15), marginTop: verticalScale(8)}}>
+      style={{height:verticalScale(35)}}>
       <View
         style={{
-          width: horizontalScale(120),
+          width: horizontalScale(width),
+          marginRight:horizontalScale(marginRight),
+          
         }}>
         <DropDownPicker
           style={{
-            backgroundColor: color.white,
+            backgroundColor:backgroundColor,
             borderRadius: 10,
-          }}
-          iconContainerStyle={{
-            borderWidth:1,
-            backgroundColor:"lightgreen"
+            minHeight:verticalScale(35),
           }}
           open={open}
           value={value}
@@ -51,7 +50,7 @@ const LanguageDropdown = ({value, setValue, width}) => {
                   fontFamily: fonts.medium,
                   fontSize: RFValue(sizes.h7, 667),
                 }}>
-                Language
+                {text}
               </Text>
             </View>
           }

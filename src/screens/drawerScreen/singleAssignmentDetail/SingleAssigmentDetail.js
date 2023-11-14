@@ -6,7 +6,9 @@ import {horizontalScale, verticalScale} from '../../../constants/dimension';
 import Coin from '../../../assets/images/coin.svg';
 import MinusDeleteIcon from '../../../assets/images/minus_delete_icon.svg';
 
-const SingleAssigmentDetail = () => {
+const SingleAssigmentDetail = ({route}) => {
+  const {params:{item}} = route;
+  console.log("rieuorieuoir",item)
   return (
     <View
       style={{

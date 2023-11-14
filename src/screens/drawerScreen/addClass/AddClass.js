@@ -1,5 +1,5 @@
-import {View, Text, TextInput} from 'react-native';
-import React from 'react';
+import {View, Text, TextInput, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
 import {color} from '../../../constants/theme';
 import UserEmail from '../../../assets/images/inputMail.svg';
 import UserLock from '../../../assets/images/inputLock.svg';
@@ -10,21 +10,52 @@ import {addClassStyle} from './addClassStyle';
 import ClassBook from '../../../assets/images/class_book.svg';
 import UserLogo from '../../../assets/images/inputUser.svg';
 import CustomDropdown, {CustomDropDown} from '../../../utils/CustomDropDown';
+import StudentSelectionModal from '../../../components/modals/StudentSelectionModal';
+import {isEmailValid} from '../../../utils/HelperFunction';
+import {useDispatch, useSelector} from 'react-redux';
+import {addClass} from '../../../service/api/classApi';
+import {dispatchCommand} from 'react-native-reanimated';
+import {toast} from '../../../service/ToastMessage';
 
-const AddClass = () => {
+const AddClass = ({navigation}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const {selectedValue} = useSelector(state => state.checkbox);
+  const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
     formState: {errors},
   } = useForm();
+  // const open
 
-  const isEmailValid = email => {
-    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    return emailPattern.test(email);
+  const handleOpen = () => {
+    setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
+  // Add Class
+
+  const handleAddClass = async data => {
+    const query = {
+      className: data.className,
+      studentIds: selectedValue,
+    };
+
+    try {
+      await addClass({query});
+      navigation.navigate('My Class');
+    } catch (error) {
+      console.log('error', error);
+      toast({type: 'error', text1: error.response.data.message});
+    }
   };
 
   return (
     <View style={{flex: 1, backgroundColor: color.white}}>
+      <StudentSelectionModal open={isOpen} closeModal={handleClose} />
       <View style={addClassStyle.detailView}>
         <View style={{marginBottom: verticalScale(15)}}>
           <Controller
@@ -32,8 +63,6 @@ const AddClass = () => {
             name="className"
             rules={{
               required: 'ClassName is Required',
-              validate: value =>
-                isEmailValid(value) || 'Please Enter Valid Class',
             }}
             render={({field}) => (
               <View style={addClassStyle.inputBoxView}>
@@ -50,20 +79,30 @@ const AddClass = () => {
             <Text style={addClassStyle.errorText}>{errors.email.message}</Text>
           )}
         </View>
-        <View
-          style={addClassStyle.dropDown}>
-          <View style={addClassStyle.dropDownLogo}>
+        <TouchableOpacity
+          onPress={handleOpen}
+          style={addClassStyle.assignmentName}>
+          <View style={addClassStyle.assignmentLogo}>
             <UserLogo />
           </View>
-          <CustomDropDown width={300} text="Select Class" />
-        </View>
+          <TextInput
+            editable={false}
+            placeholderTextColor="#878787"
+            placeholder="Select Student"
+            style={addClassStyle.input}
+          />
+        </TouchableOpacity>
 
         <View style={addClassStyle.customError}>
           <Text style={addClassStyle.customErrorText}>
-            ( 0 Student Selected)
+            ( {selectedValue.length} Student Selected)
           </Text>
         </View>
-        <Mainbutton text="Create Class" width={290} />
+        <Mainbutton
+          text="Create Class"
+          width={290}
+          action={handleSubmit(handleAddClass)}
+        />
       </View>
     </View>
   );

@@ -36,4 +36,28 @@ export const editStudentStyle = StyleSheet.create({
     fontSize: RFValue(sizes.h6, 667),
     width: horizontalScale(250),
   },
+
+  inputBoxView: {
+    borderWidth: 1,
+    borderColor: 'grey',
+    borderRadius: 10,
+    paddingVertical: verticalScale(1),
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: horizontalScale(10),
+    justifyContent: 'space-between',
+    backgroundColor: color.lightGrey,
+  },
+  inputbox: {
+    fontFamily: fonts.medium,
+    paddingLeft: horizontalScale(10),
+    width: '90%',
+    borderRadius: 30,
+  },
+  errorText: {
+    color: 'red',
+    fontFamily: fonts.medium,
+    marginTop: verticalScale(5),
+    fontSize: RFValue(8.5, 667),
+  },
 });

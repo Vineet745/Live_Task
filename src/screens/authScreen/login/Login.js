@@ -28,6 +28,7 @@ import {authToken} from '../../../redux/slice/authSlice';
 import Loader from '../../../utils/Loader';
 import {toast} from '../../../service/ToastMessage';
 import {onGoogleButtonPress, signOutGoogle} from '../../../service/authLogin';
+import {isEmailValid} from '../../../utils/HelperFunction';
 
 const Login = () => {
   const {
@@ -39,7 +40,6 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
 
   // Login By the Email AND Id
 
@@ -59,13 +59,6 @@ const Login = () => {
       setLoading(false);
       toast({type: 'error', text1: 'Credential Error'});
     }
-  };
-
-  // Email Validation
-
-  const isEmailValid = email => {
-    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    return emailPattern.test(email);
   };
 
   return (

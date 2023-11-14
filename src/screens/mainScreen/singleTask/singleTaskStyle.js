@@ -19,7 +19,7 @@ singleMain:{
         flexDirection: 'row',
         alignItems: 'center',
         height: verticalScale(35),
-        width: horizontalScale(80),
+        width: horizontalScale(100),
         borderRadius: 5,
         justifyContent: 'space-evenly',
   }

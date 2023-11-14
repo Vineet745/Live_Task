@@ -163,10 +163,10 @@ const Profile = ({navigation}) => {
           </View>
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate('Profile Stack', {
-                screen: 'Edit',
+              navigation.navigate('Profile Stack', {screen:"Edit",
                 params: {username: userData.username},
               })
+              
             }
             style={profileStyle.profileEditButton}>
             <Text style={profileStyle.profileEditText}>Edit</Text>
@@ -211,8 +211,7 @@ const Profile = ({navigation}) => {
           <View style={profileStyle.updatePassword}>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('Profile Stack', {
-                  screen: 'Update Password',
+                navigation.navigate('Update Password', {
                   params: {show: show},
                 })
               }

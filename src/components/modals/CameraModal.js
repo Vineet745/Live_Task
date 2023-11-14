@@ -1,19 +1,12 @@
-import {
-  View,
-  Text,
-  Modal,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import {color, fonts, sizes} from '../../constants/theme';
 import {horizontalScale, verticalScale} from '../../constants/dimension';
 import {RFValue} from 'react-native-responsive-fontsize';
+import {useSelector} from 'react-redux';
+import Modal from 'react-native-modal';
 
 const CameraModal = ({open, closeModal, openGallery, openCamera}) => {
-
-    
   //handleGallery
 
   const handleGallery = async () => {
@@ -29,7 +22,12 @@ const CameraModal = ({open, closeModal, openGallery, openCamera}) => {
   };
 
   return (
-    <Modal transparent={true} animationType="fade" visible={open}>
+    <Modal
+      transparent={true}
+      animationType="fade"
+      isVisible={open}
+      style={styles.modal}
+      onBackdropPress={closeModal}>
       <TouchableOpacity
         activeOpacity={1}
         onPress={closeModal}
@@ -56,10 +54,8 @@ const CameraModal = ({open, closeModal, openGallery, openCamera}) => {
 };
 
 const styles = StyleSheet.create({
-  modalBackground: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    alignItems: 'center',
+  modal: {
+    margin: 0,
     justifyContent: 'flex-end',
   },
   innerModal: {

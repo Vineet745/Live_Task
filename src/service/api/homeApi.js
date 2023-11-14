@@ -2,13 +2,9 @@ import instance from '../instance';
 
 // Get Home Task
 
-export const getHomeTask = async () => {
+export const getTasks = async (flag) => {
   try {
-    const response = await instance.get(`tasks/?flag=explore&reaction=UPV`, {
-      headers: {
-        role: 'TCH',
-      },
-    });
+    const response = await instance.get(`tasks/?flag=${flag}&reaction=UPV`);
     return response;
   } catch (error) {
     console.log('error', error);
@@ -31,16 +27,10 @@ export const getTaskReaction = async userData => {
 
 // SingleTask
 
-export const getSingleTask = async id => {
+export const getSingleTask = async ({query}) => {
+
   try {
-    const response = await instance.get(
-      `tasks/?flag=explore&reaction=UPV&taskId=${id}`,
-      {
-        headers: {
-          role: 'TCH',
-        },
-      },
-    );
+    const response = await instance.get(`tasks/?flag=${query.flag}&reaction=UPV&taskId=${query.id}`);
     return response;
   } catch (error) {
     console.log('error', error);
@@ -65,7 +55,6 @@ export const searchTask = async userData => {
 // Filter
 
 export const filterTask = async query => {
-  console.log("query",query)
   try {
     const response = await instance.post('tasks/search', query, {
       headers: {
@@ -77,3 +66,15 @@ export const filterTask = async query => {
     console.log('error', error);
   }
 };
+
+
+// toogle Button 
+
+export const toggleButton = async ({query})=>{
+  try {
+    const response = await instance.post('tasks/toggle',query)
+    return response;
+  } catch (error) {
+    console.log("error",error)
+  }
+}
