@@ -4,6 +4,10 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Image,
+  BackHandler,
+  Keyboard,
+   KeyboardEvent,
+    Platform
 } from 'react-native';
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -58,6 +62,8 @@ import EditAssignment from '../screens/drawerScreen/editAssignment/EditAssignmen
 import SingleAllTask from '../screens/drawerScreen/singleAllTask/SingleAllTask';
 import Conversation from '../screens/drawerScreen/conversation/Conversation';
 import AddTask from '../screens/drawerScreen/addTask/AddTask';
+import {useNavigation} from '@react-navigation/native';
+import DrawerLogo from './components/DrawerLogo';
 // Navigator Imports
 
 const Stack = createNativeStackNavigator();
@@ -90,8 +96,6 @@ const HomeTopStack = () => {
 
 // Profile Stack
 
-
-
 const ProfileStack = () => {
   return (
     <Stack.Navigator>
@@ -118,7 +122,7 @@ const ProfileStack = () => {
           },
           headerShadowVisible: false,
           headerBackVisible: false,
-          autoHideHomeIndicator:false,
+          autoHideHomeIndicator: false,
           headerTitle: () => {
             return <StackCustomHeader text="Edit Information !" />;
           },
@@ -320,8 +324,6 @@ const StudentStack = () => {
           },
         }}
       />
-
-     
     </Stack.Navigator>
   );
 };
@@ -491,7 +493,7 @@ const AssignmentStack = () => {
           headerShown: false,
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="Create New Assignment"
         component={CreateNewAssignment}
         options={{
@@ -572,7 +574,7 @@ const AssignmentStack = () => {
       <Stack.Screen
         name="Conversation"
         component={Conversation}
-        options={({ route }) => ({
+        options={({route}) => ({
           headerTitleStyle: {
             fontFamily: fonts.segoeUI,
             fontSize: RFValue(sizes.h4, 667),
@@ -581,7 +583,8 @@ const AssignmentStack = () => {
           headerShadowVisible: false,
           headerBackVisible: false,
           headerTitle: () => {
-            const studentName = route?.params?.item?.students[0].username || 'Default Name';
+            const studentName =
+              route?.params?.item?.students[0].username || 'Default Name';
             return <StackCustomHeader text={studentName} />;
           },
         })}
@@ -600,7 +603,7 @@ const TaskStack = () => {
           borderBottomWidth: 0,
         },
       }}>
-        <Stack.Screen
+      <Stack.Screen
         name="My Tasks"
         component={AllTasks}
         options={{
@@ -651,9 +654,14 @@ const TaskStack = () => {
 // Drawer Navigator
 
 const DrawerStack = ({route}) => {
+  const navigation = useNavigation();
+  const initialRouteName = route.name === 'Home' ? 'HomeStack' : 'MyProfile';
+
   return (
     <Drawer.Navigator
-      initialRouteName={route.name === 'Home' ? 'HomeStack' : 'MyProfile'}
+       
+      drawerContent={props => <DrawerLogo {...props} />}
+      initialRouteName={initialRouteName}
       screenOptions={{
         headerBackground: () => (
           <View style={{backgroundColor: color.darkPink, flex: 1}} />
@@ -661,7 +669,8 @@ const DrawerStack = ({route}) => {
         headerStyle: {
           height: verticalScale(55),
         },
-
+        drawerActiveBackgroundColor: 'white',
+        drawerItemStyle: {borderBottomWidth: 1},
         headerTitleStyle: {
           display: 'none',
         },
@@ -684,16 +693,18 @@ const DrawerStack = ({route}) => {
       <Drawer.Screen
         name="HomeStack"
         component={HomeTopStack}
-        
+        options={{
+          drawerItemStyle: {display: 'none'},
+        }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="MyProfile"
         component={ProfileStack}
         
-      />
+      /> */}
       <Drawer.Screen name="My Students" component={StudentStack} />
       <Drawer.Screen name="My Classes" component={ClassStack} />
-        <Drawer.Screen name="All Assignment" component={AssignmentStack} />
+      <Drawer.Screen name="All Assignment" component={AssignmentStack} />
       <Drawer.Screen name="All Tasks" component={TaskStack} />
     </Drawer.Navigator>
   );
@@ -702,15 +713,18 @@ const DrawerStack = ({route}) => {
 // MainStack Drawer Stack
 
 const MainStack = () => {
+ 
   return (
-    <View style={{flex: 1}}>
-      <Tab.Navigator
+    <KeyboardAvoidingView style={{flex: 1}} behavior='height'>
+      <Tab.Navigator 
         screenOptions={{
           tabBarShowLabel: false,
+          tabBarHideOnKeyboard:true,
           tabBarStyle: {
             backgroundColor: color.darkPink,
             height: verticalScale(20),
             elevation: 0,
+            
           },
           headerShown: false,
         }}>
@@ -718,11 +732,12 @@ const MainStack = () => {
           name="Home"
           component={DrawerStack}
           options={{
+            tabBarHideOnKeyboard: true,
             tabBarIcon: ({focused, color, size}) => (
               <View
                 style={{
                   position: 'absolute',
-                  top: -32,
+                  top: -30,
                   backgroundColor: focused ? '#04c38c' : 'white',
                   borderRadius: 30,
                   padding: verticalScale(5),
@@ -747,13 +762,13 @@ const MainStack = () => {
 
         <Tab.Screen
           name="Profile Stack"
-          component={DrawerStack}
+          component={ProfileStack}
           options={{
             tabBarIcon: ({focused, color, size}) => (
               <View
                 style={{
                   position: 'absolute',
-                  top: -32,
+                  top: -30,
                   backgroundColor: focused ? '#04c38c' : 'white',
                   borderRadius: 30,
                   padding: verticalScale(5),
@@ -791,7 +806,7 @@ const MainStack = () => {
           component={Balance}
         />
       </Tab.Navigator>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

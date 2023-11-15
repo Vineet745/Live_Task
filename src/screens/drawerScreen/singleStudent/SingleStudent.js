@@ -11,6 +11,7 @@ import ImageEdit from '../../../assets/images/image_edit.svg';
 import ClassModal from '../../../components/modals/ClassModal';
 import {getStudentClassList} from '../../../service/api/studentApi';
 import {color} from '../../../constants/theme';
+import StudentClassModal from '../../../components/modals/StudentClassModal';
 
 const SingleStudent = ({route}) => {
   const {
@@ -36,6 +37,9 @@ const SingleStudent = ({route}) => {
 
   // Get Student Class List
 
+
+
+
   const handleGetStudentList = async () => {
     try {
       const {data} = await getStudentClassList({id: item.id});
@@ -49,7 +53,7 @@ const SingleStudent = ({route}) => {
 
   return (
     <View style={singleStudentStyle.singleStudentMain}>
-      <ClassModal closeModal={handleClose} open={open} />
+      <StudentClassModal closeModal={handleClose} open={open}  item={item}/>
       <View style={singleStudentStyle.singleStudentInner}>
         <View style={singleStudentStyle.singleStudentHeader}>
           <View style={singleStudentStyle.singleStudentLeftView}>

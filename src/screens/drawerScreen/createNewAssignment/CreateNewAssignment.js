@@ -9,18 +9,24 @@ import TaskIcon from '../../../assets/images/task_icon.svg';
 import Mainbutton from '../../../components/mainComponent/Mainbutton';
 import CalendarIcon from '../../../assets/images/calendar_icon.svg';
 import SimpleCalendarModal from '../../../components/modals/SimpleCalendarModal';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import EndCalendarModal from '../../../components/modals/EndCalendarModal';
 import StudentSelectionModal from '../../../components/modals/StudentSelectionModal';
-import { addAssignment } from '../../../service/api/assignmentApi';
+import {addAssignment} from '../../../service/api/assignmentApi';
+import ClassModal from '../../../components/modals/ClassModal';
+import CreditModal from '../../../components/modals/CreditModal';
+import TaskModal from '../../../components/modals/TaskModal';
 
 const CreateNewAssignment = ({navigation}) => {
   const [open, setOpen] = useState(false);
+  const [taskOpen, setTaskOpen] = useState(false);
   const [endOpen, setEndOpen] = useState(false);
-  const [classOpen, setClassOpen] = useState(false)
+  const [classOpen, setClassOpen] = useState(false);
   const {startDate, endDate} = useSelector(state => state.calendar);
-  const{selectedValue} = useSelector(state=>state.checkbox)
-  const [assignment,setAssignment] = useState("")
+  const {radioSelected} = useSelector(state => state.checkbox);
+  const {radioSelectedTask} = useSelector(state => state.checkbox);
+  const [assignment, setAssignment] = useState('');
+  const dispatch = useDispatch();
   // Funciton for Start Date Modal
 
 
@@ -51,22 +57,29 @@ const CreateNewAssignment = ({navigation}) => {
     setClassOpen(false);
   };
 
-// Add Assignment
+  const handleTaskOpen = () => {
+    setTaskOpen(true);
+  };
 
-const handleAddAssignment = async()=>{
-  const query = {
-    assignment_name:assignment,
-    start_date:startDate,
-    due_date_time:endDate,
-  }
-  try {
-  await addAssignment({query})
-  navigation.navigate("My Assignments")
-  } catch (error) {
-    console.log("error",error)
-  }
-}
+  const handleTaskClose = () => {
+    setTaskOpen(false);
+  };
 
+  // Add Assignment
+
+  const handleAddAssignment = async () => {
+    const query = {
+      assignment_name: assignment,
+      start_date: startDate,
+      due_date_time: endDate,
+    };
+    try {
+      await addAssignment({query});
+      navigation.navigate('My Assignments');
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
 
 
   return (
@@ -79,14 +92,15 @@ const handleAddAssignment = async()=>{
       }}>
       <SimpleCalendarModal open={open} closeModal={handleClose} />
       <EndCalendarModal open={endOpen} closeModal={handleEndClose} />
-      <StudentSelectionModal open={classOpen} closeModal={handleClassClose}/>
+      <TaskModal open={taskOpen} closeModal={handleTaskClose} />
+      <ClassModal open={classOpen} closeModal={handleClassClose} />
       <View style={createNewAssignmentStyle.assignmentName}>
         <View style={createNewAssignmentStyle.assignmentLogo}>
           <AssingmentFile />
         </View>
         <TextInput
           value={assignment}
-          onChangeText={(val)=>setAssignment(val)}
+          onChangeText={val => setAssignment(val)}
           placeholderTextColor="#878787"
           placeholder="Enter Assignment Name"
           style={createNewAssignmentStyle.input}
@@ -117,14 +131,20 @@ const handleAddAssignment = async()=>{
       </View>
 
       <View>
-        <TouchableOpacity onPress={handleClassOpen} style={createNewAssignmentStyle.assignmentName}>
+        <TouchableOpacity
+          onPress={handleClassOpen}
+          style={createNewAssignmentStyle.assignmentName}>
           <View style={createNewAssignmentStyle.assignmentLogo}>
             <ClassBook />
           </View>
           <TextInput
+            // value={radioSelected?radioSelected.showName:"Assign To Class"}
+            // value={}
             editable={false}
             placeholderTextColor="#878787"
-            placeholder="Assign To Class"
+            placeholder={
+              radioSelected ? radioSelected.showName : 'Assign To Class'
+            }
             style={createNewAssignmentStyle.input}
           />
         </TouchableOpacity>
@@ -136,14 +156,18 @@ const handleAddAssignment = async()=>{
       </View>
 
       <View>
-        <TouchableOpacity style={createNewAssignmentStyle.assignmentName}>
+        <TouchableOpacity
+          onPress={handleTaskOpen}
+          style={createNewAssignmentStyle.assignmentName}>
           <View style={createNewAssignmentStyle.assignmentLogo}>
             <TaskIcon />
           </View>
           <TextInput
             editable={false}
             placeholderTextColor="#878787"
-            placeholder="Assign Task"
+            placeholder={
+              radioSelectedTask ? radioSelectedTask.showName : 'Assign Task'
+            }
             style={createNewAssignmentStyle.input}
           />
         </TouchableOpacity>
@@ -154,7 +178,11 @@ const handleAddAssignment = async()=>{
         </View>
       </View>
       <View style={{marginTop: verticalScale(5)}}>
-        <Mainbutton text="Create Assignment" width={280} action={handleAddAssignment} />
+        <Mainbutton
+          text="Create Assignment"
+          width={280}
+          action={handleAddAssignment}
+        />
       </View>
     </View>
   );

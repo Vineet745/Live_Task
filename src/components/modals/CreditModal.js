@@ -15,14 +15,14 @@ import Coin from '../../assets/images/coin.svg';
 import {assignClass} from '../../service/api/assignmentApi';
 import {useNavigation} from '@react-navigation/native';
 
-const CreditModal = ({open, closeModal, navigation, item}) => {
+const CreditModal = ({open, closeModal, navigation, item,handleSingleAssignmentDetail}) => {
   const dispatch = useDispatch();
   const {navigate} = useNavigation();
-  const [amount, setAmount] = useState('00');
-  const {selectedValue} = useSelector(state => state.checkbox);
+  const [amount, setAmount] = useState("");
+  const {radioSelected} = useSelector(state => state.checkbox);
 
   // number
-  const numberFromSelected = parseInt(selectedValue[0], 10);
+  // const numberFromSelected = parseInt(selectedValue[0], 10);
 
   //   // HandleLogout
   //   const handleLogout = async () => {
@@ -39,13 +39,14 @@ const CreditModal = ({open, closeModal, navigation, item}) => {
   const handleAssignClass = async () => {
     const query = {
       assignmentId: item.id,
-      class_id: numberFromSelected,
+      class_id: radioSelected?.id,
       credit_limit: amount,
     };
     try {
       const data = await assignClass({query});
       closeModal();
-      navigate('My Assignments');
+      await handleSingleAssignmentDetail() 
+      // navigate('My Assignments');
     } catch (error) {
       console.log('error', error);
     }
@@ -64,6 +65,7 @@ const CreditModal = ({open, closeModal, navigation, item}) => {
             <TextInput
               style={{width: '92%'}}
               value={amount}
+              placeholder='00'
               onChangeText={val => setAmount(val)}
             />
           </View>

@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 export const filterTaskSlice = createSlice({
   name: 'auth',
-  initialState: {filteredData: [],studentFilterData:[],classFilterData:[],assignmentFilterData:[]},
+  initialState: {filteredData: [],studentFilterData:[],classFilterData:[],assignmentFilterData:[],filteredTaskData:[]},
   reducers: {
     filteredData: (state, action) => {
       state.filteredData = action.payload;
@@ -16,8 +16,11 @@ export const filterTaskSlice = createSlice({
     assingmentFilter:(state,action)=>{
       state.assignmentFilterData = action.payload
     },
+    taskFilter:(state,action)=>{
+      state.filteredTaskData = action.payload
+    },
   },
 });
 
-export const {filteredData,studentFilter,classFilter,assingmentFilter} = filterTaskSlice.actions;
+export const {filteredData,studentFilter,classFilter,assingmentFilter,taskFilter} = filterTaskSlice.actions;
 export default filterTaskSlice.reducer;

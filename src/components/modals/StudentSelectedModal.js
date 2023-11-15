@@ -17,6 +17,8 @@ import {getStudents} from '../../service/api/studentApi';
 import CustomCheckBox from '../mainComponent/CustomCheckBox';
 import CustomCheckBoxTwo from '../drawerComponent/CustomCheckBoxTwo';
 import {useSelector} from 'react-redux';
+import CustomRadioButton from '../mainComponent/CustomRadioButton';
+import CustomRadioButtonTwo from '../mainComponent/CustomTaskRadioButton';
 
 const StudentSelectedModal = ({
   open,
@@ -103,6 +105,11 @@ const StudentSelectedModal = ({
                         selectedItems={selectedItems}
                         setSelectedItems={setSelectedItems}
                       />
+                      {/* <CustomRadioButtonTwo
+                        item={item}
+                        selectedItems={selectedItems}
+                        setSelectedItems={setSelectedItems}
+                      /> */}
                     </View>
                   </View>
                 );

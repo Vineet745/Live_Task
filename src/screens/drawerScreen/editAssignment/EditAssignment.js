@@ -13,31 +13,36 @@ import Calendar from '../../../assets/images/calendar_icon.svg';
 import Dropdown from '../../../assets/images/dropdown.svg';
 import SimpleCalendarModal from '../../../components/modals/SimpleCalendarModal';
 import EndCalendarModal from '../../../components/modals/EndCalendarModal';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import TaskSelectedModal from '../../../components/modals/TaskSelectedModal';
+import TaskModal from '../../../components/modals/TaskModal';
+import {editAssignment} from '../../../service/api/assignmentApi';
+import Loader from '../../../utils/Loader';
 
-const EditAssignment = ({route}) => {
+const EditAssignment = ({route, navigation}) => {
   const {
     params: {item},
   } = route;
   const [open, setOpen] = useState(false);
   const [endOpen, setEndOpen] = useState(false);
   const [taskOpen, setTaskOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [assignment, setAssignment] = useState(item?.show_name);
   const [amount, setAmount] = useState(
-    item?.credits_for_all_students.toString(),
+    item.credits_for_all_students
+      ? item?.credits_for_all_students.toString()
+      : null,
   );
-  const {startDate,endDate} = useSelector(state=>state.calendar)
 
-
-  console.log("stareirue",startDate,endDate)
-
+  const {startDate, endDate} = useSelector(state => state.calendar);
+  const {radioSelected} = useSelector(state => state.checkbox);
+  const {radioSelectedTask} = useSelector(state => state.checkbox);
   const properStartDate = item.start_date ? item.start_date.split('T') : null;
   const properDueDate = item.due_date_time
-    ? item.due_date_time.split('T')
+    ? item?.due_date_time?.split('T')
     : null;
 
-  console.log("item",JSON.stringify(item))
+  console.log('rjeruioeur', radioSelectedTask);
 
   const handleOpen = () => {
     setOpen(true);
@@ -58,6 +63,7 @@ const EditAssignment = ({route}) => {
 
   // Handle Task Popup
   const handleTaskOpen = () => {
+    console.log('khul gya');
     setTaskOpen(true);
   };
 
@@ -65,12 +71,35 @@ const EditAssignment = ({route}) => {
     setTaskOpen(false);
   };
 
+  // handleEdit
+
+  const handleEditAssignment = async () => {
+    const query = {
+      assignment_name: assignment,
+      assignment_id: item.id,
+      task_id: radioSelectedTask.id,
+      start_date: startDate,
+      due_date_time: endDate,
+      credit_limit: amount,
+      is_assigned: true,
+    };
+    try {
+      setLoading(true);
+      const data = await editAssignment({query});
+      navigation.navigate('Explore');
+      setLoading(false);
+    } catch (error) {
+      console.log('error', error);
+      setLoading(false);
+    }
+  };
+
   return (
     <View style={editAssignmentStyle.editAssignmentMain}>
+      <Loader loading={loading} />
       <SimpleCalendarModal open={open} closeModal={handleClose} />
       <EndCalendarModal open={endOpen} closeModal={handleEndClose} />
-         {/* <TaskSelectedModal open={taskOpen} closeModal={handleTaskClose} item={item}/> */}
-      {/* <StudentSelectionModal open={classOpen} closeModal={handleClassClose} /> */}
+      <TaskModal item={item} open={taskOpen} closeModal={handleTaskClose} />
       <View style={editAssignmentStyle.editAssignmentView}>
         <View style={editAssignmentStyle.editAssignmentBox}>
           <Text style={editAssignmentStyle.editAssignmentLabel}>
@@ -109,7 +138,7 @@ const EditAssignment = ({route}) => {
             onPress={handleOpen}
             style={editAssignmentStyle.editBottomView}>
             <Text style={editAssignmentStyle.editAssignmentInput}>
-              {startDate ? startDate : properStartDate[0] }
+              {startDate ? startDate : properStartDate[0]}
             </Text>
             <Calendar />
           </TouchableOpacity>
@@ -120,7 +149,7 @@ const EditAssignment = ({route}) => {
             onPress={handleEndOpen}
             style={editAssignmentStyle.editBottomView}>
             <Text style={editAssignmentStyle.editAssignmentInput}>
-              {endDate ? endDate : properDueDate[0] }
+              {endDate ? endDate : properDueDate[0]}
             </Text>
             <Calendar />
           </TouchableOpacity>
@@ -129,15 +158,20 @@ const EditAssignment = ({route}) => {
           <Text style={editAssignmentStyle.editAssignmentLabel}>
             Assigned Task
           </Text>
-          <TouchableOpacity onPress={handleTaskOpen} style={editAssignmentStyle.editBottomView}>
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={handleTaskOpen}
+            style={editAssignmentStyle.editBottomView}>
             <Text style={editAssignmentStyle.editAssignmentInput}>
-              {item.task.show_name?item.task.show_name : "Task Name"}
+              {radioSelectedTask
+                ? radioSelectedTask.showName
+                : item?.task?.show_name}
             </Text>
             <Dropdown />
           </TouchableOpacity>
         </View>
 
-        <Mainbutton width={240} text="Save" />
+        <Mainbutton width={240} text="Save" action={handleEditAssignment} />
       </View>
     </View>
   );

@@ -6,7 +6,7 @@ import Mainbutton from '../../../components/mainComponent/Mainbutton';
 import {horizontalScale, verticalScale} from '../../../constants/dimension';
 import DeleteWhite from '../../../assets/images/white_delete.svg';
 import BackButton from '../../../assets/images/back_arrow_button.svg';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused, useNavigation} from '@react-navigation/native';
 import ImageEdit from '../../../assets/images/image_edit.svg';
 import {assingmentDetailStyle} from './assignmentDetailStyle';
 import {assignClassStyle} from '../assignClasses/assignClassStyle';
@@ -32,8 +32,9 @@ const AssignmentDetail = ({route}) => {
   const [taskOpen, setTaskOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState([])
-  const {selectedValue} = useSelector(state => state.checkbox);
-  // modify Start Date
+  const {radioSelected} = useSelector(state => state.checkbox);
+
+const isFocused = useIsFocused()
 
   // modify Number
 
@@ -48,8 +49,9 @@ const AssignmentDetail = ({route}) => {
 
   useEffect(() => {
     handleSingleAssignmentDetail();
-  }, []);
-
+  }, [isFocused]);
+  
+  
   // navigation
 
   const handleOpen = () => {
@@ -63,7 +65,7 @@ const AssignmentDetail = ({route}) => {
   // handleCreditBoxopen
 
   const handleCreditOpen = () => {
-    if (selectedValue.length > 0) {
+    if (radioSelected !== null) {
       handleClose();
       setCreditOpen(true);
     } else {
@@ -113,13 +115,16 @@ const AssignmentDetail = ({route}) => {
         closeModal={handleClose}
         handleCreditOpen={handleCreditOpen}
         handleCreditClose={handleCreditClose}
+        item={item}
+        
       />
       <CreditModal
         open={creditOpen}
         closeModal={handleCreditClose}
         item={item}
+        handleSingleAssignmentDetail={handleSingleAssignmentDetail}
       />
-      <TaskModal open={taskOpen} closeModal={handleTaskClose} item={item} />
+      <TaskModal open={taskOpen} closeModal={handleTaskClose} item={item} handleSingleAssignmentDetail={handleSingleAssignmentDetail} />
       <View style={assingmentDetailStyle.singleStudentInner}>
         <View style={assingmentDetailStyle.singleStudentHeader}>
           <View style={assingmentDetailStyle.singleStudentLeftView}>

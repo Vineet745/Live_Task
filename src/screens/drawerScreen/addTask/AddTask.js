@@ -94,7 +94,6 @@ const AddTask = () => {
       profile_image: image,
       username: userData.username,
     };
-    console.log('userData', updatedUserData);
 
     try {
       await updateUserImage(updatedUserData);

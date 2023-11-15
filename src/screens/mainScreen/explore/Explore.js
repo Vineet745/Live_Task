@@ -1,4 +1,3 @@
-
 import {View, Text, TextInput, TouchableOpacity, FlatList} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import TeacherDashboardTask from '../../../components/mainComponent/teacherDashboardTask.js/TeacherDashboardTask';
@@ -29,13 +28,16 @@ const Explore = () => {
   // Get Task
 
   const handleGetTask = async () => {
-    const flag = "explore";
+    const flag = 'explore';
     try {
+      setLoading(true);
       const {data} = await getTasks(flag);
       dispatch(filteredData(data.data));
       setOriginalTaskData(data.data);
+      setLoading(false);
     } catch (error) {
       console.log('Error fetching tasks: ', error);
+      setLoading(false);
     }
   };
 
@@ -87,19 +89,25 @@ const Explore = () => {
         </TouchableOpacity>
       </View>
       <View style={{marginVertical: verticalScale(10)}}>
-        {data?<FlatList
-          style={{
-            marginBottom: verticalScale(50),
-          }}
-          showsVerticalScrollIndicator={false}
-          data={data} 
-          renderItem={({item}) => {
-            return (
-              <TeacherDashboardTask item={item} handleGetTask={handleGetTask} />
-            );
-          }}
-        />:<Text>No Task Found</Text>}
-        
+        {data ? (
+          <FlatList
+            style={{
+              marginBottom: verticalScale(50),
+            }}
+            showsVerticalScrollIndicator={false}
+            data={data}
+            renderItem={({item}) => {
+              return (
+                <TeacherDashboardTask
+                  item={item}
+                  handleGetTask={handleGetTask}
+                />
+              );
+            }}
+          />
+        ) : (
+          <Text>No Task Found</Text>
+        )}
       </View>
     </View>
   );

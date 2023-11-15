@@ -6,17 +6,26 @@ import {RFValue} from 'react-native-responsive-fontsize';
 import BackButton from '../../../assets/images/back_arrow_button.svg';
 import {useNavigation} from '@react-navigation/native';
 import {singleAllTaskStyle} from './singleAllTaskStyle';
-import {getSingleTask} from '../../../service/api/homeApi';
+import {getSingleTask, toggleButton} from '../../../service/api/homeApi';
 import ShareIcon from '../../../assets/images/share_icon.svg';
 import Loader from '../../../utils/Loader';
+import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 
 const SingleAllTask = ({route}) => {
+
   const {
-    params: {id},
+    params: {id,item},
   } = route;
   const [loading, setLoading] = useState(false);
   const [singleData, setSingleData] = useState('');
-  // Get single Data
+  const [isEnabled, setIsEnabled] = useState(item.is_shared)
+  const navigation = useNavigation();
+
+
+
+
+
+// Single Assignment
 
   useEffect(() => {
     handleGetSingleData();
@@ -38,7 +47,38 @@ const SingleAllTask = ({route}) => {
     }
   };
 
-  const navigation = useNavigation();
+  // Toggle Button
+
+  const handleToggleButton = async () => {
+    if (isEnabled === false) {
+      const query = {
+        task_id: item.task_reaction.task_id, 
+        check: true,
+      };
+      try {
+        setIsEnabled(!isEnabled);
+        await toggleButton({query});
+        console.log("done")
+      } catch (error) {
+        console.log('error', error);
+      }
+    } else if (isEnabled === true) {
+      const query = {
+        task_id: item.task_reaction.task_id,
+        check: false,
+      };
+      try {
+        setIsEnabled(!isEnabled);
+        await toggleButton({query});
+        console.log("nod daone")
+      } catch (error) {
+        console.log('error', error);
+      }
+    }
+  };
+
+
+
   return (
     <View style={singleAllTaskStyle.singleMain}>
       <Loader loading={loading} />
@@ -46,9 +86,9 @@ const SingleAllTask = ({route}) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <BackButton width={32} height={32} />
         </TouchableOpacity>
-        <TouchableOpacity style={singleAllTaskStyle.shareButton}>
+        <TouchableOpacity onPress={handleToggleButton} style={singleAllTaskStyle.shareButton}>
           <Text style={{color: color.white, fontFamily: fonts.semiBold}}>
-            {singleData.is_shared ? 'Unshared' : 'Shared'}
+            {isEnabled === true ? 'Unshare' : 'Share'}
           </Text>
           <ShareIcon />
         </TouchableOpacity>

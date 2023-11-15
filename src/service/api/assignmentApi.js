@@ -33,11 +33,13 @@ export const addAssignment = async ({query}) => {
 
 // ---------------Edit Assignment ----------------------/
 
-export const editAssignment = async()=>{
+export const editAssignment = async({query})=>{
 try {
-  const response = await instance.put("assignments")
+  const response = await instance.put("assignments",query)
+  return response;
 } catch (error) {
   console.log("error",error)
+  throw error;
 }
 }
 
@@ -70,6 +72,7 @@ export const assignClass = async({query})=>{
 // ----------------------------assign Task ------------------------/
 
 export const assignTask = async({query})=>{
+  console.log("query",query)
   try {
     const response = await instance.post("assignments/add-task",query)
     return response;
@@ -92,7 +95,6 @@ export const viewReport = async(id)=>{
 //--------------------------- Conversation -------------------------
 
 export const conversation = async({query})=>{
-  console.log("query",query)
   try {
     const response = await instance.get(`chats?assignment_id=1&student_id=1`)
     return response;

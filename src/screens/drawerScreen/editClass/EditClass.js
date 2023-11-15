@@ -17,6 +17,8 @@ const EditStudent = ({route}) => {
   const {selectedValue} = useSelector(state => state.checkbox);
   const selectedStudentIDs = selectedValue.map(student => student?.student_id); // Filtered Value of the data which i get from the redux;
 
+  console.log('selected', selectedStudentIDs);
+
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState(item.show_name);
 

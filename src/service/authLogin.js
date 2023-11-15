@@ -17,13 +17,11 @@ export const onGoogleButtonPress = async dispatch => {
     });
     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
     const userInfo = await GoogleSignin.signIn();
-    console.log("userInfo",userInfo)
     dispatch(authToken(userInfo.idToken));
     await AsyncStorage.setItem('Token', userInfo.idToken);
     const {idToken, access_token} = userInfo;
     const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
     const userCredential = await auth().signInWithCredential(googleCredentials);
-    console.log('Successfully signed in with Google:', userCredential.user);
   } catch (error) {}
 };
 

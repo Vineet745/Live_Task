@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  BackHandler
 } from 'react-native';
 import React, {useState, useEffect, useCallback} from 'react';
 import {horizontalScale, verticalScale} from '../../../constants/dimension';
@@ -14,7 +15,7 @@ import Coin from '../../../assets/images/coin.svg';
 import RightArrow from '../../../assets/images/update_password_arrow.svg';
 import LogOutModal from '../../../components/modals/LogOutModal';
 import {getUserProfile, updateUserImage} from '../../../service/api/userApi';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import ImagePicker from 'react-native-image-crop-picker';
 import Loader from '../../../utils/Loader';
 import CameraModal from '../../../components/modals/CameraModal';
@@ -25,7 +26,6 @@ const Profile = ({navigation}) => {
   const [uri, setUri] = useState('');
   const [loading, setLoading] = useState(false);
   const [cameraOpen, setCameraOpen] = useState(false);
-
   const originalPath = 'https://livetask-ai.hackerkernel.co/'.concat(
     userData.image_path,
   );
@@ -119,7 +119,6 @@ const Profile = ({navigation}) => {
       profile_image: image,
       username: userData.username,
     };
-    console.log("userData",updatedUserData)
 
     try {
       await updateUserImage(updatedUserData);
@@ -127,6 +126,29 @@ const Profile = ({navigation}) => {
       console.log('error', error);
     }
   };
+
+
+
+  // React.useEffect(() => {
+  //   const backHandler = BackHandler.addEventListener(
+  //     'hardwareBackPress',
+  //     handleBackPress
+  //   );
+
+  //   return () => {
+  //     backHandler.remove();
+  //   };
+  // }, []);
+
+  // const handleBackPress = () => {
+  //   navigation.navigate("HomeStack")
+  //   // if (navigation.canGoBack() && route.name === 'MyProfile') {
+  //   //   navigation.navigate("HomeStack",{screen:"Home"});
+  //   //   return true;
+  //   // }
+
+  //   // return false;  
+  // };
 
   return (
     <ScrollView style={{backgroundColor: 'white'}}>

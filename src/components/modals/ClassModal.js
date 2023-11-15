@@ -18,23 +18,29 @@ import CreditModal from './CreditModal';
 import {getClasses} from '../../service/api/classApi';
 import CustomCheckBox from '../mainComponent/CustomCheckBox';
 import {useNavigation} from '@react-navigation/native';
+import CustomRadioButton from '../mainComponent/CustomRadioButton';
 
 const ClassModal = ({
   open,
   closeModal,
+  item,
   handleCreditOpen,
   handleCreditClose,
 }) => {
   const [searchText, setSearchText] = useState('');
   const [classData, setClassData] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState(item?.class_assignment ? item?.class_assignment : '',);
   const {navigate} = useNavigation();
+
+
 
   useEffect(() => {
     handleGetClasses();
   }, []);
 
   // handle Classes
+
+
 
   const handleGetClasses = async () => {
     try {
@@ -81,10 +87,15 @@ const ClassModal = ({
                           {item.show_name}
                         </Text>
                       </View>
-                      <CustomCheckBox
+                      {/* <CustomCheckBox
                         item={item}
                         selectedItems={selectedItems}
                         setSelectedItems={setSelectedItems}
+                      /> */}
+                      <CustomRadioButton
+                      item={item}
+                      selectedItems={selectedItems}
+                      setSelectedItems={setSelectedItems}
                       />
                     </View>
                   </View>
@@ -97,7 +108,7 @@ const ClassModal = ({
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={handleCreditOpen}
+              onPress={handleCreditOpen?handleCreditOpen:closeModal}
               style={styles.confirmButton}>
               <Text style={styles.confirmButtonText}>Done</Text>
             </TouchableOpacity>

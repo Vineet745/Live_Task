@@ -8,11 +8,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import {taskCardStyle} from './taskCardStyle';
 import {SwitchButton} from '../SwitchButton';
 import {verticalScale} from '../../../constants/dimension';
+import { toggleButton } from '../../../service/api/homeApi';
 
 const TaskCard = ({item, handleGetTask}) => {
   const [open, setOpen] = useState(false);
   const [isEnabled, setIsEnabled] = useState(item.is_shared)
   const {navigate} = useNavigation();
+
+
 
   // handleOpen
 
@@ -26,9 +29,10 @@ const TaskCard = ({item, handleGetTask}) => {
 
   // toggle Button
 
+  
   return (
     <TouchableOpacity
-      onPress={() => navigate('Single Task', {id: item.id})}
+      onPress={() => navigate('Single Task', {id: item.id, item:item,})}
       style={taskCardStyle.dashboardTaskMain}>
       <DataDeleteModal open={open} closeModal={handleClose} />
       <View style={taskCardStyle.topView}>

@@ -50,7 +50,6 @@ const Credits = () => {
   const handleGetChart = async () => {
     try {
       const {data} = await getInitalChartData();
-      console.log("data",data.data.updated_at)
       dispatch(graphFilterData(data.data));
     } catch (error) {
       console.log('error', error);

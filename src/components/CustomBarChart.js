@@ -89,7 +89,6 @@ export const CustomBarChart = ({weekChart}) => {
     if (weekChart && weekChart.length > 0) {
       const formattedData = weekChart.reduce((acc, item) => {
         const date = new Date(item.updated_at);
-        console.log("date",date)
         const weekNumber = getWeekNumber(date);
         if (!acc[weekNumber]) {
           acc[weekNumber] = [];

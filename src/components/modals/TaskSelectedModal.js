@@ -27,7 +27,6 @@ const TaskSelectedModal = ({
   handleGetSingleClass,
 }) => {
 
-  console.log("item",item)
   const [searchText, setSearchText] = useState('');
   const [taskData, setTaskData] = useState([]);
   const [selectedItems, setSelectedItems] = useState("");

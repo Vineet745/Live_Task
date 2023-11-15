@@ -21,13 +21,16 @@ import { allTaskStyle } from './allTasksStyle';
 import TaskCard from '../../../components/drawerComponent/taskCard/TaskCard';
 import { getAllTasks } from '../../../service/api/taskApi';
 import { getTasks } from '../../../service/api/homeApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { taskFilter } from '../../../redux/slice/filterTaskSlice';
 
 const AllTasks = () => {
   const [searchText, setSearchText] = useState('');
   const [allTask, setAllTask] = useState([]);
   const {navigate} = useNavigation();
   const [loading, setLoading] = useState(false);
-
+const dispatch = useDispatch()
+const {filteredTaskData} = useSelector(state=>state.filter)
   // handle Get Students
 
   useFocusEffect(
@@ -45,6 +48,7 @@ const AllTasks = () => {
    try {
     setLoading(true)
       const {data} = await getTasks(flag)
+      dispatch(taskFilter(data.data))
       setAllTask(data?.data)
       setLoading(false)
    } catch (error) {
@@ -52,6 +56,24 @@ const AllTasks = () => {
      setLoading(false)
    }
   }
+
+  const filterTask = searchQuery => {
+    const filteredTask = allTask.filter(item => {
+      return item?.show_name?.toLowerCase().includes(searchQuery.toLowerCase());
+    });
+    dispatch(taskFilter(filteredTask));
+  };
+
+  // handleTextChange
+
+  const handleTextChange = value => {
+    setSearchText(value);
+    if (value === '') {
+      dispatch(taskFilter(allTask));
+    } else {
+      filterTask(value);
+    }
+  };
 
 
 
@@ -68,7 +90,7 @@ const AllTasks = () => {
               <SearchIcon />
               <TextInput
                 value={searchText}
-                onChangeText={val => setSearchText(val)}
+                onChangeText={handleTextChange}
                 style={{width: '84%', fontFamily: fonts.semiBold}}
                 placeholder="Search Assignment" 
               />
@@ -85,7 +107,7 @@ const AllTasks = () => {
           <FlatList
             showsVerticalScrollIndicator={false}
             style={{marginBottom: verticalScale(130)}}
-            data={allTask}
+            data={filteredTaskData}
             renderItem={({item}) => (
               <TaskCard
                 item={item}

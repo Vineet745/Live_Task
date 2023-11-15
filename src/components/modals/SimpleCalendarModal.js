@@ -16,7 +16,6 @@ const SimpleCalendarModal = ({
   startDate,
   endDate,
 }) => {
-  console.log('startd', startDate);
 
   return (
     <Modal

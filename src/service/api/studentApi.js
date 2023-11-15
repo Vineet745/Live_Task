@@ -40,7 +40,6 @@ export const getStudentClassList = async ({id}) => {
 // ---------------Edit Student -----------------------------
 
 export const editStudent = async ({data}) => {
-  console.log('kejreroi', data);
   try {
     const response = await instance.put(`/students/`, data);
     return response;

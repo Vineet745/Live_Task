@@ -4,18 +4,20 @@ import {ClassAssignmentCardStyle} from './classAssignmentCardStyle';
 import MinusDeleteIcon from '../../../assets/images/minus_delete_icon.svg';
 import {classAssignmentStyle} from '../../../screens/drawerScreen/classAssignment/classAssignmentStyle';
 import { useNavigation } from '@react-navigation/native';
+import { conversationStyle } from '../../../screens/drawerScreen/conversation/conversationStyle';
 
-const ClassAssignmentCard = () => {
+const ClassAssignmentCard = ({item}) => {
+  const time = item.due_date_time.split("T")
 
   const {navigate} = useNavigation()
 
 
   return (
-    <TouchableOpacity onPress={()=>navigate("Single Assignment")} style={ClassAssignmentCardStyle.classAssignmentCardMain}>
+    <TouchableOpacity onPress={()=>navigate("Single Assignment",{item:item})} style={ClassAssignmentCardStyle.classAssignmentCardMain}>
       <View style={ClassAssignmentCardStyle.classAssignmentCardChild}>
         <View style={ClassAssignmentCardStyle.classAssignmentTopView}>
           <Text style={ClassAssignmentCardStyle.assignmentText}>
-            Assignment 1
+            {item?.task?.show_name}
           </Text>
           <TouchableOpacity style={ClassAssignmentCardStyle.classDeleteView}>
             <MinusDeleteIcon />
@@ -23,7 +25,7 @@ const ClassAssignmentCard = () => {
         </View>
         <View style={ClassAssignmentCardStyle.classAssignmentDate}>
           <Text style={ClassAssignmentCardStyle.classDateText}>
-            Due Date - dd / mm / yyyy
+            Due Date - {time?time[0]:"dd / mm / yyyy"} 
           </Text>
         </View>
       </View>

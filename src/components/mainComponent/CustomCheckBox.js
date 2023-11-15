@@ -1,25 +1,21 @@
-import { View, Text } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import {View, Text} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import CheckBox from '@react-native-community/checkbox';
-import { horizontalScale } from '../../constants/dimension';
-import { color, fonts } from '../../constants/theme';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectedCheckBox } from '../../redux/slice/checkBoxSlice';
-import { RadioButton } from 'react-native-paper';
+import {horizontalScale} from '../../constants/dimension';
+import {color, fonts} from '../../constants/theme';
+import {useDispatch, useSelector} from 'react-redux';
+import {selectedCheckBox} from '../../redux/slice/checkBoxSlice';
+import {RadioButton} from 'react-native-paper';
 import RadioGroup from 'react-native-radio-buttons-group';
 
-
-
-const CustomCheckBox = ({ selectedItems, setSelectedItems, item }) => {
+const CustomCheckBox = ({selectedItems, setSelectedItems, item}) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [isItemSelected, setIsItemSelected] = useState(false);
-  const {selectedValue} = useSelector(state=>state.checkbox)
-const dispatch = useDispatch()
-
-
+  const {selectedValue} = useSelector(state => state.checkbox);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(selectedCheckBox(selectedItems))
+    dispatch(selectedCheckBox(selectedItems));
     if (selectedItems.includes(item.id)) {
       setToggleCheckBox(true);
       setIsItemSelected(true);
@@ -34,23 +30,23 @@ const dispatch = useDispatch()
       setSelectedItems([...selectedItems, item.id]);
       setIsItemSelected(true);
     } else {
-      setSelectedItems(selectedItems.filter(selectedItem => selectedItem !== item.id));
+      setSelectedItems(
+        selectedItems.filter(selectedItem => selectedItem !== item.id),
+      );
       setIsItemSelected(false);
     }
   };
 
-
-
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+    <View style={{flexDirection: 'row', alignItems: 'center'}}>
       <CheckBox
-      onCheckColor="darkPink"
+        onCheckColor="darkPink"
         disabled={false}
         value={toggleCheckBox}
         onValueChange={handleValueChange}
       />
-      <View style={{ marginLeft: horizontalScale(2) }}>
-        <Text style={{ fontFamily: fonts.medium, color: color.black }}>
+      <View style={{marginLeft: horizontalScale(2)}}>
+        <Text style={{fontFamily: fonts.medium, color: color.black}}>
           {item.item}
         </Text>
       </View>
@@ -65,9 +61,6 @@ const dispatch = useDispatch()
 };
 
 export default CustomCheckBox;
-
-
-
 
 // import { View, Text } from 'react-native';
 // import React, { useEffect, useState } from 'react';
@@ -108,4 +101,3 @@ export default CustomCheckBox;
 // };
 
 // export default CustomCheckBox;
-

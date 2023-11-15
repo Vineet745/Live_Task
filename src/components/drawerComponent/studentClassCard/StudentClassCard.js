@@ -3,7 +3,6 @@ import React from 'react';
 import {studentClassCardStyle} from './studentClassCardStyle';
 import MinusIcon from '../../../assets/images/minus_icon.svg';
 const StudentClassCard = ({item}) => {
-  console.log("item",item)
   return (
     <View style={studentClassCardStyle.studentClassCardMain}>
       <View style={studentClassCardStyle.studentClassCardTop}>
