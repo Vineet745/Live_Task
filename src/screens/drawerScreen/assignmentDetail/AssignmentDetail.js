@@ -214,7 +214,7 @@ const isFocused = useIsFocused()
             <View style={assingmentDetailStyle.studentDetailView}>
               <Text style={assingmentDetailStyle.studentName}>Task Name</Text>
               <Text style={assingmentDetailStyle.assignedStatus}>
-                {singleAssignment?.task?.show_name}
+                {singleAssignment?.task?.show_name.slice(0,20)}...
               </Text>
             </View>
           ) : null}

@@ -18,6 +18,7 @@ export const getAssignments = async () => {
 
 // -------------- Add Assignment -----------------------//
 export const addAssignment = async ({query}) => {
+  console.log("jherjker",query)
   try {
     const response = await instance.post('assignments', query ,{
       headers: {

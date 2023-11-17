@@ -15,13 +15,18 @@ import LanguageDropdown from '../../navigation/components/LanguageDropdown';
 import Modal from 'react-native-modal';
 import { getStudents } from '../../service/api/studentApi';
 import CustomCheckBox from '../mainComponent/CustomCheckBox';
-import CustomCheckBoxTwo from '../drawerComponent/CustomCheckBoxTwo';
+import CustomCheckBoxTwo from '../drawerComponent/MultipleSelectedRadioButton';
 import { useSelector } from 'react-redux';
+import CustomRadioButton from '../mainComponent/CustomRadioButton';
+import MultipleSelectionCheckBox from '../mainComponent/MultipleSelectionRadioButton';
 
 const StudentSelectionModal = ({ open, closeModal }) => {
   const [searchText, setSearchText] = useState('');
   const [studentData, setStudentData] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
+
+
+console.log("sjkdkrheiuor",selectedItems)
 
 
   useEffect(() => {
@@ -80,7 +85,7 @@ const StudentSelectionModal = ({ open, closeModal }) => {
                       <View style={styles.innerTextView}>
                         <Text style={styles.innerStudentText}>{item.username}</Text>
                       </View>
-                      <CustomCheckBox
+                      <MultipleSelectionCheckBox
                       item={item}
                       selectedItems={selectedItems}
                       setSelectedItems={setSelectedItems}

@@ -10,6 +10,8 @@ import {getSingleTask, toggleButton} from '../../../service/api/homeApi';
 import ShareIcon from '../../../assets/images/share_icon.svg';
 import Loader from '../../../utils/Loader';
 import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsEnabled } from '../../../redux/slice/switchSlice';
 
 const SingleAllTask = ({route}) => {
 
@@ -18,17 +20,20 @@ const SingleAllTask = ({route}) => {
   } = route;
   const [loading, setLoading] = useState(false);
   const [singleData, setSingleData] = useState('');
-  const [isEnabled, setIsEnabled] = useState(item.is_shared)
+  // const [isEnabled, setIsEnabled] = useState(item.is_shared)
   const navigation = useNavigation();
+  const dispatch = useDispatch()
+  const {isEnabled} = useSelector(state=>state.switch)
 
 
-
-
+// console.log("iseEnndmlf",isEnabled)
+// console.log("dfkljeoirerpo",setIsEnabled)
 
 // Single Assignment
 
   useEffect(() => {
     handleGetSingleData();
+    dispatch(setIsEnabled(item.is_shared))
   }, []);
 
   const handleGetSingleData = async () => {
@@ -47,33 +52,23 @@ const SingleAllTask = ({route}) => {
     }
   };
 
+
   // Toggle Button
 
   const handleToggleButton = async () => {
-    if (isEnabled === false) {
+    try {
       const query = {
-        task_id: item.task_reaction.task_id, 
-        check: true,
+        task_id: item?.id,
+        check: !isEnabled, 
       };
-      try {
-        setIsEnabled(!isEnabled);
-        await toggleButton({query});
-        console.log("done")
-      } catch (error) {
-        console.log('error', error);
-      }
-    } else if (isEnabled === true) {
-      const query = {
-        task_id: item.task_reaction.task_id,
-        check: false,
-      };
-      try {
-        setIsEnabled(!isEnabled);
-        await toggleButton({query});
-        console.log("nod daone")
-      } catch (error) {
-        console.log('error', error);
-      }
+      dispatch(setIsEnabled(!isEnabled)); 
+     const data =  await toggleButton({ query });
+      console.log("dljdreir",data)
+      await handleGetSingleData();
+    } catch (error) {
+      console.log('error', error);
+      console.log("klrjuoiuere")
+      dispatch(setIsEnabled(isEnabled)); 
     }
   };
 
@@ -88,7 +83,7 @@ const SingleAllTask = ({route}) => {
         </TouchableOpacity>
         <TouchableOpacity onPress={handleToggleButton} style={singleAllTaskStyle.shareButton}>
           <Text style={{color: color.white, fontFamily: fonts.semiBold}}>
-            {isEnabled === true ? 'Unshare' : 'Share'}
+            {singleData.is_shared === true ? 'Unshare' : 'Share'}
           </Text>
           <ShareIcon />
         </TouchableOpacity>
@@ -103,7 +98,7 @@ const SingleAllTask = ({route}) => {
             color: color.black,
             fontSize: RFValue(sizes.h5, 667),
           }}>
-          {singleData.show_name}
+          {singleData?.show_name}
         </Text>
       </View>
 
@@ -129,7 +124,7 @@ const SingleAllTask = ({route}) => {
             color: color.black,
             fontSize: RFValue(sizes.h5, 667),
           }}>
-          {singleData.minimum_age} yrs to {singleData.maximum_age} yrs
+          {singleData?.minimum_age} yrs to {singleData?.maximum_age} yrs
         </Text>
       </View>
 
@@ -143,7 +138,7 @@ const SingleAllTask = ({route}) => {
             color: color.black,
             fontSize: RFValue(sizes.h5, 667),
           }}>
-          {singleData.language}
+          {singleData?.language}
         </Text>
       </View>
 
@@ -166,7 +161,7 @@ const SingleAllTask = ({route}) => {
             fontFamily: fonts.regular,
             color: color.black,
           }}>
-          {singleData.description}
+          {singleData?.description}
         </Text>
       </View>
     </View>

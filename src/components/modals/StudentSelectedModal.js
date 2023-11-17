@@ -15,10 +15,12 @@ import LanguageDropdown from '../../navigation/components/LanguageDropdown';
 import Modal from 'react-native-modal';
 import {getStudents} from '../../service/api/studentApi';
 import CustomCheckBox from '../mainComponent/CustomCheckBox';
-import CustomCheckBoxTwo from '../drawerComponent/CustomCheckBoxTwo';
+import CustomCheckBoxTwo from '../drawerComponent/MultipleSelectedRadioButton';
 import {useSelector} from 'react-redux';
 import CustomRadioButton from '../mainComponent/CustomRadioButton';
 import CustomRadioButtonTwo from '../mainComponent/CustomTaskRadioButton';
+import MultipleSelectionRadioButton from '../mainComponent/MultipleSelectionRadioButton';
+import MultipleSelectedRadioButton from '../drawerComponent/MultipleSelectedRadioButton';
 
 const StudentSelectedModal = ({
   open,
@@ -100,7 +102,7 @@ const StudentSelectedModal = ({
                         </Text>
                         {/* <Text style={styles.innerAgeText}>{item.age}</Text>  */}
                       </View>
-                      <CustomCheckBoxTwo
+                      <MultipleSelectedRadioButton
                         item={item}
                         selectedItems={selectedItems}
                         setSelectedItems={setSelectedItems}

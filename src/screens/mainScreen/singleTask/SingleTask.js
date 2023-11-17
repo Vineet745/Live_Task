@@ -18,6 +18,7 @@ const SingleTask = ({route}) => {
 
 
 
+
   return (
     <View style={singleTaskStyle.singleMain}>
       {/* <Loader loading={loading}/> */}
@@ -50,7 +51,7 @@ const SingleTask = ({route}) => {
             color: color.black,
             fontSize: RFValue(sizes.h5, 667),
           }}>
-          {singleData.show_name}
+          {singleData?.show_name}
         </Text>
       </View>
 
@@ -92,7 +93,7 @@ const SingleTask = ({route}) => {
             color: color.black,
             fontSize: RFValue(sizes.h5, 667),
           }}>
-          {singleData.minimum_age} yrs to {singleData.maximum_age} yrs
+          {singleData?.minimum_age} yrs to {singleData?.maximum_age} yrs
         </Text>
       </View>
 
@@ -114,7 +115,7 @@ const SingleTask = ({route}) => {
             color: color.black,
             fontSize: RFValue(sizes.h5, 667),
           }}>
-          {singleData.language}
+          {singleData?.language}
         </Text>
       </View>
 
@@ -133,7 +134,7 @@ const SingleTask = ({route}) => {
             fontFamily: fonts.regular,
             color: color.black,
           }}>
-          {singleData.description}
+          {singleData?.description}
         </Text>
       </View>
     </View>

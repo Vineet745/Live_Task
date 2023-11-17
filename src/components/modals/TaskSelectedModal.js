@@ -15,7 +15,7 @@ import LanguageDropdown from '../../navigation/components/LanguageDropdown';
 import Modal from 'react-native-modal';
 import {getStudents} from '../../service/api/studentApi';
 import CustomCheckBox from '../mainComponent/CustomCheckBox';
-import CustomCheckBoxTwo from '../drawerComponent/CustomCheckBoxTwo';
+import CustomCheckBoxTwo from '../drawerComponent/MultipleSelectedRadioButton';
 import {useSelector} from 'react-redux';
 import { getTasks } from '../../service/api/homeApi';
 

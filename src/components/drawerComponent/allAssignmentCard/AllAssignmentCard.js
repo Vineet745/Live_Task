@@ -48,7 +48,7 @@ const AllAssignmentCard = ({item, handleAssignments}) => {
         handleDelete={handelDeleteAssignment}
       />
       <View style={allAssignmentCardStyle.topView}>
-        <Text style={allAssignmentCardStyle.demoText}>{item.show_name}</Text>
+        <Text style={allAssignmentCardStyle.demoText}>{item.show_name.slice(0,25)}...</Text>
         <View style={allAssignmentCardStyle.middleView}>
           <View style={allAssignmentCardStyle.middleViewFirstView}>
             <Text style={allAssignmentCardStyle.creditText}>

@@ -22,14 +22,13 @@ const CreateNewAssignment = ({navigation}) => {
   const [taskOpen, setTaskOpen] = useState(false);
   const [endOpen, setEndOpen] = useState(false);
   const [classOpen, setClassOpen] = useState(false);
+  const [creditOpen, setCreditOpen] = useState(false);
   const {startDate, endDate} = useSelector(state => state.calendar);
   const {radioSelected} = useSelector(state => state.checkbox);
   const {radioSelectedTask} = useSelector(state => state.checkbox);
+  const {creditAmount} = useSelector(state => state.checkbox);
   const [assignment, setAssignment] = useState('');
   const dispatch = useDispatch();
-  // Funciton for Start Date Modal
-
-
 
   const handleOpen = () => {
     setOpen(true);
@@ -65,6 +64,16 @@ const CreateNewAssignment = ({navigation}) => {
     setTaskOpen(false);
   };
 
+  // credit Open
+
+  const isCreditOpen = () => {
+    setCreditOpen(true);
+  };
+
+  const isCreditClose = () => {
+    setCreditOpen(false);
+  };
+
   // Add Assignment
 
   const handleAddAssignment = async () => {
@@ -72,15 +81,28 @@ const CreateNewAssignment = ({navigation}) => {
       assignment_name: assignment,
       start_date: startDate,
       due_date_time: endDate,
+      class_id: radioSelected?.id || null,
+      task_id: radioSelectedTask?.id || null,
+      credit_limit: parseInt(creditAmount) || null,
+      is_assigned: true,
     };
     try {
-      await addAssignment({query});
+      const data = await addAssignment({query});
       navigation.navigate('My Assignments');
     } catch (error) {
       console.log('error', error);
     }
   };
 
+  const handleCreditOpen = () => {
+    if (radioSelected !== null) {
+      handleClassClose();
+      setCreditOpen(true);
+    } else {
+      handleClassClose();
+      toast({type: 'error', text1: 'Please Select the Class'});
+    }
+  };
 
   return (
     <View
@@ -93,7 +115,12 @@ const CreateNewAssignment = ({navigation}) => {
       <SimpleCalendarModal open={open} closeModal={handleClose} />
       <EndCalendarModal open={endOpen} closeModal={handleEndClose} />
       <TaskModal open={taskOpen} closeModal={handleTaskClose} />
-      <ClassModal open={classOpen} closeModal={handleClassClose} />
+      <ClassModal
+        open={classOpen}
+        closeModal={handleClassClose}
+        handleCreditOpen={handleCreditOpen}
+      />
+      <CreditModal open={creditOpen} closeModal={isCreditClose} />
       <View style={createNewAssignmentStyle.assignmentName}>
         <View style={createNewAssignmentStyle.assignmentLogo}>
           <AssingmentFile />

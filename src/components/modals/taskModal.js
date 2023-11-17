@@ -97,7 +97,7 @@ const TaskModal = ({open, closeModal, item,handleSingleAssignmentDetail}) => {
                     <View style={styles.innerModalCenterView}>
                       <View style={styles.innerTextView}>
                         <Text style={styles.innerStudentText}>
-                          {item.show_name}
+                          {item.show_name.slice(0,25)}
                         </Text>
                       </View>
                       <CustomTaskRadioButton

@@ -663,6 +663,9 @@ const DrawerStack = ({route}) => {
       drawerContent={props => <DrawerLogo {...props} />}
       initialRouteName={initialRouteName}
       screenOptions={{
+        // drawerIcon:({})=>{
+        //   return 
+        // }
         headerBackground: () => (
           <View style={{backgroundColor: color.darkPink, flex: 1}} />
         ),

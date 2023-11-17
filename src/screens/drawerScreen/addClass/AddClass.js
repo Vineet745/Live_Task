@@ -52,7 +52,6 @@ const AddClass = ({navigation}) => {
       toast({type: 'error', text1: error.response.data.message});
     }
   };
-
   return (
     <View style={{flex: 1, backgroundColor: color.white}}>
       <StudentSelectionModal open={isOpen} closeModal={handleClose} />
@@ -95,7 +94,7 @@ const AddClass = ({navigation}) => {
 
         <View style={addClassStyle.customError}>
           <Text style={addClassStyle.customErrorText}>
-            ( {selectedValue.length} Student Selected)
+            ( {selectedValue.length >0 ?selectedValue.length:"0"} Student Selected)
           </Text>
         </View>
         <Mainbutton

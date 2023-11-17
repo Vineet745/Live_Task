@@ -14,6 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Coin from '../../assets/images/coin.svg';
 import {assignClass} from '../../service/api/assignmentApi';
 import {useNavigation} from '@react-navigation/native';
+import { selectedCreditAmount } from '../../redux/slice/checkBoxSlice';
 
 const CreditModal = ({open, closeModal, navigation, item,handleSingleAssignmentDetail}) => {
   const dispatch = useDispatch();
@@ -38,17 +39,23 @@ const CreditModal = ({open, closeModal, navigation, item,handleSingleAssignmentD
 
   const handleAssignClass = async () => {
     const query = {
-      assignmentId: item.id,
+      assignmentId: item?.id,
       class_id: radioSelected?.id,
       credit_limit: amount,
     };
-    try {
-      const data = await assignClass({query});
-      closeModal();
-      await handleSingleAssignmentDetail() 
-      // navigate('My Assignments');
-    } catch (error) {
-      console.log('error', error);
+    if(query.assignmentId){
+      try {
+        const data = await assignClass({query});
+        closeModal();
+        await handleSingleAssignmentDetail() 
+        // navigate('My Assignments');
+      } catch (error) {
+        console.log('error', error);
+      }
+
+    }else{
+      closeModal()
+      dispatch(selectedCreditAmount(amount))
     }
   };
 

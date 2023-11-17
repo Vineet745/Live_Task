@@ -1,45 +1,49 @@
 import {Switch} from 'react-native-switch';
 import React, {useState} from 'react';
 import {toggleButton} from '../../service/api/homeApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsEnabled } from '../../redux/slice/switchSlice';
 
 export const SwitchButton = ({
   item,
   handleGetTask,
-  isEnabled,
-  setIsEnabled,
 }) => {
+const dispatch = useDispatch()
+const [isEnabled, setIsEnabled] = useState(item?.is_shared)
 
   const handleToggleButton = async () => {
-    if (isEnabled === false) {
+    if ( isEnabled === false ) {
       const query = {
         task_id: item.id,
-        check: true,
+        check:true,
       };
       try {
         setIsEnabled(!isEnabled);
         await toggleButton({query});
-        handleGetTask();
+        await handleGetTask();
       } catch (error) {
         console.log('error', error);
       }
-    } else if (isEnabled === true) {
+    } else if (item.is_shared === true) {
       const query = {
         task_id: item.id,
-        check: false,
+        check: !isEnabled,
       };
       try {
         setIsEnabled(!isEnabled);
+        // dispatch(setIsEnabled(!isEnabled))
         await toggleButton({query});
-        handleGetTask();
+        await handleGetTask();
       } catch (error) {
         console.log('error', error);
       }
     }
   };
 
+
   return (
     <Switch
-      value={isEnabled}
+      value={item.is_shared}
       onValueChange={handleToggleButton}
       disabled={false}
       circleSize={25}

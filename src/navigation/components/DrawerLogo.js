@@ -75,7 +75,19 @@ const DrawerLogo = props => {
           <Cross width={25} height={25} />
         </TouchableOpacity>
       </View>
-
+      <DrawerItem
+        style={{
+          borderBottomWidth: 1.5,
+          borderColor:"#b1b1b1"
+        }}
+        labelStyle={{
+          fontFamily: fonts.medium,
+          fontSize: RFValue(sizes.h6, 667),
+          color: color.black,
+        }}
+        label="Home"
+        onPress={() => navigation.navigate('HomeStack')}
+      /> 
       <DrawerItem
         style={{
           borderBottomWidth: 1.5,

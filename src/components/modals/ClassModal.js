@@ -108,7 +108,7 @@ const ClassModal = ({
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={handleCreditOpen?handleCreditOpen:closeModal}
+              onPress={handleCreditOpen}
               style={styles.confirmButton}>
               <Text style={styles.confirmButtonText}>Done</Text>
             </TouchableOpacity>

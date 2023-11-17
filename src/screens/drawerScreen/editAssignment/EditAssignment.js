@@ -86,7 +86,7 @@ const EditAssignment = ({route, navigation}) => {
     try {
       setLoading(true);
       const data = await editAssignment({query});
-      navigation.navigate('Explore');
+      navigation.navigate('All Assignment',{screen:"My Assignments"});
       setLoading(false);
     } catch (error) {
       console.log('error', error);

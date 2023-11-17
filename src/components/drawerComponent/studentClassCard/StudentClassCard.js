@@ -7,7 +7,7 @@ const StudentClassCard = ({item}) => {
     <View style={studentClassCardStyle.studentClassCardMain}>
       <View style={studentClassCardStyle.studentClassCardTop}>
         <Text style={studentClassCardStyle.studentClassCardClassName}>
-          {item.class.show_name}
+          {item.class.show_name.slice(0,25)}
         </Text>
         <TouchableOpacity>
           <MinusIcon />

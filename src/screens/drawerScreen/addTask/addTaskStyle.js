@@ -9,7 +9,6 @@ export const addTaskStyle = StyleSheet.create({
     backgroundColor: 'white',
     paddingHorizontal: horizontalScale(15),
     paddingVertical: verticalScale(10),
-    
   },
   inputBoxView: {
     borderWidth: 1,
@@ -38,7 +37,7 @@ export const addTaskStyle = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: verticalScale(15),
+    marginVertical: verticalScale(10),
   },
   ageInput: {
     width: horizontalScale(130),
@@ -58,17 +57,18 @@ export const addTaskStyle = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: horizontalScale(10),
     paddingVertical: verticalScale(5),
-    justifyContent:"space-between",
-    marginBottom:verticalScale(20)
+    justifyContent: 'space-between',
+    marginBottom: verticalScale(20),
   },
   linkTopView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  instructionText:{
-  fontFamily:fonts.medium,
-  
+  instructionText: {
+    fontFamily: fonts.medium,
+    width: '90%',
+    height: '80%',
   },
   galleryIcon: {
     height: 25,
@@ -78,31 +78,32 @@ export const addTaskStyle = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  linkBottomView:{
-    backgroundColor:"#d9d9d9",
-    height:verticalScale(30),
-    paddingHorizontal:horizontalScale(10),
-    borderRadius:5,
-    alignItems:"flex-start",
-    justifyContent:"center"
+  linkBottomView: {
+    backgroundColor: '#d9d9d9',
+    height: verticalScale(30),
+    paddingHorizontal: horizontalScale(10),
+    borderRadius: 5,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
   },
-  addLinkText:{
-    fontFamily:fonts.medium,
-    color:color.black
+  addLinkText: {
+    fontFamily: fonts.medium,
+    color: color.black,
+    width:"100%"
   },
-  dropDownView:{
-    flexDirection:"row",
-    alignItems:"center",
-    justifyContent:"space-between",
+  dropDownView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
-  voiceOnlyOptionView:{
-    flexDirection:"row",
-    alignItems:"center",
-    justifyContent:"space-between",
-    marginVertical:verticalScale(20)
+  voiceOnlyOptionView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: verticalScale(20),
   },
-  voiceOnlyTask:{
-    fontFamily:fonts.medium,
-    color:"#6e6e6e"
-  }
+  voiceOnlyTask: {
+    fontFamily: fonts.medium,
+    color: '#6e6e6e',
+  },
 });

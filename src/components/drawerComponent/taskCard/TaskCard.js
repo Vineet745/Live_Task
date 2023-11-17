@@ -12,9 +12,8 @@ import { toggleButton } from '../../../service/api/homeApi';
 
 const TaskCard = ({item, handleGetTask}) => {
   const [open, setOpen] = useState(false);
-  const [isEnabled, setIsEnabled] = useState(item.is_shared)
   const {navigate} = useNavigation();
-
+ const {isEnabled} = useSelector(state=>state.switch)
 
 
   // handleOpen
@@ -32,12 +31,13 @@ const TaskCard = ({item, handleGetTask}) => {
   
   return (
     <TouchableOpacity
-      onPress={() => navigate('Single Task', {id: item.id, item:item,})}
+    onPress={() => navigate('Single Task', { id: item.id, item:item, })}
+
       style={taskCardStyle.dashboardTaskMain}>
       <DataDeleteModal open={open} closeModal={handleClose} />
       <View style={taskCardStyle.topView}>
         <View style={taskCardStyle.lefttopView}>
-          <Text style={taskCardStyle.taskNameText}>{item.show_name}</Text>
+          <Text style={taskCardStyle.taskNameText}>{item.show_name.substring(0, 20)} ...</Text>
           <Text style={taskCardStyle.yearsText}>
             {item.minimum_age} yrs to {item.maximum_age} yrs
           </Text>
@@ -56,9 +56,9 @@ const TaskCard = ({item, handleGetTask}) => {
               justifyContent: 'space-between',
             }}>
             <Text style={taskCardStyle.sharedText}>
-              {isEnabled === true ? 'Shared' : 'Not-Shared'}
+              {item.is_shared === true ? 'Shared' : 'Not-Shared'}
             </Text>
-            <SwitchButton item={item} handleGetTask={handleGetTask} isEnabled={isEnabled} setIsEnabled={setIsEnabled}/>
+            <SwitchButton item={item} handleGetTask={handleGetTask}/>
           </View>
         </View>
       </View>
