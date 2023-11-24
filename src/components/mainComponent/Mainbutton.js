@@ -11,7 +11,7 @@ const Mainbutton = ({text, width, action}) => {
       style={{
         backgroundColor: color.lightGreen,
         width: horizontalScale(width),
-        height: verticalScale(45),
+        minHeight: verticalScale(45),
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 30,

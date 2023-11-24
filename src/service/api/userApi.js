@@ -45,7 +45,6 @@ export const updateUserImage = async userData => {
 
     const response = await instance.post('settings/profile', formData, {
       headers: {
-        role: 'TCH',
         'Content-Type': 'multipart/form-data',
       },
     });

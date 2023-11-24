@@ -3,7 +3,7 @@ import {horizontalScale, verticalScale} from '../../../constants/dimension';
 import {color, fonts} from '../../../constants/theme';
 import {RFValue} from 'react-native-responsive-fontsize';
 
-export const addTaskStyle = StyleSheet.create({
+export const editTaskStyle = StyleSheet.create({
   addTaskMain: {
     flex: 1,
     backgroundColor: 'white',
@@ -48,6 +48,7 @@ export const addTaskStyle = StyleSheet.create({
     marginTop: verticalScale(8),
     borderColor: 'grey',
     paddingLeft: horizontalScale(10),
+    fontFamily:fonts.medium
   },
   linkView: {
     borderWidth: 1,

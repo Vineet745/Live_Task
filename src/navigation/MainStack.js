@@ -6,10 +6,10 @@ import {
   Image,
   BackHandler,
   Keyboard,
-   KeyboardEvent,
-    Platform
+  KeyboardEvent,
+  Platform,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Credits from '../screens/mainScreen/credits/Credits';
 import Explore from '../screens/mainScreen/explore/Explore';
@@ -64,6 +64,8 @@ import Conversation from '../screens/drawerScreen/conversation/Conversation';
 import AddTask from '../screens/drawerScreen/addTask/AddTask';
 import {useNavigation} from '@react-navigation/native';
 import DrawerLogo from './components/DrawerLogo';
+import Entypo from 'react-native-vector-icons/Entypo';
+import EditTask from '../screens/drawerScreen/editTask/EditTask';
 // Navigator Imports
 
 const Stack = createNativeStackNavigator();
@@ -75,17 +77,36 @@ const Drawer = createDrawerNavigator();
 
 const HomeTopStack = () => {
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1,backgroundColor:"white"}}>
       <HomeUserProfile />
       <TopTab.Navigator
         screenOptions={{
           tabBarLabelStyle: {
             fontFamily: fonts.semiBold,
-            fontSize: RFValue(sizes.h7, 667),
+            fontSize: RFValue(sizes.h8, 667),
           },
+
           tabBarStyle: {
             elevation: 0,
+            backgroundColor: 'white',
+            marginLeft: 15,
           },
+
+          tabBarIndicatorStyle: {
+            height: verticalScale(40),
+            backgroundColor: '#04c38c',
+            borderRadius: 40,
+          },
+          tabBarItemStyle: {
+            borderColor: '#04c38c',
+            borderWidth: 2,
+            borderRadius: 30,
+            width: horizontalScale(170),
+          },
+          tabBarGap: 3,
+          tabBarActiveTintColor: 'white',
+          tabBarInactiveTintColor: 'black',
+          tabBarPressColor: '#ffffff',
         }}>
         <TopTab.Screen name="Explore" component={Explore} />
         <TopTab.Screen name="Credits" component={Credits} />
@@ -647,6 +668,22 @@ const TaskStack = () => {
           },
         }}
       />
+      <Stack.Screen
+        name="Edit Task"
+        component={EditTask}
+        options={{
+          headerTitleStyle: {
+            fontFamily: fonts.segoeUI,
+            fontSize: RFValue(sizes.h4, 667),
+            color: color.black,
+          },
+          headerShadowVisible: false,
+          headerBackVisible: false,
+          headerTitle: () => {
+            return <StackCustomHeader text="Edit Task" />;
+          },
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -659,17 +696,19 @@ const DrawerStack = ({route}) => {
 
   return (
     <Drawer.Navigator
-       
       drawerContent={props => <DrawerLogo {...props} />}
       initialRouteName={initialRouteName}
       screenOptions={{
-        // drawerIcon:({})=>{
-        //   return 
-        // }
+        drawerIcon: ({}) => {
+          return <Entypo name="menu" size={20} color="white" />;
+        },
+
+
+        
         headerBackground: () => (
           <View style={{backgroundColor: color.darkPink, flex: 1}} />
         ),
-        headerStyle: {
+        headerStyle: {    
           height: verticalScale(55),
         },
         drawerActiveBackgroundColor: 'white',
@@ -678,12 +717,15 @@ const DrawerStack = ({route}) => {
           display: 'none',
         },
         headerRight: () => {
+          const [value, setValue] = useState(false)
           return (
             <LanguageDropdown
               width={130}
               text="English"
               marginRight={15}
               backgroundColor="white"
+              value={value}
+              setValue={setValue}
             />
           );
         },
@@ -716,18 +758,16 @@ const DrawerStack = ({route}) => {
 // MainStack Drawer Stack
 
 const MainStack = () => {
- 
   return (
-    <KeyboardAvoidingView style={{flex: 1}} behavior='height'>
-      <Tab.Navigator 
+    <KeyboardAvoidingView style={{flex: 1}} behavior="height">
+      <Tab.Navigator
         screenOptions={{
           tabBarShowLabel: false,
-          tabBarHideOnKeyboard:true,
+          tabBarHideOnKeyboard: true,
           tabBarStyle: {
             backgroundColor: color.darkPink,
             height: verticalScale(20),
             elevation: 0,
-            
           },
           headerShown: false,
         }}>
@@ -764,9 +804,11 @@ const MainStack = () => {
         />
 
         <Tab.Screen
+        
           name="Profile Stack"
           component={ProfileStack}
-          options={{
+          options={({route})=>({
+            tabBarHideOnKeyboard: true,
             tabBarIcon: ({focused, color, size}) => (
               <View
                 style={{
@@ -791,7 +833,9 @@ const MainStack = () => {
                 )}
               </View>
             ),
-          }}
+            
+          })
+          }
         />
         <Tab.Screen
           options={{tabBarItemStyle: {display: 'none'}}}

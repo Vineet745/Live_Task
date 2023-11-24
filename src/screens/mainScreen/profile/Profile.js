@@ -20,8 +20,9 @@ import ImagePicker from 'react-native-image-crop-picker';
 import Loader from '../../../utils/Loader';
 import CameraModal from '../../../components/modals/CameraModal';
 
-const Profile = ({navigation}) => {
+const Profile = ({navigation,props}) => {
   const [open, setOpen] = useState(false);
+  const [logOutOpen, setLogoutOpen] = useState(false)
   const [userData, setUserData] = useState('');
   const [uri, setUri] = useState('');
   const [loading, setLoading] = useState(false);
@@ -37,6 +38,18 @@ const Profile = ({navigation}) => {
       handleUserProfile();
     }, []),
   );
+
+ // Logout Modal
+
+ const handleOpen = ()=>{
+  setLogoutOpen(true)
+}
+
+const handleClose = ()=>{
+  setLogoutOpen(false)
+}
+
+ 
 
   // Open Modal
   const openModal = () => {
@@ -60,8 +73,8 @@ const Profile = ({navigation}) => {
   // Get User Detail
 
   const handleUserProfile = async () => {
-    setLoading(true);
     try {
+      setLoading(true);
       const {data} = await getUserProfile();
       setUserData(data?.data);
       setLoading(false);
@@ -129,34 +142,13 @@ const Profile = ({navigation}) => {
 
 
 
-  // React.useEffect(() => {
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     handleBackPress
-  //   );
-
-  //   return () => {
-  //     backHandler.remove();
-  //   };
-  // }, []);
-
-  // const handleBackPress = () => {
-  //   navigation.navigate("HomeStack")
-  //   // if (navigation.canGoBack() && route.name === 'MyProfile') {
-  //   //   navigation.navigate("HomeStack",{screen:"Home"});
-  //   //   return true;
-  //   // }
-
-  //   // return false;  
-  // };
 
   return (
     <ScrollView style={{backgroundColor: 'white'}}>
       <Loader loading={loading} />
       <LogOutModal
-        open={open}
-        closeModal={closeModal}
-        navigation={navigation}
+        open={logOutOpen}
+        closeModal={handleClose}
       />
       <CameraModal
         open={cameraOpen}
@@ -223,7 +215,7 @@ const Profile = ({navigation}) => {
             <View style={profileStyle.creditContainer}>
               <View style={profileStyle.creditLeftContainer}>
                 <Coin />
-                <Text style={profileStyle.creditText}>1000</Text>
+                <Text style={profileStyle.creditText}>{userData.credits}</Text>
               </View>
               <TouchableOpacity style={profileStyle.buyButton}>
                 <Text style={profileStyle.buyText}>Buy</Text>
@@ -233,9 +225,8 @@ const Profile = ({navigation}) => {
           <View style={profileStyle.updatePassword}>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('Update Password', {
-                  params: {show: show},
-                })
+                navigation.navigate('Update Password',{userData:userData},
+                )
               }
               style={profileStyle.updatePasswordInnerContainer}>
               <Text style={profileStyle.updatePasswordText}>
@@ -245,7 +236,7 @@ const Profile = ({navigation}) => {
             </TouchableOpacity>
           </View>
           <TouchableOpacity
-            onPress={openModal}
+            onPress={handleOpen}
             style={profileStyle.logOutContainer}>
             <Text style={profileStyle.logoutText}>Log Out</Text>
           </TouchableOpacity>

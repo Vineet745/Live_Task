@@ -1,5 +1,5 @@
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {color, fonts} from '../../../constants/theme';
 import {horizontalScale, verticalScale} from '../../../constants/dimension';
 import AssingmentFile from '../../../assets/images/assignment_file.svg';
@@ -16,6 +16,17 @@ import {addAssignment} from '../../../service/api/assignmentApi';
 import ClassModal from '../../../components/modals/ClassModal';
 import CreditModal from '../../../components/modals/CreditModal';
 import TaskModal from '../../../components/modals/TaskModal';
+import Loader from '../../../utils/Loader';
+import {
+  selectedRadioButton,
+  selectedRadioTask,
+} from '../../../redux/slice/checkBoxSlice';
+import {
+  selectedEndDate,
+  selectedStartDate,
+} from '../../../redux/slice/calendarSlice';
+import {toast} from '../../../service/ToastMessage';
+import {handleInputValidation} from '../../../utils/HelperFunction';
 
 const CreateNewAssignment = ({navigation}) => {
   const [open, setOpen] = useState(false);
@@ -23,12 +34,20 @@ const CreateNewAssignment = ({navigation}) => {
   const [endOpen, setEndOpen] = useState(false);
   const [classOpen, setClassOpen] = useState(false);
   const [creditOpen, setCreditOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const {startDate, endDate} = useSelector(state => state.calendar);
   const {radioSelected} = useSelector(state => state.checkbox);
   const {radioSelectedTask} = useSelector(state => state.checkbox);
   const {creditAmount} = useSelector(state => state.checkbox);
   const [assignment, setAssignment] = useState('');
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(selectedRadioButton(null));
+    dispatch(selectedRadioTask(null));
+    dispatch(selectedStartDate(null));
+    dispatch(selectedEndDate(null));
+  }, []);
 
   const handleOpen = () => {
     setOpen(true);
@@ -81,16 +100,31 @@ const CreateNewAssignment = ({navigation}) => {
       assignment_name: assignment,
       start_date: startDate,
       due_date_time: endDate,
-      class_id: radioSelected?.id || null,
-      task_id: radioSelectedTask?.id || null,
-      credit_limit: parseInt(creditAmount) || null,
-      is_assigned: true,
     };
-    try {
-      const data = await addAssignment({query});
-      navigation.navigate('My Assignments');
-    } catch (error) {
-      console.log('error', error);
+    if (radioSelected?.id) {
+      (query.class_id = radioSelected?.id),
+        (query.is_assigned = true),
+        (query.credit_limit = creditAmount);
+    }
+    if (radioSelectedTask?.id) {
+      query.task_id = radioSelectedTask?.id;
+    }
+    if (!query.assignment_name || !query.start_date || !query.due_date_time) {
+      toast({
+        type: 'error',
+        text1: 'Please Select All the mandatory Field One',
+      });
+    } else {
+      try {
+        setLoading(true);
+        const data = await addAssignment({query});
+        navigation.navigate('My Assignments');
+        setLoading(false);
+      } catch (error) {
+        console.log('error', error.response);
+        setLoading(false);
+        toast({type: 'error', text1: 'Please Select All the mandatory Field'});
+      }
     }
   };
 
@@ -112,6 +146,7 @@ const CreateNewAssignment = ({navigation}) => {
         paddingVertical: verticalScale(10),
         paddingHorizontal: horizontalScale(15),
       }}>
+      <Loader loading={loading} />
       <SimpleCalendarModal open={open} closeModal={handleClose} />
       <EndCalendarModal open={endOpen} closeModal={handleEndClose} />
       <TaskModal open={taskOpen} closeModal={handleTaskClose} />
@@ -127,7 +162,14 @@ const CreateNewAssignment = ({navigation}) => {
         </View>
         <TextInput
           value={assignment}
-          onChangeText={val => setAssignment(val)}
+          onChangeText={val =>
+            handleInputValidation({
+              newValue: val,
+              limit: 35,
+              error: 'Assignment Name',
+              setValue: setAssignment,
+            })
+          }
           placeholderTextColor="#878787"
           placeholder="Enter Assignment Name"
           style={createNewAssignmentStyle.input}

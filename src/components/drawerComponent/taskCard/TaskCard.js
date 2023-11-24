@@ -9,18 +9,18 @@ import {taskCardStyle} from './taskCardStyle';
 import {SwitchButton} from '../SwitchButton';
 import {verticalScale} from '../../../constants/dimension';
 import { toggleButton } from '../../../service/api/homeApi';
+import { deleteTask } from '../../../service/api/taskApi';
 
 const TaskCard = ({item, handleGetTask}) => {
   const [open, setOpen] = useState(false);
   const {navigate} = useNavigation();
- const {isEnabled} = useSelector(state=>state.switch)
-
-
+ const [isEnabled, setIsEnabled] = useState(item.is_shared)
+ 
   // handleOpen
 
   const handleOpen = () => {
     setOpen(true);
-  };
+  }; 
 
   const handleClose = () => {
     setOpen(false);
@@ -28,13 +28,26 @@ const TaskCard = ({item, handleGetTask}) => {
 
   // toggle Button
 
+  const handelDeleteTask = async () => {
+    const id = item.id;
+    try {
+      console.log("hello")
+       await deleteTask(id);
+      await handleGetTask();
+      handleClose();
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+
   
   return (
     <TouchableOpacity
-    onPress={() => navigate('Single Task', { id: item.id, item:item, })}
+    onPress={() => navigate('Single Task', { id: item.id, item:item,isEnabled:isEnabled ,setIsEnabled:setIsEnabled })}
 
       style={taskCardStyle.dashboardTaskMain}>
-      <DataDeleteModal open={open} closeModal={handleClose} />
+      <DataDeleteModal open={open} closeModal={handleClose} handleDelete={handelDeleteTask}/>
       <View style={taskCardStyle.topView}>
         <View style={taskCardStyle.lefttopView}>
           <Text style={taskCardStyle.taskNameText}>{item.show_name.substring(0, 20)} ...</Text>
@@ -56,9 +69,9 @@ const TaskCard = ({item, handleGetTask}) => {
               justifyContent: 'space-between',
             }}>
             <Text style={taskCardStyle.sharedText}>
-              {item.is_shared === true ? 'Shared' : 'Not-Shared'}
+              {isEnabled || item.is_shared === true? 'Shared' : 'Not-Shared'}
             </Text>
-            <SwitchButton item={item} handleGetTask={handleGetTask}/>
+            <SwitchButton item={item} handleGetTask={handleGetTask} isEnabled={isEnabled} setIsEnabled={setIsEnabled}/>
           </View>
         </View>
       </View>
@@ -66,8 +79,7 @@ const TaskCard = ({item, handleGetTask}) => {
         <View style={taskCardStyle.bottomViewInnerView}></View>
         <View style={taskCardStyle.buttonContainer}>
           <View style={taskCardStyle.iconTextContainer}>
-            <TouchableOpacity
-              onPress={() => navigate('Edit Student')}
+            <TouchableOpacity onPress={()=>navigate("Edit Task",{item:item})}
               style={taskCardStyle.buttons}>
               <Edit />
             </TouchableOpacity>

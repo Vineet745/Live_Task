@@ -1,7 +1,7 @@
 import {View, Text, TextInput, TouchableOpacity, FlatList} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import SearchIcon from '../../../assets/images/search_icon.svg';
-import {fonts} from '../../../constants/theme';
+import {color, fonts} from '../../../constants/theme';
 import PlusIcon from '../../../assets/images/plus_icon.svg';
 import {
   useFocusEffect,
@@ -19,25 +19,35 @@ import {classFilter} from '../../../redux/slice/filterTaskSlice';
 const MyClasses = () => {
   const [searchText, setSearchText] = useState('');
   const [classes, setClasses] = useState([]);
+  const [classesFilterData, setclassesFilterData] = useState([]);
   const [loading, setloading] = useState(false);
   const isfocused = useIsFocused();
   const {navigate} = useNavigation();
   const dispatch = useDispatch();
-  const {classFilterData} = useSelector(state => state.filter);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      handleGetClasses();
-    }, []),
-  );
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     handleGetClasses();
+  //   }, []),
+  // );
+
+  useEffect(() => {
+    handleGetClasses();
+  }, [isfocused]);
 
   const handleGetClasses = async () => {
-    setloading(true);
     try {
-      const {data} = await getClasses();
-      dispatch(classFilter(data.data));
-      setClasses(data.data);
-      setloading(false);
+      if (!classes.length) {
+        setloading(true);
+        const {data} = await getClasses();
+        setclassesFilterData(data.data);
+        setClasses(data.data);
+        setloading(false);
+      } else {
+        const {data} = await getClasses();
+        setClasses(data.data);
+        setclassesFilterData(data.data);
+      }
     } catch (error) {
       console.log('error', error);
       setloading(false);
@@ -48,7 +58,8 @@ const MyClasses = () => {
     const filteredTask = classes.filter(item => {
       return item?.show_name?.toLowerCase().includes(searchQuery.toLowerCase());
     });
-    dispatch(classFilter(filteredTask));
+    // dispatch(classFilter(filteredTask));
+    setclassesFilterData(filteredTask);
   };
 
   // handleTextChange
@@ -56,11 +67,16 @@ const MyClasses = () => {
   const handleTextChange = value => {
     setSearchText(value);
     if (value === '') {
-      dispatch(classFilter(classes));
+      setclassesFilterData(classes);
+      // dispatch(classFilter(classes));
     } else {
       filterTask(value);
     }
   };
+
+  // const handleNavigate = ()=>{
+
+  // }
 
   return (
     <View style={myClassesStyle.myStudentMain}>
@@ -87,14 +103,25 @@ const MyClasses = () => {
           </View>
         </View>
         <View style={myClassesStyle.cardView}>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            style={{marginBottom: verticalScale(130)}}
-            data={classFilterData}
-            renderItem={({item}) => (
-              <MyClassCard item={item} handleGetClasses={handleGetClasses} />
-            )}
-          />
+          {classes.length ? (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              style={{marginBottom: verticalScale(130)}}
+              data={classesFilterData}
+              renderItem={({item}) => (
+                <MyClassCard item={item} handleGetClasses={handleGetClasses} />
+              )}
+            />
+          ) : (
+            <Text
+              style={{
+                color: color.black,
+                fontFamily: fonts.medium,
+                alignSelf: 'center',
+              }}>
+              Classes Not Found
+            </Text>
+          )}
         </View>
       </View>
     </View>

@@ -15,7 +15,7 @@ export const loginStyle = StyleSheet.create({
   loginTopView: {
     paddingTop: verticalScale(15),
     paddingHorizontal: horizontalScale(20),
-    minHeight: verticalScale(480),
+    paddingBottom: verticalScale(85),
   },
   welcomeMain: {
     marginTop: verticalScale(30),

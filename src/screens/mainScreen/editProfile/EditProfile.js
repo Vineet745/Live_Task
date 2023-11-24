@@ -1,11 +1,13 @@
 import {View, Text, TouchableOpacity, TextInput} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import EditBlack from '../../../assets/images/edit_black.svg';
 import {editProfileStyle} from './editProfileStyle';
 import Mainbutton from '../../../components/mainComponent/Mainbutton';
 import {horizontalScale} from '../../../constants/dimension';
 import {updateUserProfile} from '../../../service/api/userApi';
 import {useNavigation} from '@react-navigation/native';
+import { toast } from '../../../service/ToastMessage';
+import { handleInputValidation } from '../../../utils/HelperFunction';
 
 const EditProfile = ({route}) => {
   const {
@@ -14,16 +16,16 @@ const EditProfile = ({route}) => {
   const {navigate} = useNavigation();
   const [inputValue, setInputValue] = useState(username);
 
-  const handleInputChange = newValue => {
-    setInputValue(newValue);
-  };
+  
+
+  
 
   // Update Profile
 
   const handleUpdateProfile = async () => {
     try {
       await updateUserProfile(inputValue);
-      navigate('Profile');
+      navigate('Profile Stack',{screen:"Profile View"});
     } catch (error) {
       console.log('error', error);
     }
@@ -35,9 +37,11 @@ const EditProfile = ({route}) => {
         <View style={editProfileStyle.studentTopContainer}>
           <Text style={editProfileStyle.studentLabelName}>User Name</Text>
           <TextInput
+          aria-valuemax={25}
             style={editProfileStyle.input}
             value={inputValue}
-            onChangeText={handleInputChange}
+            onChangeText={(val)=>handleInputValidation({newValue:val
+              ,limit:15, error:"User Name",setValue:setInputValue})}
           />
         </View>
         <TouchableOpacity>

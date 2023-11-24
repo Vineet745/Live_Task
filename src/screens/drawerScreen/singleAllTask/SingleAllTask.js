@@ -9,31 +9,23 @@ import {singleAllTaskStyle} from './singleAllTaskStyle';
 import {getSingleTask, toggleButton} from '../../../service/api/homeApi';
 import ShareIcon from '../../../assets/images/share_icon.svg';
 import Loader from '../../../utils/Loader';
-import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
-import { useDispatch, useSelector } from 'react-redux';
-import { setIsEnabled } from '../../../redux/slice/switchSlice';
+import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
+import {useDispatch, useSelector} from 'react-redux';
+import {setIsEnabled} from '../../../redux/slice/switchSlice';
 
 const SingleAllTask = ({route}) => {
-
   const {
-    params: {id,item},
+    params: {id, item, isEnabled, setIsEnabled},
   } = route;
   const [loading, setLoading] = useState(false);
   const [singleData, setSingleData] = useState('');
-  // const [isEnabled, setIsEnabled] = useState(item.is_shared)
   const navigation = useNavigation();
-  const dispatch = useDispatch()
-  const {isEnabled} = useSelector(state=>state.switch)
 
+  // Single Assignment
 
-// console.log("iseEnndmlf",isEnabled)
-// console.log("dfkljeoirerpo",setIsEnabled)
-
-// Single Assignment
 
   useEffect(() => {
     handleGetSingleData();
-    dispatch(setIsEnabled(item.is_shared))
   }, []);
 
   const handleGetSingleData = async () => {
@@ -52,27 +44,23 @@ const SingleAllTask = ({route}) => {
     }
   };
 
-
   // Toggle Button
 
   const handleToggleButton = async () => {
     try {
       const query = {
         task_id: item?.id,
-        check: !isEnabled, 
+        check: !isEnabled,
       };
-      dispatch(setIsEnabled(!isEnabled)); 
-     const data =  await toggleButton({ query });
-      console.log("dljdreir",data)
+      setIsEnabled(!isEnabled);
+      const data = await toggleButton({query});
+      console.log('dljdreir', data);
       await handleGetSingleData();
     } catch (error) {
       console.log('error', error);
-      console.log("klrjuoiuere")
-      dispatch(setIsEnabled(isEnabled)); 
+      setIsEnabled(isEnabled);
     }
   };
-
-
 
   return (
     <View style={singleAllTaskStyle.singleMain}>
@@ -81,7 +69,9 @@ const SingleAllTask = ({route}) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <BackButton width={32} height={32} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleToggleButton} style={singleAllTaskStyle.shareButton}>
+        <TouchableOpacity
+          onPress={handleToggleButton}
+          style={singleAllTaskStyle.shareButton}>
           <Text style={{color: color.white, fontFamily: fonts.semiBold}}>
             {singleData.is_shared === true ? 'Unshare' : 'Share'}
           </Text>

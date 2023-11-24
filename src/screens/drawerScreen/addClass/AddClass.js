@@ -11,15 +11,18 @@ import ClassBook from '../../../assets/images/class_book.svg';
 import UserLogo from '../../../assets/images/inputUser.svg';
 import CustomDropdown, {CustomDropDown} from '../../../utils/CustomDropDown';
 import StudentSelectionModal from '../../../components/modals/StudentSelectionModal';
-import {isEmailValid} from '../../../utils/HelperFunction';
+import {handleInputValidation, isEmailValid} from '../../../utils/HelperFunction';
 import {useDispatch, useSelector} from 'react-redux';
 import {addClass} from '../../../service/api/classApi';
 import {dispatchCommand} from 'react-native-reanimated';
 import {toast} from '../../../service/ToastMessage';
+import Loader from '../../../utils/Loader';
+import { selectedCheckBox } from '../../../redux/slice/checkBoxSlice';
 
 const AddClass = ({navigation}) => {
   const [isOpen, setIsOpen] = useState(false);
   const {selectedValue} = useSelector(state => state.checkbox);
+  const [loading, setLoading] = useState(false)
   const dispatch = useDispatch();
   const {
     control,
@@ -45,15 +48,20 @@ const AddClass = ({navigation}) => {
     };
 
     try {
+      setLoading(true)
       await addClass({query});
       navigation.navigate('My Class');
+      dispatch(selectedCheckBox([]))
+      setLoading(false)
     } catch (error) {
+      setLoading(false)
       console.log('error', error);
       toast({type: 'error', text1: error.response.data.message});
     }
   };
   return (
     <View style={{flex: 1, backgroundColor: color.white}}>
+      <Loader loading={loading}/>
       <StudentSelectionModal open={isOpen} closeModal={handleClose} />
       <View style={addClassStyle.detailView}>
         <View style={{marginBottom: verticalScale(15)}}>
@@ -68,7 +76,8 @@ const AddClass = ({navigation}) => {
                 <ClassBook />
                 <TextInput
                   value={field.value}
-                  onChangeText={field.onChange}
+                  onChangeText={(val)=>handleInputValidation({newValue:val
+                ,limit:25, error:"Class Name",setValue:field.onChange})}
                   placeholderTextColor={'grey'}
                   style={addClassStyle.input}
                   placeholder="Enter Class Name"></TextInput>

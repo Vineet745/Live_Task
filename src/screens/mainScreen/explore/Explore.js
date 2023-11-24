@@ -8,7 +8,7 @@ import {fonts} from '../../../constants/theme';
 import {exploreStyle} from './exploreStyle';
 import {getTasks} from '../../../service/api/homeApi';
 import {useDispatch, useSelector} from 'react-redux';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import SortModal from '../../../components/modals/SortModal';
 import {filteredData} from '../../../redux/slice/filterTaskSlice';
 import Loader from '../../../utils/Loader';
@@ -19,25 +19,42 @@ const Explore = () => {
   const dispatch = useDispatch();
   const {filteredData: data} = useSelector(state => state.filter);
   const [originalTaskData, setOriginalTaskData] = useState([]);
+  const [filteredData, setFilteredData] = useState([])
   const [loading, setLoading] = useState(false);
+  const {fetch} = useSelector(state => state.data);
+  const isfocused = useIsFocused()
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     handleGetTask();
+  //   }, []),
+  // );
 
-  useEffect(() => {
-    handleGetTask();
-  }, []);
+useEffect(() => {
+  handleGetTask()
+}, [isfocused])
+
+
+
 
   // Get Task
 
   const handleGetTask = async () => {
     const flag = 'explore';
     try {
-      setLoading(true);
-      const {data} = await getTasks(flag);
-      dispatch(filteredData(data.data));
-      setOriginalTaskData(data.data);
-      setLoading(false);
+      if(!originalTaskData.length){
+        setLoading(true)
+        const {data} = await getTasks(flag);
+        setOriginalTaskData(data.data);
+        setFilteredData(data.data)
+        setLoading(false);
+      }else{
+        const {data} = await getTasks(flag);
+        setOriginalTaskData(data.data);
+        setFilteredData(data.data)
+      }
     } catch (error) {
-      console.log('Error fetching tasks: ', error);
-      setLoading(false);
+      console.log('Error fetching tasks: ', error.response.data.message);
+      // setLoading(false);
     }
   };
 
@@ -47,7 +64,7 @@ const Explore = () => {
     const filteredTask = originalTaskData.filter(item => {
       return item.show_name.toLowerCase().includes(searchQuery.toLowerCase());
     });
-    dispatch(filteredData(filteredTask));
+    setFilteredData(filteredTask)
   };
 
   // handleTextChange
@@ -55,7 +72,7 @@ const Explore = () => {
   const handleTextChange = value => {
     setSearchText(value);
     if (value === '') {
-      dispatch(filteredData(originalTaskData));
+      setFilteredData(originalTaskData)
     } else {
       filterTask(value);
     }
@@ -89,13 +106,12 @@ const Explore = () => {
         </TouchableOpacity>
       </View>
       <View style={{marginVertical: verticalScale(10)}}>
-        {data ? (
           <FlatList
             style={{
               marginBottom: verticalScale(50),
             }}
             showsVerticalScrollIndicator={false}
-            data={data}
+            data={filteredData}
             renderItem={({item}) => {
               return (
                 <TeacherDashboardTask
@@ -105,9 +121,6 @@ const Explore = () => {
               );
             }}
           />
-        ) : (
-          <Text>No Task Found</Text>
-        )}
       </View>
     </View>
   );

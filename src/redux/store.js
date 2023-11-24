@@ -7,6 +7,7 @@ import graphDataSlice from "./slice/graphDataSlice"
 import modalSlice from "./slice/modalSlice"
 import checkBoxSlice from "./slice/checkBoxSlice"
 import switchSlice from "./slice/switchSlice"
+import dataSlice from "./slice/dataSlice"
 
 export default configureStore({
     reducer:{
@@ -17,6 +18,7 @@ export default configureStore({
         graph:graphDataSlice,
         modal:modalSlice,
         checkbox:checkBoxSlice,
-        switch:switchSlice
+        switch:switchSlice,
+        data:dataSlice
     }
 })

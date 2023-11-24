@@ -41,6 +41,7 @@ export const optionScreenStyle = StyleSheet.create({
         backgroundColor:color.lightGreen,
         width:horizontalScale(260),
         alignItems:"center",
+        justifyContent:"center",
         padding:verticalScale(12),
         borderRadius:30
     },

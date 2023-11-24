@@ -5,34 +5,63 @@ import {verticalScale} from '../../../constants/dimension';
 import {useForm, Controller} from 'react-hook-form';
 import UserLock from '../../../assets/images/inputLock.svg';
 import BigRectangle from '../../../assets/images/big-rectangle.svg';
-import {changePassword} from '../../../service/api/authApi';
 import {useNavigation} from '@react-navigation/native';
 import {toast} from '../../../service/ToastMessage';
 import Loader from '../../../utils/Loader';
 import {updatePasswordStyle} from './updatePasswordStyle';
 import Button from '../../../components/mainComponent/Mainbutton';
 import Mainbutton from '../../../components/mainComponent/Mainbutton';
-import { isPasswordValid } from '../../../utils/HelperFunction';
+import {isPasswordValid} from '../../../utils/HelperFunction';
+import {changePassword} from '../../../service/api/settingsApi';
 
 const UpdatePassword = ({route}) => {
   const {
-    params: {show},
+    params: {userData},
   } = route;
 
-  const [loading, setLoading] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+  const {navigate} = useNavigation();
   const {
     control,
     handleSubmit,
     formState: {errors},
   } = useForm();
 
-  const {navigate} = useNavigation();
   // handleNew Password
 
-  // Password
+  // Check
 
-  
+  // Password
+  const handleUpdatePassword = async data => {
+    if (data.newPassword !== data.confirmPassword) {
+      toast({type: 'error', text1: 'New & Confirm Password does not match'});
+      return;
+    }
+    if (data.currentPassword === data.newPassword) {
+      toast({type: 'error', text1: 'New & Current Password are same '});
+      return;
+    }
+
+    const query = {
+      role: 'TCH',
+      oldPassword: data.currentPassword,
+      newPassword: data.confirmPassword,
+      flag: 'OLP',
+    };
+    try {
+      setLoading(true);
+
+      const data = await changePassword({query});
+      console.log("data",data)
+      navigate('Profile Stack', {screen: 'Profile View'});
+      setLoading(false);
+    } catch (error) {
+      console.log('error', error);
+      toast({type: 'error', text1: error.response.data.message});
+      setLoading(false);
+    }
+  };
 
   return (
     <View style={updatePasswordStyle.resetPasswordMain}>
@@ -50,9 +79,6 @@ const UpdatePassword = ({route}) => {
               name="currentPassword"
               rules={{
                 required: 'Enter Current Password',
-                validate: value =>
-                  isPasswordValid(value) ||
-                  'Must contain special Number and alphabetic Values',
               }}
               render={({field}) => (
                 <View style={updatePasswordStyle.inputBoxView}>
@@ -66,18 +92,23 @@ const UpdatePassword = ({route}) => {
                     placeholder="Enter current password"></TextInput>
                 </View>
               )}></Controller>
-            {errors.newPassword && (
+            {/* {errors.newPassword && (
               <Text style={updatePasswordStyle.errorText}>
                 {errors.newPassword.message}
               </Text>
-            )}
+            )} */}
           </View>
 
           <View style={{marginBottom: verticalScale(15)}}>
             <Controller
               control={control}
               name="newPassword"
-              rules={{required: 'New Password is Required'}}
+              rules={{
+                required: 'New Password is Required',
+                // validate: value =>
+                // isPasswordValid(value) ||
+                // 'Password must contain special ,Number and alphabetic values',
+              }}
               render={({field}) => (
                 <View style={updatePasswordStyle.inputBoxView}>
                   <UserLock />
@@ -92,7 +123,7 @@ const UpdatePassword = ({route}) => {
               )}></Controller>
             {errors.confirmPassword && (
               <Text style={updatePasswordStyle.errorText}>
-                Confirm Password is required
+                {/* {errors.newPassword.message} */} New Password is Required
               </Text>
             )}
           </View>
@@ -120,7 +151,7 @@ const UpdatePassword = ({route}) => {
               </Text>
             )}
           </View>
-          {show === true ? null : (
+          {/* {show === true ? null : (
             <View style={updatePasswordStyle.forgotView}>
               <Text style={updatePasswordStyle.forgotText}>
                 Forgot Current Password ?
@@ -133,10 +164,14 @@ const UpdatePassword = ({route}) => {
                 <Text style={updatePasswordStyle.resetButtonText}>Reset</Text>
               </TouchableOpacity>
             </View>
-          )}
+          )} */}
 
           <View style={{marginVertical: verticalScale(10)}}>
-            <Mainbutton width={300} text="Update Password" />
+            <Mainbutton
+              width={300}
+              text="Update Password"
+              action={handleSubmit(handleUpdatePassword)}
+            />
           </View>
         </View>
       </View>

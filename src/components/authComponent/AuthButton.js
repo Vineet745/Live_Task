@@ -10,7 +10,7 @@ const AuthButton = ({text, action}) => {
         onPress={action}
         style={{
           width: horizontalScale(275),
-          height: verticalScale(40),
+          paddingVertical:verticalScale(12),
           alignItems: 'center',
           alignSelf: 'center',
           borderRadius: 30,
@@ -23,7 +23,6 @@ const AuthButton = ({text, action}) => {
             color: color.white,
             fontFamily: fonts.segoeUI,
             fontSize: RFValue(sizes.h5, 667),
-            textAlign:"center"
           }}>
           {text}
         </Text>

@@ -7,31 +7,94 @@ import BackButton from '../../../assets/images/back_arrow_button.svg';
 import UserRemix from '../../../assets/images/user_remix_white.svg';
 import {useNavigation} from '@react-navigation/native';
 import {singleTaskStyle} from './singleTaskStyle';
-import { getSingleTask } from '../../../service/api/homeApi';
+import {getSingleTask, getTaskReaction} from '../../../service/api/homeApi';
 import Loader from '../../../utils/Loader';
+import {DrawerContentScrollView} from '@react-navigation/drawer';
+import {getUserProfile} from '../../../service/api/userApi';
 
 const SingleTask = ({route}) => {
   const {
-    params: {singleData},
+    params: {item},
   } = route;
   const navigation = useNavigation();
+  const [singleData, setSingleData] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [userData, setUserData] = useState('');
 
+  // console.log("jdfhieurioepr",item?.task_reaction?.task_id)
 
+  // Single Task
+  useEffect(() => {
+    handleSingleTask();
+  }, [item]);
 
+  useEffect(() => {
+    handleUserProfile();
+  }, []);
+
+  const handleSingleTask = async () => {
+    const query = {
+      id: item?.id,
+    };
+    try {
+      setLoading(true);
+      const {data} = await getSingleTask({query});
+      setSingleData(data?.data);
+      setLoading(false);
+    } catch (error) {
+      console.log('error', error);
+      setLoading(false);
+    }
+  };
+
+  //  Remix
+
+  const handleRemix = async () => {
+    const userData = {
+      upvote: false,
+      flag: 'remix',
+      remix: true,
+      task_id: item.id,
+    };
+    try {
+      await getTaskReaction(userData);
+      await handleSingleTask();
+    } catch (error) {
+      setIsLike(false);
+      console.log('error', error);
+    }
+  };
+
+  // Get Current User Data
+
+  const handleUserProfile = async () => {
+    try {
+      const {data} = await getUserProfile();
+      setUserData(data?.data);
+    } catch (error) {
+      console.log('error', error);
+      setLoading(false);
+    }
+  };
 
   return (
     <View style={singleTaskStyle.singleMain}>
-      {/* <Loader loading={loading}/> */}
+      <Loader loading={loading} />
       <View style={singleTaskStyle.customHeader}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <BackButton width={32} height={32} />
         </TouchableOpacity>
-        <TouchableOpacity style={singleTaskStyle.remixButton}>
-          <Text style={{color: color.white, fontFamily: fonts.semiBold}}>
-            Remix
-          </Text>
-          <UserRemix />
-        </TouchableOpacity>
+        {singleData?.creator_id === singleData?.task_reaction?.reactor_id ||
+        userData?.id === singleData?.task_reaction?.reactor_id ? null : (
+          <TouchableOpacity
+            onPress={handleRemix}
+            style={singleTaskStyle.remixButton}>
+            <Text style={{color: color.white, fontFamily: fonts.semiBold}}>
+              Remix
+            </Text>
+            <UserRemix />
+          </TouchableOpacity>
+        )}
       </View>
       <View
         style={{

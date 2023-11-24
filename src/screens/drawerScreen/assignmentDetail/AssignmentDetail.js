@@ -15,10 +15,11 @@ import {singleAssignmentDetail, viewReport} from '../../../service/api/assignmen
 import {color, fonts} from '../../../constants/theme';
 import Coin from '../../../assets/images/coin.svg';
 import CreditModal from '../../../components/modals/CreditModal';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {toast} from '../../../service/ToastMessage';
 import Loader from '../../../utils/Loader';
 import TaskModal from '../../../components/modals/TaskModal';
+import { selectedRadioButton } from '../../../redux/slice/checkBoxSlice';
 
 const AssignmentDetail = ({route}) => {
   const {
@@ -33,7 +34,7 @@ const AssignmentDetail = ({route}) => {
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState([])
   const {radioSelected} = useSelector(state => state.checkbox);
-
+const dispatch = useDispatch()
 const isFocused = useIsFocused()
 
   // modify Number
@@ -68,6 +69,7 @@ const isFocused = useIsFocused()
     if (radioSelected !== null) {
       handleClose();
       setCreditOpen(true);
+
     } else {
       handleClose();
       toast({type: 'error', text1: 'Please Select the Class'});

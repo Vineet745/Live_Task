@@ -7,6 +7,7 @@ export const creditStyle = StyleSheet.create({
   creditMain: {
     flex: 1,
     backgroundColor: 'white',
+    paddingVertical:verticalScale(10)
   },
   balanceView: {
     backgroundColor: '#f3f3f3',

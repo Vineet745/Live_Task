@@ -4,10 +4,12 @@ import EditBlack from '../../../assets/images/edit_black.svg';
 import Mainbutton from '../../../components/mainComponent/Mainbutton';
 import {editClassStyle} from './editClassStyle';
 import UserLogo from '../../../assets/images/inputUser.svg';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import StudentSelectedModal from '../../../components/modals/StudentSelectedModal';
 import {editClass} from '../../../service/api/classApi';
 import {useNavigation} from '@react-navigation/native';
+import {selectedCheckBox} from '../../../redux/slice/checkBoxSlice';
+import Loader from '../../../utils/Loader';
 
 const EditStudent = ({route}) => {
   const {
@@ -16,11 +18,18 @@ const EditStudent = ({route}) => {
   const {navigate} = useNavigation();
   const {selectedValue} = useSelector(state => state.checkbox);
   const selectedStudentIDs = selectedValue.map(student => student?.student_id); // Filtered Value of the data which i get from the redux;
-
-  console.log('selected', selectedStudentIDs);
+  const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState(item.show_name);
+  const [loading, setLoading] = useState(false);
+  
+
+  useEffect(() => {
+    dispatch(selectedCheckBox(item?.class_students));
+  }, []);
+
+// Selected Student Modal
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -38,10 +47,13 @@ const EditStudent = ({route}) => {
       studentIds: selectedStudentIDs,
     };
     try {
+      setLoading(true);
       await editClass({id: item.id, query});
       navigate('My Class');
+      setLoading(false);
     } catch (error) {
       console.log('error');
+      setLoading(false);
     }
   };
 
@@ -49,6 +61,7 @@ const EditStudent = ({route}) => {
 
   return (
     <View style={editClassStyle.editMain}>
+      <Loader loading={loading} />
       <StudentSelectedModal
         open={isOpen}
         closeModal={handleClose}

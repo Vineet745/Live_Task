@@ -48,7 +48,8 @@ const CreditModal = ({open, closeModal, navigation, item,handleSingleAssignmentD
         const data = await assignClass({query});
         closeModal();
         await handleSingleAssignmentDetail() 
-        // navigate('My Assignments');
+        dispatch(selectedRadioButton(null))
+        dispatch(selectedCreditAmount(null))
       } catch (error) {
         console.log('error', error);
       }

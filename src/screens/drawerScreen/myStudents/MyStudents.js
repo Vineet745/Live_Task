@@ -10,10 +10,14 @@ import {
 import React, {useState, useEffect} from 'react';
 import {myStudentStyle} from './myStudentsStyle';
 import SearchIcon from '../../../assets/images/search_icon.svg';
-import {fonts} from '../../../constants/theme';
+import {color, fonts} from '../../../constants/theme';
 import PlusIcon from '../../../assets/images/plus_icon.svg';
 import StudentCard from '../../../components/drawerComponent/studentCard/StudentCard';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import {GetStudents, getStudents} from '../../../service/api/studentApi';
 import {verticalScale} from '../../../constants/dimension';
 import Loader from '../../../utils/Loader';
@@ -23,42 +27,69 @@ import {
 } from '../../../redux/slice/filterTaskSlice';
 import {useDispatch, useSelector} from 'react-redux';
 
-const MyStudents = () => {
+const MyStudents = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
   const [studentData, setStudentData] = useState([]);
+  const [studentFilterData, setStudentFilterData] = useState([]);
   const {navigate} = useNavigation();
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
-  const {studentFilterData} = useSelector(state => state.filter);
+  const [initialVisit, setInitialVisit] = useState(false);
+  const isfocused = useIsFocused();
 
   // handle Get Students
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     handleGetStudent();
+  //   }, []),
+  // );
 
-  useFocusEffect(
-    React.useCallback(() => {
-      handleGetStudent();
-    }, []),
-  );
+  useEffect(() => {
+    handleGetStudent();
+  }, [isfocused]);
 
   // Get Students
 
   const handleGetStudent = async () => {
     try {
-      setLoading(true);
-      const {data} = await getStudents();
-      dispatch(studentFilter(data.data));
-      setStudentData(data.data);
-      setLoading(false);
+      if (!studentData.length) {
+        setLoading(true);
+        const {data} = await getStudents();
+        setStudentFilterData(data.data);
+        setStudentData(data.data);
+        setLoading(false);
+      } else {
+        const {data} = await getStudents();
+        setStudentFilterData(data.data);
+        setStudentData(data.data);
+      }
     } catch (error) {
       console.log('error', error);
       setLoading(false);
     }
   };
 
+  // const handleGetStudent = async () => {
+  //   try {
+  //     // if (studentData.length < 0) {
+  //       setLoading(true);
+  //     // }
+
+  //     const { data } = await getStudents();
+  //     setStudentFilterData(data.data);
+  //     setStudentData(data.data);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.log('error', error);
+  //     setLoading(false);
+  //   }
+  // };
+
   const filterTask = searchQuery => {
     const filteredTask = studentData.filter(item => {
       return item?.username?.toLowerCase().includes(searchQuery.toLowerCase());
     });
-    dispatch(studentFilter(filteredTask));
+    setStudentFilterData(filteredTask);
+    // dispatch(studentFilter(filteredTask));
   };
 
   // handleTextChange when the text length is null
@@ -66,7 +97,8 @@ const MyStudents = () => {
   const handleTextChange = value => {
     setSearchText(value);
     if (value === '') {
-      dispatch(studentFilter(studentData));
+      setStudentFilterData(studentData);
+      // dispatch(studentFilter(studentData));
     } else {
       filterTask(value);
     }
@@ -97,7 +129,7 @@ const MyStudents = () => {
           </View>
         </View>
         <View style={myStudentStyle.cardView}>
-          <FlatList
+          {studentData.length ?<FlatList
             showsVerticalScrollIndicator={false}
             style={{marginBottom: verticalScale(130)}}
             data={studentFilterData}
@@ -110,7 +142,12 @@ const MyStudents = () => {
                 // onEndReachedThreshold={0.3}
               />
             )}
-          />
+          />:<Text style={{
+            color: color.black,
+            fontFamily: fonts.medium,
+            alignSelf: 'center',
+          }}>Students Not found</Text>}
+          
         </View>
       </View>
     </View>

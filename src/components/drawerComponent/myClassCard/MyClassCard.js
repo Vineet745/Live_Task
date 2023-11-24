@@ -26,8 +26,8 @@ const MyClassCard = ({item,handleGetClasses,navigation}) => {
     const id = item.id;
     try {
       await deleteClass(id);
-      await handleGetClasses();
       handleClose();
+      await handleGetClasses();
       navigation.navigate('My Class');
     } catch (error) {
       console.log('error', error);

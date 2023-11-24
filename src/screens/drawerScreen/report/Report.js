@@ -38,10 +38,10 @@ const Report = ({route}) => {
     <View style={reportStyle.reportMain}>
       <View style={reportStyle.taskDetail}>
         <Text style={reportStyle.taskName}>
-          Task Name :- {item?.task?.show_name}
+          Task Name :- {item?.task?.show_name?item?.task?.show_name:"No Task Assigned"}
         </Text>
         <Text style={reportStyle.className}>
-          Class Name :- {item?.class_assignment?.class.show_name}
+          Class Name :- {item?.class_assignment?.class.show_name?item?.class_assignment?.class.show_name:"No Class Assigned"}
         </Text>
         <Text style={reportStyle.dateText}>Due Date :- {updatedTime[0]} </Text>
       </View>

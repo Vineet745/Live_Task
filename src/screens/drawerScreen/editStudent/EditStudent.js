@@ -6,6 +6,7 @@ import Mainbutton from '../../../components/mainComponent/Mainbutton';
 import {editStudent} from '../../../service/api/studentApi';
 import Loader from '../../../utils/Loader';
 import {toast} from '../../../service/ToastMessage';
+import { handlePasswordValidation } from '../../../utils/HelperFunction';
 
 const EditStudent = ({route, navigation}) => {
   const {
@@ -19,6 +20,12 @@ const EditStudent = ({route, navigation}) => {
   // handleEdit
 
   const handleEditStudent = async () => {
+
+    if(!newPassword && !confirmPassword){
+      toast({type: 'error', text1:"New password and Confirm password should not blank"});
+      return;
+    }
+
     let data = {
       email: email,
       password: newPassword,
@@ -43,6 +50,7 @@ const EditStudent = ({route, navigation}) => {
         <View style={editStudentStyle.studentTopContainer}>
           <Text style={editStudentStyle.studentLabelName}>Email</Text>
           <TextInput
+          editable={false}
             style={editStudentStyle.input}
             placeholder="Student@gmail.com"
             value={email}

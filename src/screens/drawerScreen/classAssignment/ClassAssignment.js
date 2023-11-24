@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {classAssignmentStyle} from './classAssignmentStyle';
 import PlusIcon from '../../../assets/images/plus_icon.svg';
 import SearchIcon from '../../../assets/images/search_icon.svg';
-import {fonts} from '../../../constants/theme';
+import {color, fonts} from '../../../constants/theme';
 import ClassAssignmentCard from '../../../components/drawerComponent/classAssignmentCard/ClassAssignmentCard';
 import {useNavigation} from '@react-navigation/native';
 import {verticalScale} from '../../../constants/dimension';
@@ -58,7 +58,7 @@ const ClassAssignment = ({route}) => {
         </View>
       </View>
       <View style={{marginBottom: verticalScale(50)}}>
-        <FlatList
+        {assignments.length >0 ?<FlatList
           showsVerticalScrollIndicator={false}
           data={assignments}
           renderItem={({item}) => {
@@ -66,7 +66,8 @@ const ClassAssignment = ({route}) => {
             return <ClassAssignmentCard item={item.assignment} />;
           }}
           keyExtractor={(item, index) => index.toString()}
-        />
+        />:<Text style={{fontFamily:fonts.semiBold,marginVertical:verticalScale(20),alignSelf:"center",color:color.reblack}}>No Task Assigned</Text>}
+        
       </View>
     </View>
   );

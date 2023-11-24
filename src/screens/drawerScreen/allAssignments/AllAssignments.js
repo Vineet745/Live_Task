@@ -1,9 +1,13 @@
 import {View, Text, TextInput, TouchableOpacity, FlatList} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import SearchIcon from '../../../assets/images/search_icon.svg';
-import {fonts} from '../../../constants/theme';
+import {color, fonts} from '../../../constants/theme';
 import PlusIcon from '../../../assets/images/plus_icon.svg';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import {AllAssignmentsStyle} from './allAssignmentsStyle';
 import AllAssignmentCard from '../../../components/drawerComponent/allAssignmentCard/AllAssignmentCard';
 import {getAssignments} from '../../../service/api/assignmentApi';
@@ -18,25 +22,37 @@ import {
 const AllAssignments = () => {
   const [searchText, setSearchText] = useState('');
   const [assignmentData, setassignmentData] = useState([]);
+  const [assignmentFilterData, setAssignmentFilterData] = useState([]);
   const [loading, setloading] = useState(false);
   const dispatch = useDispatch();
-  const {assignmentFilterData} = useSelector(state => state.filter);
+  const isfocused = useIsFocused();
+  // const {assignmentFilterData} = useSelector(state => state.filter);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      handleAssignments();
-    }, []),
-  );
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     handleAssignments();
+  //   }, []),
+  // );
+
+  useEffect(() => {
+    handleAssignments();
+  }, [isfocused]);
 
   // handle Get Assignment
 
   const handleAssignments = async () => {
     try {
-      setloading(true);
-      const {data} = await getAssignments();
-      dispatch(assingmentFilter(data.data));
-      setassignmentData(data?.data);
-      setloading(false);
+      if (!assignmentData.length) {
+        setloading(true);
+        const {data} = await getAssignments();
+        setAssignmentFilterData(data.data);
+        setassignmentData(data?.data);
+        setloading(false);
+      } else {
+        const {data} = await getAssignments();
+        setAssignmentFilterData(data.data);
+        setassignmentData(data?.data);
+      }
     } catch (error) {
       console.log('error', error);
       setloading(false);
@@ -47,7 +63,7 @@ const AllAssignments = () => {
     const filteredTask = assignmentData.filter(item => {
       return item?.show_name?.toLowerCase().includes(searchQuery.toLowerCase());
     });
-    dispatch(assingmentFilter(filteredTask));
+    setAssignmentFilterData(filteredTask);
   };
 
   // handleTextChange
@@ -55,7 +71,7 @@ const AllAssignments = () => {
   const handleTextChange = value => {
     setSearchText(value);
     if (value === '') {
-      dispatch(assingmentFilter(assignmentData));
+      setAssignmentFilterData(assignmentData);
     } else {
       filterTask(value);
     }
@@ -89,7 +105,7 @@ const AllAssignments = () => {
           </View>
         </View>
         <View style={AllAssignmentsStyle.cardView}>
-          <FlatList
+          {assignmentData.length?<FlatList
             data={assignmentFilterData}
             showsVerticalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}
@@ -101,7 +117,12 @@ const AllAssignments = () => {
                 />
               );
             }}
-          />
+          />:<Text style={{
+            color: color .black,
+            fontFamily: fonts.medium,
+            alignSelf: 'center',
+          }}>Assignment Not found</Text>}
+          
         </View>
       </View>
     </View>

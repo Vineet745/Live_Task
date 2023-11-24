@@ -1,4 +1,5 @@
 import {modalOpen} from '../redux/slice/modalSlice';
+import { toast } from '../service/ToastMessage';
 
 
 // Email Validation
@@ -29,6 +30,21 @@ export const handleClose = dispatch => {
   dispatch(modalOpen(false));
 };
 
+// Validation Input
+export const handleInputValidation = ({newValue,limit,error,setValue}) => {
+  if(newValue.length <= limit){
+    setValue(newValue);
+  }else{
+    toast({type: 'error', text1: `${error} can't bigger than ${limit} Words`});
+  }
+};
 
-// Camera Open
 
+// New password and Confirm password Validation
+
+export const handlePasswordValidation = (newPassword,confirmPassword)=>{
+  if(!newPassword && !confirmPassword){
+    toast({type: 'error', text1:"New password and Confirm password should be Same"});
+    return;
+  }
+}

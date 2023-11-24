@@ -55,7 +55,7 @@ console.log("sjkdkrheiuor",selectedItems)
         <View style={styles.innerModal}>
           <View style={styles.innerModalTopView}>
             <Text style={styles.mainText}>Select Students</Text>
-            <View style={styles.inputView}>
+            {/* <View style={styles.inputView}>
               <View style={styles.searchTask}>
                 <SearchIcon />
                 <TextInput
@@ -73,7 +73,7 @@ console.log("sjkdkrheiuor",selectedItems)
                   backgroundColor="#f3f3f3"
                 />
               </View>
-            </View>
+            </View> */}
           </View>
           <View style={{ height: 450 }}>
             <FlatList

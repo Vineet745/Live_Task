@@ -15,27 +15,9 @@ import SingleTask from '../../../screens/mainScreen/singleTask/SingleTask';
 
 const TeacherDashboardTask = ({item, handleGetTask}) => {
   const navigation = useNavigation();
-  const [singleData, setSingleData] = useState('');
-  const [isLike, setIsLike] = useState(false);
+  const [isLike, setIsLike] = useState(item.task_reaction?.reaction_type === 'UPV');
 
-  // Single Task
-  useEffect(() => {
-    handleSingleTask();
-  }, []);
-
-  const handleSingleTask = async () => {
-    const query = {
-      id: item.id,
-      flag: 'explore',
-    };
-    try {
-      const {data} = await getSingleTask({query});
-      setSingleData(data?.data);
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
-
+ 
   const likePost = async () => {
     const userData = {
       upvote: true,
@@ -53,7 +35,7 @@ const TeacherDashboardTask = ({item, handleGetTask}) => {
     }
   };
 
-  const unlikePost = async ({upvote}) => {
+  const unlikePost = async () => {
     const userData = {
       upvote: false,
       flag: 'upvote',
@@ -70,11 +52,15 @@ const TeacherDashboardTask = ({item, handleGetTask}) => {
     }
   };
 
+ 
+
+  // Rmx 
+
 
   return (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate('SingleTask', {singleData: singleData})
+        navigation.navigate('SingleTask', {item: item})
       }
       style={teacherDashboardTaskStyle.dashboardTaskMain}>
       <View style={teacherDashboardTaskStyle.topView}>
@@ -94,28 +80,24 @@ const TeacherDashboardTask = ({item, handleGetTask}) => {
           <View style={teacherDashboardTaskStyle.iconTextContainer}>
             <TouchableOpacity
               onPress={() => {
-                if (isLike === true || item.task_reaction !== null) {
-                  unlikePost({item});
+                if (isLike) {
+                  unlikePost();
                 } else {
-                  likePost({item});
+                  likePost();
                 }
               }}
               style={teacherDashboardTaskStyle.buttons}>
-              {item.task_reaction !== null || isLike === true ? (
-                <LikePink />
-              ) : (
-                <LikePlane />
-              )}
+              {isLike ? <LikePink /> : <LikePlane />}
             </TouchableOpacity>
             <Text style={teacherDashboardTaskStyle.countText}>
-              {item.upvote_count}
+              {item?.upvote_count}
             </Text>
           </View>
           <View style={teacherDashboardTaskStyle.iconTextContainer}>
             <TouchableOpacity style={teacherDashboardTaskStyle.buttons}>
               <Share />
             </TouchableOpacity>
-            <Text style={teacherDashboardTaskStyle.countText}>1233</Text>
+            <Text style={teacherDashboardTaskStyle.countText}>{item?.remix_count}</Text>
           </View>
           <View style={teacherDashboardTaskStyle.iconTextContainer}>
             <TouchableOpacity style={teacherDashboardTaskStyle.buttons}>

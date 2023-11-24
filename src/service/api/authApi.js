@@ -53,7 +53,7 @@ export const otpVerification = async({userData})=>{
 
 // ---------------------handle Change Password -----------//
 
-export const changePassword = async({userData})=>{
+export const changePassword = async({query})=>{
     try {
         const res = await instance.post("auth/set-newpassword",userData)
         return res;

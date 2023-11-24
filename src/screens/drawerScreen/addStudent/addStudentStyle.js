@@ -61,4 +61,15 @@ export const addStudentStyle = StyleSheet.create({
     color: color.black,
     fontSize: RFValue(sizes.h5, 667),
   },
+  csvButton:{
+    width:horizontalScale(260),
+    borderRadius:30,
+    backgroundColor:"#04c38c",
+    alignItems:"center",
+    justifyContent:"center"
+  },
+  csvInput:{
+    fontFamily:fonts.semiBold,
+    width:horizontalScale(100)
+  }
 });

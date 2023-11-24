@@ -13,13 +13,10 @@ export const getTasks = async flag => {
 
 // Like & Dislike
 
-export const getTaskReaction = async userData => {
+export const getTaskReaction = async (userData) => {
   try {
-    const response = await instance.post('tasks/reactions', userData, {
-      headers: {
-        role: 'TCH',
-      },
-    });
+    const response = await instance.post('tasks/reactions', userData);
+    return response;
   } catch (error) {
     console.log('Error', error.response);
   }
@@ -28,14 +25,14 @@ export const getTaskReaction = async userData => {
 // SingleTask
 
 export const getSingleTask = async ({query}) => {
-  console.log("queyr",query)
   try {
     const response = await instance.get(
-      `tasks/?flag=${query.flag}&reaction=UPV&taskId=${query.id}`,
+      `tasks/?taskId=${query.id}&reaction=RMX`,
     );
     return response;
   } catch (error) {
     console.log('error', error);
+    throw error;
   }
 };
 
@@ -72,7 +69,7 @@ export const filterTask = async query => {
 // toogle Button
 
 export const toggleButton = async ({query}) => {
-  console.log("qieruye",query)
+  console.log('qieruye', query);
   try {
     const response = await instance.post('tasks/toggle', query);
     return response;
@@ -84,7 +81,6 @@ export const toggleButton = async ({query}) => {
 // Add Task
 
 export const createTask = async ({query}) => {
-  console.log("dkjfoieurpoe",query)
   const formData = new FormData();
   formData.append('subject_id', query.subject_id);
   formData.append('taskName', query.taskName);
@@ -96,14 +92,20 @@ export const createTask = async ({query}) => {
   formData.append('prompt', query.prompt);
   formData.append('voice_only', query.voice_only);
   formData.append('is_advanced', query.is_advanced);
-  if(query.images){
-    formData.append("images",{
-      uri:query.images,
-      name: `${new Date().getTime()}.jpeg`,
-      type: 'image/jpeg',
-    })
-    formData.append("urls",query.urls)
-
+  if (query.images && query.images.length > 0) {
+    query.images.forEach((image, index) => {
+      formData.append('images', {
+        uri: image,
+        name: `${new Date().getTime()}_${index}.jpeg`,
+        type: 'image/jpeg',
+      });
+    });
+  }
+  if (query.urls) {
+    formData.append('urls', query.urls);
+  }
+  if (query.content) {
+    formData.append('content', query.content);
   }
 
   try {

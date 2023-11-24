@@ -28,6 +28,7 @@ export const addAssignment = async ({query}) => {
     return response;
   } catch (error) {
     console.log('error', error);
+    throw error;
   }
 };
 
